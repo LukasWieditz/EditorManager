@@ -1,0 +1,1 @@
+Use this option to import an XML file containing special character definitions.

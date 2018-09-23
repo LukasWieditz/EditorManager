@@ -1,0 +1,50 @@
+<xf:title>{{ phrase('kl_em_special_chars:') }} {$group.title}</xf:title>
+
+<xf:pageaction>
+	<div class="buttonGroup">
+		<xf:button href="{{ link('em/special-chars/characters/add', $group) }}" icon="add">{{ phrase('kl_em_special_chars_add_character') }}</xf:button>
+
+		<xf:if contentcheck="true">
+			<div class="buttonGroup-buttonWrapper">
+				<xf:button class="menuTrigger" data-xf-click="menu" aria-expanded="false" aria-haspopup="true" title="{{ phrase('more_options')|for_attr }}">&#8226;&#8226;&#8226;</xf:button>
+				<div class="menu" data-menu="menu" aria-hidden="true">
+					<div class="menu-content">
+						<h4 class="menu-header">{{ phrase('more_options') }}</h4>
+						<xf:contentcheck>
+							<xf:if is="$specialChars is not empty">
+								<a href="{{ link('em/special-chars/characters/sort', $group) }}" class="menu-linkRow" data-xf-click="overlay">{{ phrase('button.sort') }}</a>
+							</xf:if>
+						</xf:contentcheck>
+					</div>
+				</div>
+			</div>
+		</xf:if>
+	</div>
+</xf:pageaction>
+
+<xf:if is="$specialChars is not empty">
+	<xf:form action="{{ link('em/special-chars/characters/toggle', $group) }}"
+			 ajax="true" class="block">
+		<div class="block-container">
+			<div class="block-body">
+				<xf:datalist>
+					<xf:foreach loop="$specialChars" value="$character">
+						<xf:datarow>
+							<xf:cell class="dataList-cell--link dataList-cell--main" hash="{$character.character_id}">
+								<a href="{{ link('em/special-chars/characters/edit', $character) }}">
+										<div class="dataList-mainRow">{$character.code|raw} <span class="dataList-hint" dir="auto">{$character.title}</span></div>
+								</a>
+							</xf:cell>
+							<xf:toggle name="active[{$character.character_id}]" selected="$character.active"
+									   class="dataList-cell--separated" submit="true"
+									   tooltip="{{ phrase('enable_disable_x', {'title': $character.title }) }}" />
+							<xf:delete href="{{ link('em/special-chars/characters/delete', $character) }}" />
+						</xf:datarow>
+					</xf:foreach>
+				</xf:datalist>
+			</div>
+		</div>
+	</xf:form>
+	<xf:else />
+	<div class="blockMessage">{{ phrase('no_items_have_been_created_yet') }}</div>
+</xf:if>

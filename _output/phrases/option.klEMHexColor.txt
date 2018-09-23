@@ -1,0 +1,1 @@
+Enable hex color input

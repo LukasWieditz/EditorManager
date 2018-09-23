@@ -1,0 +1,115 @@
+<xf:title>{{ phrase('admin_navigation.emLayout') }}</xf:title>
+
+<xf:css src="public:editor.less" />
+<xf:css src="kl_em_layout.less" />
+<xf:js src="editor-manager/vendor/jquery-ui.min.js" addon="KL/EditorManager" />
+<xf:js src="editor-manager/layout.js" addon="KL/EditorManager" min="1" />
+
+<xf:if is="{{ is_addon_active('Math') }}">
+	<xf:css src="public:Math.less" />
+</xf:if>
+
+<xf:pageaction>
+	<div class="buttonGroup">
+		<xf:button href="{{ link('em/dropdowns/add') }}" icon="add">{{ phrase('kl_em_add_dropdown') }}</xf:button>
+	</div>
+</xf:pageaction>
+
+<div class="block">
+	<div class="block-container">
+		<h1 class="block-header">
+			{{ phrase('kl_em_custom_dropdowns') }}
+		</h1>
+		<div class="block-body" style="padding: 0">
+			<xf:datalist>
+				<xf:foreach loop="$dropdowns" value="$dropdown">
+					<xf:datarow>
+						<xf:cell class="dataList-cell--link dataList-cell--main" hash="{$dropdown.dropdown_id}">
+							<a href="{{ link('em/dropdowns/edit', $dropdown) }}">
+								<div class="dataList-mainRow">{$dropdown.title}</div>
+							</a>
+						</xf:cell>
+						<xf:delete href="{{ link('em/dropdowns/delete', $dropdown) }}" />
+					</xf:datarow>
+				</xf:foreach>
+			</xf:datalist>
+		</div>
+	</div>
+</div>
+
+<xf:form action="{{ link('em/layout/save') }}" ajax="true" class="block">
+	<div class="block-container">
+		<h1 class="block-header">
+			{{ phrase('kl_em_layout') }}
+		</h1>
+		<div class="block-body">	
+			<h3>{{ phrase('kl_em_available_buttons') }}</h3>
+			<div class="fr-toolbar ui-draggable-source">
+				<xf:foreach loop="$bbCodes" value="$field">
+					<xf:if is="$field.iconType === 'separator'">
+						<span data-value="|" class="fr-sep fr-command fr-btn ui-draggable-element">
+							<i class="separator" data-xf-init="tooltip" title="{{ phrase('kl_em_separator') }}"></i>
+						</span>
+						<xf:else />
+						<xf:if is="$field.iconType === 'fa'">
+							<span data-value="{$field.toolbarName}" class="fr-command fr-btn ui-draggable-element">
+								<i data-xf-init="tooltip" class="fa fa-{$field.icon}" title="{$field.name}"></i>
+							</span>
+
+							<xf:elseif is="$field.iconType === 'text'" />
+
+							<span data-value="{$field.toolbarName}" class="fr-command fr-btn ui-draggable-element">
+								<i data-xf-init="tooltip" title="{$field.name}" class="text-icon">{$field.icon|raw}</i>
+							</span>
+
+							<xf:elseif is="$field.iconType === 'img'" />
+							<span data-value="{$field.toolbarName}" class="fr-command fr-btn ui-draggable-element">
+								<img data-xf-init="tooltip"
+									 title="{$field.name}"
+									 class="text-icon"
+									 src="{$field.icon|raw}" />
+							</span>
+						</xf:if>
+					</xf:if>
+				</xf:foreach>
+			</div>
+
+			<p class="contentRow-muted">{{ phrase('kl_em_layout_explanation') }}</p>
+			<xf:foreach loop="$layouts" key="$key" value="$layout">
+				<h3>{$layout.name}</h3>
+				<div class="fr-toolbar fr-{$key} ui-sortable ui-droppable" data-value="{$key}">
+					<xf:foreach loop="$layout.layout" value="$field">
+						<xf:if is="$field.iconType === 'separator'">
+							<span data-value="|" class="fr-sep fr-command fr-btn ui-draggable-element">
+								<i class="separator" data-xf-init="tooltip" title="{{ phrase('kl_em_separator') }}"></i>
+							</span>
+							<xf:else />
+							<xf:if is="$field.iconType === 'fa'">
+								<span data-value="{$field.toolbarName}" class="fr-command fr-btn ui-draggable-element">
+									<i data-xf-init="tooltip" class="fa fa-{$field.icon}" title="{$field.name}"></i>
+								</span>
+
+								<xf:elseif is="$field.iconType === 'text'" />
+
+								<span data-value="{$field.toolbarName}" class="fr-command fr-btn ui-draggable-element">
+									<i data-xf-init="tooltip" title="{$field.name}" class="text-icon">{$field.icon|raw}</i>
+								</span>
+
+								<xf:elseif is="$field.iconType === 'img'" />
+								<span data-value="{$field.toolbarName}" class="fr-command fr-btn ui-draggable-element">
+									<img data-xf-init="tooltip"
+										 title="{$field.name}"
+										 class="text-icon"
+										 src="{$field.icon|raw}" />
+								</span>
+							</xf:if>
+						</xf:if>
+					</xf:foreach>
+				</div>
+			</xf:foreach>
+		</div>
+
+		<input type="hidden" value='{$layoutValue|json|raw}' name="toolbar_layout" id="layoutValue" />
+		<xf:submitrow sticky="true" icon="save" />
+	</div>
+</xf:form>

@@ -1,0 +1,13 @@
+{
+    "edit_format": "spinbox",
+    "edit_format_params": "min=0",
+    "data_type": "unsigned_integer",
+    "sub_options": [],
+    "validation_class": "",
+    "validation_method": "",
+    "default_value": "90",
+    "relations": {
+        "klEM": 10080,
+        "logging": 315
+    }
+}

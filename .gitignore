@@ -3,7 +3,6 @@
 .DS_Store
 
 _data/
-_output/
 _releases
 _build
 

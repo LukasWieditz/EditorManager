@@ -1,0 +1,836 @@
+{
+    "admin_navigation.emBBCode.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "303e63beace3c89dd43df3fa02263c56"
+    },
+    "admin_navigation.emFonts.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "59c4ad3f3cb3d812d68fab7a354d4a63"
+    },
+    "admin_navigation.emLayout.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "aeb95353c93c0c74cc64b1df6904bd10"
+    },
+    "admin_navigation.emOptions.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "dae8ace18bdcbcc6ae5aece263e14fe8"
+    },
+    "admin_navigation.emTemplates.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "b0b8c9ae637b4940929ffaeaa579e087"
+    },
+    "admin_navigation.klEMAudioProxyLog.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "642f1e8eb0abf40c210250e9e8cca879"
+    },
+    "admin_navigation.klEMSpecialChars.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "5d5a654fa7b639a4a5451fc900a30711"
+    },
+    "admin_navigation.klEMVideoProxyLog.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "df00d8ffb6cb0ab81f77a5598332de23"
+    },
+    "kl_em_add_dropdown.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "354596d883a63fc75bc5368a4822d563"
+    },
+    "kl_em_add_font.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "14f5ba40eb53f0346c0e6fd04e6eb3ca"
+    },
+    "kl_em_add_template.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "ad4ed0f42dcaf4d181e77ca32c45aca3"
+    },
+    "kl_em_aliases.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "9ab81f57823f6aeb02362291f23883e6"
+    },
+    "kl_em_align_justify.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "a60a0c2a6ff4d4b83cae2caadfb61dd6"
+    },
+    "kl_em_audio.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "b22f0418e8ac915eb66f829d262d14a2"
+    },
+    "kl_em_audio_proxy_details.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "fb6b3aa2107141c92627c587ac3644fb"
+    },
+    "kl_em_audio_proxy_log.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "642f1e8eb0abf40c210250e9e8cca879"
+    },
+    "kl_em_available_buttons.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "b07549660a79a922276124a973fcc33e"
+    },
+    "kl_em_background_color.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "368d9ac76af05f714092bc808a426bfc"
+    },
+    "kl_em_bb_code_help_audio_desc.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "12407a0c70630fe14a6dffd1d64bc9ad"
+    },
+    "kl_em_bb_code_help_audio_title.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "6d77ebbcebc16a162cb9412451cc5563"
+    },
+    "kl_em_bb_code_help_video_desc.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "6be2b4128e3268ce9301b64b3615f592"
+    },
+    "kl_em_bb_code_help_video_example.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "cfe658e0a073885f7dbb426d7e35ce00"
+    },
+    "kl_em_bb_code_help_video_title.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "3020f0bcb98b33b7be2121fc5f376e1a"
+    },
+    "kl_em_bb_codes.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "303e63beace3c89dd43df3fa02263c56"
+    },
+    "kl_em_browser_not_supporting_audio.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "cd022183b73daf7ce316fd599ab6b853"
+    },
+    "kl_em_browser_not_supporting_video.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "e2638644c5de6338d3858279fd7fb8f1"
+    },
+    "kl_em_characters.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "994d06622c761cbceb384fd10a0b53f3"
+    },
+    "kl_em_charcount_mode.txt": {
+        "global_cache": false,
+        "version_id": 1010072,
+        "version_string": "1.1.0.2",
+        "hash": "2b2064fc1980e6b726889785044db886"
+    },
+    "kl_em_charcount_mode_explain.txt": {
+        "global_cache": false,
+        "version_id": 1010072,
+        "version_string": "1.1.0.2",
+        "hash": "c36869bab237bc98d82208d22a9a4b4c"
+    },
+    "kl_em_chose_file.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "2bb0ba8bee22216acebe00e5f51b6556"
+    },
+    "kl_em_delete_column.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "f722b0bbb0ecaa598bf84b6568ac826b"
+    },
+    "kl_em_delete_row.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "198b6544853854b80b916df7c46db6a1"
+    },
+    "kl_em_dropdown_edit.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "ccb17c84e0556de747a36b1b5a9cbe2d"
+    },
+    "kl_em_edit_font.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "a277e2cb9b31538dbef0b414a7e6a6cd"
+    },
+    "kl_em_edit_template.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "2992dafa14a7361deb8459ad07659b12"
+    },
+    "kl_em_editor_manager_bb_codes.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "c42c27f22be73f83e481ab712c530a91"
+    },
+    "kl_em_editor_templates.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "3f6bd9b6c742b48078c4ad95aa914b42"
+    },
+    "kl_em_export_special_chars.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "730a5e49b5d9e0ac23ff329a2e9c6f75"
+    },
+    "kl_em_external_fonts.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "26f3f09698b7f1a1f9b550e2ae045e3e"
+    },
+    "kl_em_font_family.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "4c0ff9700cc0ef77c92b2627bdcd1fb8"
+    },
+    "kl_em_font_sizes.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "f786aa35308bb5ed2d9f57c75f920ba0"
+    },
+    "kl_em_general_options.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "ab9c045a3bcbd8a9c82d7013cf9486f0"
+    },
+    "kl_em_gfont.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "7fd8ff1bb929059ac9d5739b2c0c5219"
+    },
+    "kl_em_google_font.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "7fd8ff1bb929059ac9d5739b2c0c5219"
+    },
+    "kl_em_google_font_name.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "874fe33acc9c32433fcc002ccb38686e"
+    },
+    "kl_em_hidden_content.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "e43df5de2cb14fa198c6349652d9cf4c"
+    },
+    "kl_em_hide_default_option.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "61b6e58c0db2d6fec57284f63e99326f"
+    },
+    "kl_em_hide_number_of_posts.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "6d3f50277f458b8d8bf1d82a7a1a22bd"
+    },
+    "kl_em_horizontal_align.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "d3d6fd72b2165e49de4fbfb3fd844aee"
+    },
+    "kl_em_hoster.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "a619a8d941079c4adadaa0a73843c044"
+    },
+    "kl_em_import_from_library.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "38050cf9da36c05d082c1a81b5247e16"
+    },
+    "kl_em_import_special_chars.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "96f3b502e310d066e731efd4fbf0f19d"
+    },
+    "kl_em_included_excluded_fonts.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "7ef34ce45286bcd5de40af2f95d7e55f"
+    },
+    "kl_em_inline_spoiler.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "dd4e65df8a88be4913491f4bc4f241fb"
+    },
+    "kl_em_insert_column_after.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "daf0fc26e46b4c4ab46483d68482a191"
+    },
+    "kl_em_insert_column_before.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "ce66d1af10661d27bf06a7e58a3c9b75"
+    },
+    "kl_em_insert_gfont.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "f64222cec4429fa09fba6e30bd1937b6"
+    },
+    "kl_em_insert_row_above.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "9fdf73688eb49ac70d5e570ef8c2d848"
+    },
+    "kl_em_insert_row_below.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "48e4d0e9c81d56159af5f9ec710437c8"
+    },
+    "kl_em_letters.txt": {
+        "global_cache": false,
+        "version_id": 1010071,
+        "version_string": "1.1.0.1",
+        "hash": "cd8d64cdb20ce5679ebe747747c3cc4c"
+    },
+    "kl_em_no_public_templates_yet.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "8b60044b395c270ad672e42818a98a2d"
+    },
+    "kl_em_option_debug_mode_only.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "aaa297ad330bddecf2a91a142347bf22"
+    },
+    "kl_em_parse_html.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "65f754fbae3c9239424f305cb8d34c11"
+    },
+    "kl_em_please_upload_valid_xml_file.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "47653c3febc913517dcd84a59a6c3d67"
+    },
+    "kl_em_position_of_this_item.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "eaf9d9bc3961e4db1cbd5bdf40d506a4"
+    },
+    "kl_em_proxy_audios.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "0b4d0b538111d1a41d0709ca135da1d7"
+    },
+    "kl_em_proxy_videos.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "85e45f53dc9aac8fc34ad1d77a5af66d"
+    },
+    "kl_em_remove_table.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "4c59359637398d9d1be1cd4d0ab51e50"
+    },
+    "kl_em_sort_fonts.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "726da7611e7fda390ab82e727557c1a3"
+    },
+    "kl_em_sort_templates.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "dead2bedbd24c93af51be535937f8420"
+    },
+    "kl_em_special_characters.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "5d5a654fa7b639a4a5451fc900a30711"
+    },
+    "kl_em_special_chars_character_add.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "1fae5a767c1f0633585250d369c5380a"
+    },
+    "kl_em_special_chars_character_edit.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "9b889521eeae6e9c4f4f2e0efd363df4"
+    },
+    "kl_em_special_chars_pre_import_explain.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "1f54b4bcae488ed43c03f90faca704c5"
+    },
+    "kl_em_special_chars_pre_import_library_explain.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "d0780e5e096577f54def102a89af40c6"
+    },
+    "kl_em_stock_bb_codes.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "1737a047df61a56ec3f26d3e15060ff7"
+    },
+    "kl_em_table_header.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "af3ce3bc0dcd96a858b69bc01c0d4dbb"
+    },
+    "kl_em_text_align.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "c22b28c5c38d219b521e476691bd7158"
+    },
+    "kl_em_toolbarButtonsMD.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "b18a3a66eea7b00c188887ae7b67572a"
+    },
+    "kl_em_toolbarButtonsSM.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "deb3a556c9a300ec6e171fb1cf560580"
+    },
+    "kl_em_toolbarButtonsXS.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "f8b1300ee5635d6cf3bdc6007f62fae0"
+    },
+    "kl_em_unlink_all.txt": {
+        "global_cache": false,
+        "version_id": 1000170,
+        "version_string": "1.0.1",
+        "hash": "b92b910d586e887863e7b470c5598400"
+    },
+    "kl_em_unlink_all_links.txt": {
+        "global_cache": false,
+        "version_id": 1000170,
+        "version_string": "1.0.1",
+        "hash": "b92b910d586e887863e7b470c5598400"
+    },
+    "kl_em_use_extended_colorpicker.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "6e9eb08e883a66eea09eed9d57165ce3"
+    },
+    "kl_em_user_selectable.txt": {
+        "global_cache": false,
+        "version_id": 1010071,
+        "version_string": "1.1.0.1",
+        "hash": "2fc9e4bb339e56708bb18034fc900e84"
+    },
+    "kl_em_vertical_align.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "e79d06468a6485e620a9a7200f27450b"
+    },
+    "kl_em_video.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "34e2d1989a1dbf75cd631596133ee5ee"
+    },
+    "kl_em_video_proxy_details.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "fb56e47ab4cc1f3636616ce12916823d"
+    },
+    "kl_em_video_proxy_log.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "df00d8ffb6cb0ab81f77a5598332de23"
+    },
+    "kl_em_web.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "21be6240c9e1b40085756b5ab7f87775"
+    },
+    "kl_em_websafe_font_stacks.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "ed6bf40e0ea9fe3ebdd77ae76741fd3f"
+    },
+    "kl_em_words.txt": {
+        "global_cache": false,
+        "version_id": 1010071,
+        "version_string": "1.1.0.1",
+        "hash": "6f15b8d4b7287d60a8ea3d1c5cbadc84"
+    },
+    "option.kLEMVideoCacheRefresh.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "9ffde983690a78870d4e4b19632e2456"
+    },
+    "option.klEMAudioCacheRefresh.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "ef7f858837abc7be5f4346fc9cd46d56"
+    },
+    "option.klEMAudioCacheTTL.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "bea371c691f64720072d6cc555536fcd"
+    },
+    "option.klEMAudioProxyMaxSize.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "06d27f142d1ea25f68e332ddecb57a97"
+    },
+    "option.klEMCharCounter.txt": {
+        "global_cache": false,
+        "version_id": 1010071,
+        "version_string": "1.1.0.1",
+        "hash": "e93f994f01c537c4e2f7d8528c3eb5e9"
+    },
+    "option.klEMColors.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "0f07233147a117426c306273c3e6aea1"
+    },
+    "option.klEMGoogleApiKey.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "7da2b48701e306846f0a206695fbc281"
+    },
+    "option.klEMHexColor.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "63539f39aa708bea06ce23d10ca9ae89"
+    },
+    "option.klEMHideControllers.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "8d106921ec1b77c6456ce521e935f0e8"
+    },
+    "option.klEMImageAlignment.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "0fb7d1e7aa4442ff0d4cfd00c258748a"
+    },
+    "option.klEMImageDimensions.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "0c7319f1e0922753721d6022d181cb6f"
+    },
+    "option.klEMLateLoad.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "6e2ca3083d2d4091c9208e136f0de3f8"
+    },
+    "option.klEMLayout.txt": {
+        "global_cache": false,
+        "version_id": 1000291,
+        "version_string": "1.0.2 Patch Level 1",
+        "hash": "b0cd239ff9ada5a88d0921e013b950be"
+    },
+    "option.klEMProxy.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "79c9f9db576d3bc3d989b3f3c2fc3a75"
+    },
+    "option.klEMVideoAudioProxyLogLength.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "e30e03639e7b9cdb4488a1e26d4e7499"
+    },
+    "option.klEMVideoAudioProxyReferrer.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "f7869e741bb9b7117e055d6a238031ad"
+    },
+    "option.klEMVideoCacheTTL.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "3ae8935991dcf8bc3f1fb075a699b91b"
+    },
+    "option.klEMVideoProxyMaxSize.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "15ccb0ad5c43c2fa7508a4f0f63fe4a4"
+    },
+    "option_explain.kLEMVideoCacheRefresh.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "5961d025ead048150f6f91912637a802"
+    },
+    "option_explain.klEMAudioCacheRefresh.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "17f001b71e910ee0cbc9760bca591aa4"
+    },
+    "option_explain.klEMAudioCacheTTL.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "27472206c3fd064c404f6c5cdfded2c9"
+    },
+    "option_explain.klEMAudioProxyMaxSize.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "a8a418d00187bd3b19a8045bfc462bc6"
+    },
+    "option_explain.klEMCharCounter.txt": {
+        "global_cache": false,
+        "version_id": 1010071,
+        "version_string": "1.1.0.1",
+        "hash": "10b65a66335f4d0d74d9b2a905c92547"
+    },
+    "option_explain.klEMColors.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "5bc56ed7173525df5048726d76a86b2a"
+    },
+    "option_explain.klEMHexColor.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "a8f38051894965498759ac46604a7945"
+    },
+    "option_explain.klEMHideControllers.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "5c898b0f2a028b0c1d9aa66b671ca36b"
+    },
+    "option_explain.klEMImageAlignment.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "b4e3370aad9ab927ce91b421ee93b142"
+    },
+    "option_explain.klEMImageDimensions.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "80fef86f8a9d50265cf58e0b72c49da8"
+    },
+    "option_explain.klEMProxy.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "d82e3e6e717efacc1bfc27baac311a89"
+    },
+    "option_explain.klEMVideoAudioProxyLogLength.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "48b2ebd155461c0961cc5fdc9392004d"
+    },
+    "option_explain.klEMVideoAudioProxyReferrer.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "92117dcbb515e164c600c8a59cc4fe12"
+    },
+    "option_explain.klEMVideoCacheTTL.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "4014d1511c81958bc443eb1c14a0b347"
+    },
+    "option_explain.klEMVideoProxyMaxSize.txt": {
+        "global_cache": false,
+        "version_id": 1010033,
+        "version_string": "1.1.0 Beta 3",
+        "hash": "3783308dbdabb6096bd864b2158b1c9a"
+    },
+    "style_prop.klEMAudioControls.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "94a88ece06a547979f26fa5c7a91cdc6"
+    },
+    "style_prop.klEMCharCounter.txt": {
+        "global_cache": false,
+        "version_id": 1000170,
+        "version_string": "1.0.1",
+        "hash": "5101cd04f297601ce7151f64960a2b4c"
+    },
+    "style_prop.klEMVideoAudioControls.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "349156e34a54ca737899cf6dfc1b445c"
+    },
+    "style_prop.klEMVideoAudioProgress.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "3f807ffe8410ef953e9a79f4d642686b"
+    },
+    "style_prop.klEMVideoAudioTooltip.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "b33a4e678f4fe248ca770f2c5e04ffde"
+    },
+    "style_prop.klEMVideoControls.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "49b836c30765a69cf88c63f111e77dc6"
+    },
+    "style_prop.klEMiSpoiler.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "980c31bba7f8931e3871d785cf6ba067"
+    },
+    "style_prop_desc.klEMAudioControls.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "style_prop_desc.klEMCharCounter.txt": {
+        "global_cache": false,
+        "version_id": 1000170,
+        "version_string": "1.0.1",
+        "hash": "a74a163e0c941c4be3bb85eed16f4419"
+    },
+    "style_prop_desc.klEMVideoAudioControls.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "style_prop_desc.klEMVideoAudioProgress.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "style_prop_desc.klEMVideoAudioTooltip.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "style_prop_desc.klEMVideoControls.txt": {
+        "global_cache": false,
+        "version_id": 1010032,
+        "version_string": "1.1.0 Beta 2",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "style_prop_desc.klEMiSpoiler.txt": {
+        "global_cache": false,
+        "version_id": 1010070,
+        "version_string": "1.1.0",
+        "hash": "addfe62f428d194793888508f3e4b061"
+    }
+}

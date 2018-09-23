@@ -1,0 +1,14 @@
+<xf:title>{{ phrase('kl_em_export_special_chars') }}</xf:title>
+
+<xf:form action="{{ link('em/special-chars/export') }}" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:selectrow name="category" label="{{ phrase('category')}}">
+				<xf:foreach loop="$categories" value="$category">
+					<xf:option value="{$category.group_id}">{$category.title}</xf:option>
+				</xf:foreach>
+			</xf:selectrow>
+		</div>
+		<xf:submitrow submit="{{ phrase('proceed...') }}" />
+	</div>
+</xf:form>

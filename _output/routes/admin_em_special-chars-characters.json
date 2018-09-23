@@ -1,0 +1,11 @@
+{
+    "route_type": "admin",
+    "route_prefix": "em",
+    "sub_name": "special-chars/characters",
+    "format": "special-chars/:int<group_id>/characters/:int<character_id>",
+    "build_class": "",
+    "build_method": "",
+    "controller": "KL\\EditorManager:SpecialChars",
+    "context": "klEMSpecialChars",
+    "action_prefix": "character"
+}

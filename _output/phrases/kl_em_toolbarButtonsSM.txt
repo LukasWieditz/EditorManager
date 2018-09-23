@@ -1,0 +1,1 @@
+Small toolbar (992 - 768px)

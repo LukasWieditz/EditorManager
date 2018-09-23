@@ -1,0 +1,23 @@
+<xf:title>{{ phrase('kl_em_import_special_chars') }}</xf:title>
+
+<xf:form action="{{ link('em/special-chars/import-save') }}" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:textboxrow name="categoryTitle" value="{$categoryName}" label="{{ phrase('title') }}" />
+
+			<hr class="formRowSep" />
+
+			<xf:checkboxrow name="enabled[]" label="{{ phrase('kl_em_characters') }}">
+				<xf:foreach loop="$characters" key="$key" value="$character">
+					<xf:option value="{$key}"
+							   selected="true"
+							   label="<span style='font-size:20px;'>{$character->code|raw}</span> - {$character->title}">
+						<xf:textbox name="names[{$key}]" value="{$character->title}" />
+						<xf:textbox name="codes[{$key}]" value="{$character->code}" />
+					</xf:option>
+				</xf:foreach>
+			</xf:checkboxrow>
+		</div>
+		<xf:submitrow submit="{{ phrase('proceed...') }}" />
+	</div>
+</xf:form>

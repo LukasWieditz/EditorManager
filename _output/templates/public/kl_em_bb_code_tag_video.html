@@ -1,0 +1,14 @@
+<xf:js src="https://cdn.polyfill.io/v2/polyfill.min.js" />
+<xf:js src="editor-manager/vendor/plyr.min.js" addon="KL/EditorManager" />
+<xf:js src="editor-manager/vendor/rangetouch.js" addon="KL/EditorManager" />
+<xf:js src="editor-manager/video-audio.js" addon="KL/EditorManager" />
+<xf:css src="kl_em_plyr.less" />
+
+<div class="bbCodeVideo" style="{$size|raw}">
+	<video class="js-PlyrVideo" controls>
+		<xf:foreach loop="$sources" value="$source">
+			<source src="{$source.url}" type="video/{$source.type}">
+		</xf:foreach>
+		{{ phrase('kl_em_browser_not_supporting_video') }}
+	</video>
+</div>

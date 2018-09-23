@@ -1,0 +1,9 @@
+{
+    "template": "lightbox.less",
+    "description": "",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": ".lbContainer\n{\n",
+    "replace": "$0\n&::after {\n   content: \" \";\n   visibility: hidden;\n   display: block;\n   height: 0;\n   clear: both;\n}"
+}

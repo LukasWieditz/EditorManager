@@ -1,0 +1,12 @@
+{
+    "edit_format": "radio",
+    "edit_format_params": "letter={{ phrase('kl_em_letters') }}\nword={{ phrase('kl_em_words') }}\nuser={{ phrase('kl_em_user_selectable') }}",
+    "data_type": "string",
+    "sub_options": [],
+    "validation_class": "",
+    "validation_method": "",
+    "default_value": "letter",
+    "relations": {
+        "klEM": 800
+    }
+}

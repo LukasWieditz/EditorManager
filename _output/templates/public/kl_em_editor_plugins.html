@@ -1,0 +1,70 @@
+<xf:if is="{{ $plugins.image }}">
+	<xf:css src="kl_em_froala_image.less" />
+</xf:if>
+
+<xf:if is="{{ $plugins.table }}">
+	<xf:js src="vendor/froala/plugins/table.min.js" />
+	<xf:css src="kl_em_froala_table.less" />
+</xf:if>
+
+<xf:if is="{{ $plugins.fullscreen }}">
+	<xf:js src="vendor/froala/plugins/fullscreen.min.js" />
+	<xf:css src="kl_em_froala_fullscreen.less" />
+</xf:if>
+
+<xf:if is="{{ $plugins.hide }}">
+	<xf:js src="editor-manager/plugins/hide.plugin.js" min="1" addon="KL/EditorManager" />
+</xf:if>
+
+<xf:if is="{{ $plugins.templates }}">
+	<xf:css src="kl_em_editor_templates.less" />
+	<xf:js src="editor-manager/plugins/templates.plugin.js" min="1" addon="KL/EditorManager" />
+	<script class="js-klEditorTemplates" type="application/json">
+			{$templates|json|raw}
+	</script>
+</xf:if>
+
+<xf:if is="{{ $plugins.charCounter }}">
+	<xf:js src="editor-manager/plugins/charCounter.plugin.js" min="1" addon="KL/EditorManager" />
+</xf:if>
+
+<xf:if is="{{ $plugins.specialCharacters }}">
+	<xf:js src="vendor/froala/plugins/special_characters.min.js" />
+	<xf:css src="kl_em_froala_special_characters.less" />
+</xf:if>
+
+<xf:if is="{{ $plugins.ispoiler }}">
+	<xf:js src="editor-manager/plugins/inlineSpoiler.plugin.js" min="1" addon="KL/EditorManager" />
+</xf:if>
+
+<xf:if is="{{ $plugins.justify }}">
+	<xf:js src="editor-manager/plugins/justify.plugin.js" min="1" addon="KL/EditorManager" />
+</xf:if>
+
+<xf:if is="{{ $plugins.dropdowns }}">
+	<xf:js src="editor-manager/plugins/dropdowns.plugin.js" min="1" addon="KL/EditorManager" />
+</xf:if>
+
+<xf:if is="{{ $plugins.parseHtml }}">
+	<xf:js src="editor-manager/plugins/parseHtml.plugin.js" min="1" addon="KL/EditorManager" />
+</xf:if>
+
+<xf:if is="{{ $plugins.colors }}">
+	<xf:js src="editor-manager/plugins/colors.plugin.js" min="1" addon="KL/EditorManager" />
+</xf:if>
+
+<xf:if is="{{ $plugins.gFontFamily }}">
+	<xf:js src="editor-manager/plugins/gFontFamily.plugin.js" min="1" addon="KL/EditorManager" />
+</xf:if>
+
+<xf:if is="{{ $plugins.unlinkAll }}">
+	<xf:js src="editor-manager/plugins/unlinkAll.plugin.js" min="1" addon="KL/EditorManager" />
+</xf:if>
+
+<xf:if is="{{ $config.initOnClick }}">
+	<xf:js>
+		$('.actionBar-action--reply, .button--multiQuote').on('click', function(event) {
+			$('.fr-view').trigger('focus');
+		});
+	</xf:js>
+</xf:if>

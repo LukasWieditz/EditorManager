@@ -1,0 +1,9 @@
+{
+    "template": "lightbox_macros",
+    "description": "",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "/(data-lb-id=\\\"\\{\\$id\\}\\\"|alt=\\\"\\{\\$alt\\}\\\")/",
+    "replace": "$0 style=\"{$klEMStyle}\""
+}

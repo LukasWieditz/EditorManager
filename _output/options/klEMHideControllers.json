@@ -1,0 +1,12 @@
+{
+    "edit_format": "textbox",
+    "edit_format_params": "rows=3",
+    "data_type": "string",
+    "sub_options": [],
+    "validation_class": "",
+    "validation_method": "",
+    "default_value": "XF:Forum\nXF:Thread\nXF:Post",
+    "relations": {
+        "klEM": 210
+    }
+}

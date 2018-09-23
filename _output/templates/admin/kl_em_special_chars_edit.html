@@ -1,0 +1,47 @@
+<xf:if is="$group.isInsert()">
+	<xf:title>{{ phrase('kl_em_special_chars_category_add') }}</xf:title>
+	<xf:else />
+	<xf:title>{{ phrase('kl_em_special_chars_category_edit:') }} {$group.title}</xf:title>
+</xf:if>
+
+<xf:form action="{{ link('em/special-chars/save', $group) }}" ajax="true" class="block">
+	<div class="block-container">
+		<h2 class="block-tabHeader tabs hScroller" data-xf-init="h-scroller tabs" role="tablist">
+			<span class="hScroller-scroll">
+				<a class="tabs-tab is-active"
+				   role="tab"
+				   tabindex="0"
+				   aria-controls="options">{{ phrase('options') }}</a>
+				<xf:macro template="helper_criteria"
+						  name="user_tabs"
+						  arg-userTabTitle="{{ phrase('user_criteria')|for_attr }}" />
+			</span>
+		</h2>
+
+		<ul class="block-body tabPanes">
+			<li class="is-active" role="tabpanel" id="options">
+				<xf:textboxrow name="title" value="{{ $group.group_id ? $group.MasterTitle.phrase_text : ''  }}"
+							   label="{{ phrase('title') }}"/>
+
+				<hr class="formRowSep" />
+
+				<xf:macro template="display_order_macros" name="row"
+						  arg-name="display_order"
+						  arg-value="{$group.display_order}"
+						  arg-explain="{{ phrase('kl_em_position_of_this_item') }}" />
+
+				<xf:checkboxrow>
+					<xf:option name="active" value="1" selected="{{ $group.group_id ? $group.active : 1 }}">
+						{{ phrase('enabled') }}
+					</xf:option>
+				</xf:checkboxrow>
+			</li>
+
+			<xf:macro template="helper_criteria" name="user_panes"
+					  arg-criteria="{{ $userCriteria.getCriteriaForTemplate() }}"
+					  arg-data="{{ $userCriteria.getExtraTemplateData() }}" />
+		</ul>
+
+		<xf:submitrow sticky="true" icon="save" />
+	</div>
+</xf:form>

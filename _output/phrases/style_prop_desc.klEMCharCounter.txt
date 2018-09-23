@@ -1,0 +1,1 @@
+Styling properties for the character counter.

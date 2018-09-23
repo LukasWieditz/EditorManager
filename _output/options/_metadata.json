@@ -1,0 +1,59 @@
+{
+    "kLEMVideoCacheRefresh.json": {
+        "hash": "a6320971405fe5eed2f11fd3a27a7b8e"
+    },
+    "klEMAudioCacheRefresh.json": {
+        "hash": "6f4e43c0ff3e2814e210e4ee9f815c7f"
+    },
+    "klEMAudioCacheTTL.json": {
+        "hash": "fc334de9d8602b267f41c68864b7350b"
+    },
+    "klEMAudioProxyMaxSize.json": {
+        "hash": "f51d7b3f22628786973815618cfd4823"
+    },
+    "klEMCharCounter.json": {
+        "hash": "c798748c2b9f950dd9e3878a270ba3da"
+    },
+    "klEMColors.json": {
+        "hash": "52df7e998a5c0657979431dd0bf73f1f"
+    },
+    "klEMEnabledBBCodes.json": {
+        "hash": "8528f7030e8a98abd58a59ecd8488a48"
+    },
+    "klEMGoogleApiKey.json": {
+        "hash": "618788bdb8002285562e9a1baa37e59c"
+    },
+    "klEMHexColor.json": {
+        "hash": "8ac565a797f3931d7f461e44dac683ad"
+    },
+    "klEMHideControllers.json": {
+        "hash": "44f749f73c282bbbf884dfaaab85fd75"
+    },
+    "klEMImageAlignment.json": {
+        "hash": "e18136cdc3f3c70463cb3d8f5ae7ee40"
+    },
+    "klEMImageDimensions.json": {
+        "hash": "58db532690eced1f2a2a93b334ab9a5b"
+    },
+    "klEMLateLoad.json": {
+        "hash": "6b7f7b1be464b00b0946e08bd6a4a697"
+    },
+    "klEMLayout.json": {
+        "hash": "97add43a8aad7a532b783c1b5851fa9d"
+    },
+    "klEMProxy.json": {
+        "hash": "c06da77eaaf15dee26206aefc0a9182b"
+    },
+    "klEMVideoAudioProxyLogLength.json": {
+        "hash": "2f2513ffe3a1c9acf00ce4d30bb79d53"
+    },
+    "klEMVideoAudioProxyReferrer.json": {
+        "hash": "da42c31b77da06eeb5ac69128ae0c785"
+    },
+    "klEMVideoCacheTTL.json": {
+        "hash": "7c6f2c5d24800f30fbb4889e340d33d3"
+    },
+    "klEMVideoProxyMaxSize.json": {
+        "hash": "bee221e649afed80a909a0b7095bbe82"
+    }
+}

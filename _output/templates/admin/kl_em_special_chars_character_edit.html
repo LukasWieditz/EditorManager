@@ -1,0 +1,38 @@
+<xf:if is="$character.isInsert()">
+	<xf:title>{{ phrase('kl_em_special_chars_character_add') }}</xf:title>
+	<xf:else />
+	<xf:title>{{ phrase('kl_em_special_chars_character_edit:') }} {$character.title}</xf:title>
+</xf:if>
+
+<xf:form action="{{ link('em/special-chars/characters/save', $character) }}" ajax="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:textboxrow name="title" value="{{ $character.character_id ? $character.MasterTitle.phrase_text : ''  }}"
+						   label="{{ phrase('title') }}"/>
+			
+			<xf:textboxrow name="code" value="{{ $character.code  }}"
+						   label="{{ phrase('code') }}"/>
+			
+			<xf:selectrow name="group_id" value="{$character.group_id}" label="{{ phrase('category') }}">
+				<xf:foreach loop="$groups" value="$group">
+					<xf:option value="{$group.group_id}">{$group.title}</xf:option>
+				</xf:foreach>
+			</xf:selectrow>
+			
+			<hr class="formRowSep" />
+
+			<xf:macro template="display_order_macros" name="row"
+					  arg-name="display_order"
+					  arg-value="{$character.display_order}"
+					  arg-explain="{{ phrase('kl_em_position_of_this_item') }}" />
+
+			<xf:checkboxrow>
+				<xf:option name="active" value="1" selected="{{ $character.character_id ? $character.active : 1 }}">
+					{{ phrase('enabled') }}
+				</xf:option>
+			</xf:checkboxrow>
+		</div>
+
+		<xf:submitrow sticky="true" icon="save" />
+	</div>
+</xf:form>

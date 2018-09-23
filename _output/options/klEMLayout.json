@@ -1,0 +1,12 @@
+{
+    "edit_format": "template",
+    "edit_format_params": "kl_em_option_debug_text_option",
+    "data_type": "string",
+    "sub_options": [],
+    "validation_class": "",
+    "validation_method": "",
+    "default_value": "{\"toolbarButtons\":[\"clearFormatting\",\"|\",\"bold\",\"italic\",\"underline\",\"strikeThrough\",\"|\",\"color\",\"fontFamily\",\"fontSize\",\"|\",\"insertLink\",\"insertImage\",\"xfSmilie\",\"dropdown-1\",\"|\",\"align\",\"xfList\",\"insertTable\",\"|\",\"undo\",\"redo\",\"|\",\"xfDraft\",\"xfBbCode\"],\"toolbarButtonsMD\":[\"clearFormatting\",\"|\",\"bold\",\"italic\",\"underline\",\"strikeThrough\",\"|\",\"color\",\"fontFamily\",\"fontSize\",\"|\",\"insertLink\",\"insertImage\",\"xfSmilie\",\"dropdown-1\",\"|\",\"align\",\"xfList\",\"insertTable\",\"|\",\"undo\",\"redo\",\"|\",\"xfDraft\",\"xfBbCode\"],\"toolbarButtonsSM\":[\"clearFormatting\",\"|\",\"bold\",\"italic\",\"underline\",\"strikeThrough\",\"|\",\"color\",\"fontFamily\",\"fontSize\",\"|\",\"insertLink\",\"insertImage\",\"xfSmilie\",\"dropdown-1\",\"|\",\"align\",\"xfList\",\"insertTable\",\"|\",\"undo\",\"redo\",\"|\",\"xfDraft\",\"xfBbCode\"],\"toolbarButtonsXS\":[\"clearFormatting\",\"|\",\"bold\",\"italic\",\"underline\",\"|\",\"color\",\"fontSize\",\"|\",\"insertLink\",\"insertImage\",\"xfSmilie\",\"dropdown-1\",\"|\",\"align\",\"xfList\",\"|\",\"undo\",\"redo\",\"|\",\"xfBbCode\"]}",
+    "relations": {
+        "klEM": 0
+    }
+}

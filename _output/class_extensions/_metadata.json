@@ -1,0 +1,38 @@
+{
+    "XF-Admin-Controller-Log_KL-EditorManager-XF-Admin-Controller-Log.json": {
+        "hash": "58d554ae27f00cbbb515ebe6136e1aae"
+    },
+    "XF-BbCode-Renderer-EditorHtml_KL-EditorManager-XF-BbCode-Renderer-EditorHtml.json": {
+        "hash": "3c6d083f97a5d487f73e8853eb6353da"
+    },
+    "XF-BbCode-Renderer-Html_KL-EditorManager-XF-BbCode-Renderer-Html.json": {
+        "hash": "7d84abe79746e7d571f1211360149906"
+    },
+    "XF-BbCode-RuleSet_KL-EditorManager-XF-BbCode-RuleSet.json": {
+        "hash": "c127541fc8cb3b8dad427b2baebdde96"
+    },
+    "XF-Html-Renderer-BbCode_KL-EditorManager-XF-Html-Renderer-BbCode.json": {
+        "hash": "75aeb0cb5fad268e0c9ebadfc19f02d9"
+    },
+    "XF-Proxy-Controller_KL-EditorManager-XF-Proxy-Controller.json": {
+        "hash": "870ca7ce684fa955a300d56317cfe1f9"
+    },
+    "XF-Pub-Controller-Account_KL-EditorManager-XF-Pub-Controller-Account.json": {
+        "hash": "222cffbc9409b8d3f107cce3f5f1dda6"
+    },
+    "XF-Pub-Controller-Editor_KL-EditorManager-XF-Pub-Controller-Editor.json": {
+        "hash": "505207782fb9ca9a26e6d1fde33b9f1a"
+    },
+    "XF-Pub-Controller-Post_KL-EditorManager-XF-Pub-Controller-Post.json": {
+        "hash": "057e820f9e13d4f5b8cfbe47f4a939ef"
+    },
+    "XF-Pub-Controller-Thread_KL-EditorManager-XF-Pub-Controller-Thread.json": {
+        "hash": "7a730e33542687de6b93dce5b72401b0"
+    },
+    "XF-Str-Formatter_KL-EditorManager-XF-Str-Formatter.json": {
+        "hash": "e8bdbf0f979ef156f8d68e370853b08d"
+    },
+    "XF-SubContainer-Proxy_KL-EditorManager-XF-SubContainer-Proxy.json": {
+        "hash": "2cf7323eb1d381a92f2e5ed082b91089"
+    }
+}

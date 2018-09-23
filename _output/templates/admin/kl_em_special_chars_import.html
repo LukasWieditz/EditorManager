@@ -1,0 +1,27 @@
+<xf:title>{{ phrase('kl_em_import_special_chars') }}</xf:title>
+
+<xf:form action="{{ link('em/special-chars/import-form') }}" upload="true" class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:radiorow name="mode" value="upload">
+				<xf:option value="upload"
+					label="{{ phrase('import_from_uploaded_xml_file') }}"
+					hint="{{ phrase('kl_em_special_chars_pre_import_explain') }}">
+
+					<xf:upload name="upload" accept=".xml" />
+				</xf:option>
+				<xf:option value="library"
+					label="{{ phrase('kl_em_import_from_library') }}"
+					hint="{{ phrase('kl_em_special_chars_pre_import_library_explain') }}">
+
+					<xf:select name="library">
+						<xf:foreach loop="$libraries" value="$library">
+							<xf:option value="{$library.file}">{$library.name}</xf:option>
+						</xf:foreach>
+					</xf:select>
+				</xf:option>
+			</xf:radiorow>
+		</div>
+		<xf:submitrow submit="{{ phrase('proceed...') }}" />
+	</div>
+</xf:form>

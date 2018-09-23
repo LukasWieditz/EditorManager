@@ -1,0 +1,1 @@
+Special styling rules for the inline spoiler ([ISPOILER]) container.
