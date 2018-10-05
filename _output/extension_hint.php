@@ -42,6 +42,11 @@ namespace KL\EditorManager\XF\Pub\Controller
 	class XFCP_Thread extends \XF\Pub\Controller\Thread {}
 }
 
+namespace KL\EditorManager\XF\Pub\View\Thread
+{
+	class XFCP_NewPosts extends \XF\Pub\View\Thread\NewPosts {}
+}
+
 namespace KL\EditorManager\XF\Str
 {
 	class XFCP_Formatter extends \XF\Str\Formatter {}

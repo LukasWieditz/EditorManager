@@ -29,16 +29,7 @@ class Thread extends XFCP_Thread
                 ->whereSQL("LOWER(message) LIKE '%[hide%'")
                 ->fetch($messagesPerPage, $offset);
 
-            if ($posts->count()) {
-                $renderedPosts = [];
-
-                foreach ($posts as $post) {
-                    $message = \XF::app()->bbCode()->render($post->message, 'html', 'post', $post);
-                    $renderedPosts[$post->post_id] = $message;;
-                }
-
-                $return->setJsonParam('klEMPosts', $renderedPosts);
-            }
+            $return->setJsonParam('klEMPosts', $posts);
         }
 
         return $return;
