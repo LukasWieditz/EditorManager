@@ -2,7 +2,7 @@
     "parent_navigation_id": "",
     "display_order": 310,
     "link": "",
-    "icon": "editor-manager",
+    "icon": "fa-editor-manager",
     "admin_permission_id": "",
     "debug_only": false,
     "hide_no_children": true
