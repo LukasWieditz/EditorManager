@@ -8,6 +8,8 @@
 
 namespace KL\EditorManager;
 
+use KL\EditorManager\Setup\Patch1010030;
+use KL\EditorManager\Setup\Patch1020030;
 use XF\AddOn\AbstractSetup;
 use XF\AddOn\StepRunnerInstallTrait;
 use XF\AddOn\StepRunnerUninstallTrait;
@@ -145,41 +147,8 @@ class Setup extends AbstractSetup
         );
     }
 
-    /* CREATE xf_kl_em_dropdowns */
-    public function installStep4()
-    {
-        $this->schemaManager()->createTable(
-            'xf_kl_em_dropdowns',
-            function (Create $table) {
-                $table->addColumn('dropdown_id', 'INT', 10)->autoIncrement();
-                $table->addColumn('title', 'VARCHAR', 50);
-                $table->addColumn('icon', 'VARCHAR', 50);
-                $table->addColumn('buttons', 'BLOB');
-            }
-        );
-    }
-
-    /* INSERT INTO xf_kl_em_dropdowns */
-    public function installStep5()
-    {
-        $this->db()->insertBulk('xf_kl_em_dropdowns', [
-            [
-                'dropdown_id' => 1,
-                'title' => 'Insert',
-                'icon' => 'ellipsis-h',
-                'buttons' => '["xfMedia","xfQuote","xfSpoiler","xfKLEMiSpoiler","xfCode","xfInlineCode"]'
-            ],
-            [
-                'dropdown_id' => 2,
-                'title' => 'Hide',
-                'icon' => 'eye-slash',
-                'buttons' => '["klEMHide","klEMHidePosts","klEMHideThanks","klEMHideReply","klEMHideReplyThanks"]'
-            ]
-        ]);
-    }
-
     /* CREATE xf_kl_em_google_fonts */
-    public function installStep6()
+    public function installStep4()
     {
         $this->schemaManager()->createTable(
             'xf_kl_em_google_fonts',
@@ -194,7 +163,7 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_bb_codes */
-    public function installStep7()
+    public function installStep5()
     {
         $this->schemaManager()->createTable('xf_kl_em_bb_codes', function (Create $table) {
             $table->addColumn('bb_code_id', 'varbinary', 25);
@@ -205,7 +174,7 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_special_chars_groups */
-    public function installStep8()
+    public function installStep6()
     {
         $this->schemaManager()->createTable('xf_kl_em_special_chars_groups', function (Create $table) {
             $table->addColumn('group_id', 'int')->autoIncrement();
@@ -216,7 +185,7 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_special_chars */
-    public function installStep9()
+    public function installStep7()
     {
         $this->schemaManager()->createTable('xf_kl_em_special_chars', function (Create $table) {
             $table->addColumn('character_id', 'int')->autoIncrement();
@@ -227,33 +196,8 @@ class Setup extends AbstractSetup
         });
     }
 
-    /* CREATE xf_kl_em_video_proxy */
-    public function installStep10()
-    {
-        $this->schemaManager()->createTable('xf_kl_em_video_proxy', function (Create $table) {
-            $table->addColumn('video_id', 'int')->autoIncrement();
-            $table->addColumn('url', 'text');
-            $table->addColumn('url_hash', 'varbinary', 32);
-            $table->addColumn('file_size', 'int')->setDefault(0);
-            $table->addColumn('file_name', 'varchar', 250)->setDefault('');
-            $table->addColumn('mime_type', 'varchar', 100)->setDefault('');
-            $table->addColumn('fetch_date', 'int')->setDefault(0);
-            $table->addColumn('first_request_date', 'int')->setDefault(0);
-            $table->addColumn('last_request_date', 'int')->setDefault(0);
-            $table->addColumn('views', 'int')->setDefault(0);
-            $table->addColumn('pruned', 'int')->setDefault(0);
-            $table->addColumn('is_processing', 'int')->setDefault(0);
-            $table->addColumn('failed_date', 'int')->setDefault(0);
-            $table->addColumn('fail_count', 'smallint', 5)->setDefault(0);
-            $table->addUniqueKey('url_hash');
-            $table->addKey(['pruned', 'fetch_date']);
-            $table->addKey('last_request_date');
-            $table->addKey('is_processing');
-        });
-    }
-
     /* CREATE xf_kl_em_audio_proxy */
-    public function installStep11()
+    public function installStep8()
     {
         $this->schemaManager()->createTable('xf_kl_em_audio_proxy', function (Create $table) {
             $table->addColumn('audio_id', 'int')->autoIncrement();
@@ -277,24 +221,8 @@ class Setup extends AbstractSetup
         });
     }
 
-    /* CREATE xf_kl_em_video_proxy_referrer */
-    public function installStep12()
-    {
-        $this->schemaManager()->createTable('xf_kl_em_video_proxy_referrer', function (Create $table) {
-            $table->addColumn('referrer_id', 'int')->autoIncrement();
-            $table->addColumn('video_id', 'int');
-            $table->addColumn('referrer_hash', 'varbinary', 32);
-            $table->addColumn('referrer_url', 'text');
-            $table->addColumn('hits', 'int');
-            $table->addColumn('first_date', 'int');
-            $table->addColumn('last_date', 'int');
-            $table->addUniqueKey(['video_id', 'referrer_hash'], 'video_id_hash');
-            $table->addKey('last_date');
-        });
-    }
-
     /* CREATE xf_kl_em_audio_proxy_referrer */
-    public function installStep13()
+    public function installStep9()
     {
         $this->schemaManager()->createTable('xf_kl_em_audio_proxy_referrer', function (Create $table) {
             $table->addColumn('referrer_id', 'int')->autoIncrement();
@@ -309,7 +237,7 @@ class Setup extends AbstractSetup
         });
     }
 
-    public function installStep14()
+    public function installStep10()
     {
         $this->schemaManager()->alterTable('xf_user', function (Alter $table) {
             $table->addColumn('kl_em_wordcount_mode', 'enum', ['letter', 'word'])->setDefault('letter');
@@ -322,146 +250,8 @@ class Setup extends AbstractSetup
      * ----------------
      */
 
-    /* 1.1.0 */
-    /* CREATE xf_kl_em_bb_codes */
-    public function upgrade1010031Step1()
-    {
-        $this->schemaManager()->createTable('xf_kl_em_bb_codes', function (Create $table) {
-            $table->addColumn('bb_code_id', 'varbinary', 25);
-            $table->addColumn('user_criteria', 'mediumblob');
-            $table->addColumn('aliases', 'mediumblob');
-            $table->addPrimaryKey('bb_code_id');
-        });
-    }
-
-    /* CREATE xf_kl_em_bb_codes */
-    public function upgrade1010031Step2()
-    {
-        $this->schemaManager()->alterTable('xf_kl_em_templates', function (Alter $table) {
-            $table->addColumn('user_criteria', 'mediumblob');
-        });
-    }
-
-    /* CREATE xf_kl_em_special_chars_groups */
-    public function upgrade1010031Step3()
-    {
-        $this->schemaManager()->createTable('xf_kl_em_special_chars_groups', function (Create $table) {
-            $table->addColumn('group_id', 'int')->autoIncrement();
-            $table->addColumn('user_criteria', 'mediumblob');
-            $table->addColumn('display_order', 'int')->setDefault(10);
-            $table->addColumn('active', 'bool')->setDefault(true);
-        });
-    }
-
-    /* CREATE xf_kl_em_special_chars */
-    public function upgrade1010031Step4()
-    {
-        $this->schemaManager()->createTable('xf_kl_em_special_chars', function (Create $table) {
-            $table->addColumn('character_id', 'int')->autoIncrement();
-            $table->addColumn('code', 'varchar', 25);
-            $table->addColumn('group_id', 'int');
-            $table->addColumn('display_order', 'int')->setDefault(10);
-            $table->addColumn('active', 'bool')->setDefault(true);
-        });
-    }
-
-    /* CREATE xf_kl_em_special_chars */
-    public function upgrade1010032Step1()
-    {
-        $this->schemaManager()->alterTable('xf_kl_em_bb_codes', function (Alter $table) {
-            $table->changeColumn('user_criteria')->nullable();
-            $table->changeColumn('aliases')->nullable();
-        });
-    }
-
-    /* CREATE xf_kl_em_video_proxy */
-    public function upgrade1010033Step1()
-    {
-        $this->schemaManager()->createTable('xf_kl_em_video_proxy', function (Create $table) {
-            $table->addColumn('video_id', 'int')->autoIncrement();
-            $table->addColumn('url', 'text');
-            $table->addColumn('url_hash', 'varbinary', 32);
-            $table->addColumn('file_size', 'int')->setDefault(0);
-            $table->addColumn('file_name', 'varchar', 250)->setDefault('');
-            $table->addColumn('mime_type', 'varchar', 100)->setDefault('');
-            $table->addColumn('fetch_date', 'int')->setDefault(0);
-            $table->addColumn('first_request_date', 'int')->setDefault(0);
-            $table->addColumn('last_request_date', 'int')->setDefault(0);
-            $table->addColumn('views', 'int')->setDefault(0);
-            $table->addColumn('pruned', 'int')->setDefault(0);
-            $table->addColumn('is_processing', 'int')->setDefault(0);
-            $table->addColumn('failed_date', 'int')->setDefault(0);
-            $table->addColumn('fail_count', 'smallint', 5)->setDefault(0);
-            $table->addUniqueKey('url_hash');
-            $table->addKey(['pruned', 'fetch_date']);
-            $table->addKey('last_request_date');
-            $table->addKey('is_processing');
-        });
-    }
-
-    /* CREATE xf_kl_em_audio_proxy */
-    public function upgrade1010033Step2()
-    {
-        $this->schemaManager()->createTable('xf_kl_em_audio_proxy', function (Create $table) {
-            $table->addColumn('audio_id', 'int')->autoIncrement();
-            $table->addColumn('url', 'text');
-            $table->addColumn('url_hash', 'varbinary', 32);
-            $table->addColumn('file_size', 'int')->setDefault(0);
-            $table->addColumn('file_name', 'varchar', 250)->setDefault('');
-            $table->addColumn('mime_type', 'varchar', 100)->setDefault('');
-            $table->addColumn('fetch_date', 'int')->setDefault(0);
-            $table->addColumn('first_request_date', 'int')->setDefault(0);
-            $table->addColumn('last_request_date', 'int')->setDefault(0);
-            $table->addColumn('views', 'int')->setDefault(0);
-            $table->addColumn('pruned', 'int')->setDefault(0);
-            $table->addColumn('is_processing', 'int')->setDefault(0);
-            $table->addColumn('failed_date', 'int')->setDefault(0);
-            $table->addColumn('fail_count', 'smallint', 5)->setDefault(0);
-            $table->addUniqueKey('url_hash');
-            $table->addKey(['pruned', 'fetch_date']);
-            $table->addKey('last_request_date');
-            $table->addKey('is_processing');
-        });
-    }
-
-    /* CREATE xf_kl_em_video_proxy_referrer */
-    public function upgrade1010033Step3()
-    {
-        $this->schemaManager()->createTable('xf_kl_em_video_proxy_referrer', function (Create $table) {
-            $table->addColumn('referrer_id', 'int')->autoIncrement();
-            $table->addColumn('video_id', 'int');
-            $table->addColumn('referrer_hash', 'varbinary', 32);
-            $table->addColumn('referrer_url', 'text');
-            $table->addColumn('hits', 'int');
-            $table->addColumn('first_date', 'int');
-            $table->addColumn('last_date', 'int');
-            $table->addUniqueKey(['video_id', 'referrer_hash'], 'video_id_hash');
-            $table->addKey('last_date');
-        });
-    }
-
-    /* CREATE xf_kl_em_audio_proxy_referrer */
-    public function upgrade1010033Step4()
-    {
-        $this->schemaManager()->createTable('xf_kl_em_audio_proxy_referrer', function (Create $table) {
-            $table->addColumn('referrer_id', 'int')->autoIncrement();
-            $table->addColumn('audio_id', 'int');
-            $table->addColumn('referrer_hash', 'varbinary', 32);
-            $table->addColumn('referrer_url', 'text');
-            $table->addColumn('hits', 'int');
-            $table->addColumn('first_date', 'int');
-            $table->addColumn('last_date', 'int');
-            $table->addUniqueKey(['audio_id', 'referrer_hash'], 'audio_id_hash');
-            $table->addKey('last_date');
-        });
-    }
-
-    public function upgrade1010072Step1()
-    {
-        $this->schemaManager()->alterTable('xf_user', function (Alter $table) {
-            $table->addColumn('kl_em_wordcount_mode', 'enum', ['letter', 'word'])->setDefault('letter');
-        });
-    }
+    use Patch1010030;
+    use Patch1020030;
 
     /**
      * ----------------
@@ -479,12 +269,6 @@ class Setup extends AbstractSetup
     public function uninstallStep2()
     {
         $this->schemaManager()->dropTable('xf_kl_em_templates');
-    }
-
-    /* DROP xf_kl_em_dropdowns */
-    public function uninstallStep3()
-    {
-        $this->schemaManager()->dropTable('xf_kl_em_dropdowns');
     }
 
     /* DROP xf_kl_em_google_fonts */
@@ -511,22 +295,10 @@ class Setup extends AbstractSetup
         $this->schemaManager()->dropTable('xf_kl_em_special_chars');
     }
 
-    /* DROP xf_kl_em_video_proxy */
-    public function uninstallStep8()
-    {
-        $this->schemaManager()->dropTable('xf_kl_em_video_proxy');
-    }
-
     /* DROP xf_kl_em_audio_proxy */
     public function uninstallStep9()
     {
         $this->schemaManager()->dropTable('xf_kl_em_audio_proxy');
-    }
-
-    /* DROP xf_kl_em_video_proxy_referrer */
-    public function uninstallStep10()
-    {
-        $this->schemaManager()->dropTable('xf_kl_em_video_proxy_referrer');
     }
 
     /* DROP xf_kl_em_audio_proxy_referrer */

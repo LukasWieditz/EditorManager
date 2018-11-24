@@ -725,6 +725,12 @@
         "version_string": "1.1.0 Beta 3",
         "hash": "80fef86f8a9d50265cf58e0b72c49da8"
     },
+    "option_explain.klEMLayout.txt": {
+        "global_cache": false,
+        "version_id": 1010072,
+        "version_string": "1.1.0.2",
+        "hash": "a31bd1a3a45b914367221983178bee2a"
+    },
     "option_explain.klEMProxy.txt": {
         "global_cache": false,
         "version_id": 1010033,
