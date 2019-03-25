@@ -31,10 +31,7 @@ class SpecialChars extends AbstractController
      */
     public function actionIndex(ParameterBag $params)
     {
-        $options = $this->app->options();
-
         $viewParams = [
-            'enabled' => $options->klEMGeneralOptions['special_chars'],
             'specialChars' => \XF::finder('KL\EditorManager:SpecialCharacterGroup')->order('display_order')->fetch()
         ];
 
@@ -63,6 +60,10 @@ class SpecialChars extends AbstractController
         return $this->actionAddEdit($group);
     }
 
+    /**
+     * @param SpecialCharacterGroup $group
+     * @return View
+     */
     protected function actionAddEdit(SpecialCharacterGroup $group)
     {
         $userCriteria = $this->app->criteria('XF:User', $group->user_criteria);
@@ -170,26 +171,23 @@ class SpecialChars extends AbstractController
     /**
      * @param ParameterBag $params
      * @return \XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
-     * @throws \XF\PrintableException
      * @throws \XF\Mvc\Reply\Exception
      */
     public function actionDelete(ParameterBag $params)
     {
         /** @var SpecialCharacterGroup $group */
         $group = $this->assertGroupExists($params->group_id);
-
-        if ($this->isPost()) {
-            $group->delete();
-            $return = $this->redirect($this->buildLink('em/special-chars'));
-        } else {
-            $viewParams = [
-                'group' => $group
-            ];
-            $return = $this->view('KL\EditorManager:Template\Delete', 'kl_em_special_chars_delete', $viewParams);
-        }
-
-        return $return;
+        /** @var \XF\ControllerPlugin\Delete $plugin */
+        $plugin = $this->plugin('XF:Delete');
+        return $plugin->actionDelete(
+            $group,
+            $this->buildLink('em/special-chars/delete', $group),
+            $this->buildLink('em/special-chars/edit', $group),
+            $this->buildLink('em/special-chars'),
+            $group->title
+        );
     }
+
 
     /**
      * @param ParameterBag $params
@@ -349,25 +347,20 @@ class SpecialChars extends AbstractController
     /**
      * @param ParameterBag $params
      * @return \XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
-     * @throws \XF\PrintableException
      * @throws \XF\Mvc\Reply\Exception
      */
     public function actionCharacterDelete(ParameterBag $params)
     {
         $character = $this->assertCharacterExists($params->character_id);
-
-        if ($this->isPost()) {
-            $character->delete();
-            $return = $this->redirect($this->buildLink('em/special-chars/characters', $params));
-        } else {
-            $viewParams = [
-                'character' => $character
-            ];
-            $return = $this->view('KL\EditorManager:SpecialChars\Character\Delete',
-                'kl_em_special_chars_character_delete', $viewParams);
-        }
-
-        return $return;
+        /** @var \XF\ControllerPlugin\Delete $plugin */
+        $plugin = $this->plugin('XF:Delete');
+        return $plugin->actionDelete(
+            $character,
+            $this->buildLink('em/special-chars/characters/delete', $character),
+            $this->buildLink('em/special-chars/characters/edit', $character),
+            $this->buildLink('em/special-chars/characters', $params),
+            $character->title
+        );
     }
 
     /**
@@ -412,6 +405,9 @@ class SpecialChars extends AbstractController
         return $this->view('KL\EditorManager:SpecialChars\Import', 'kl_em_special_chars_import', $viewParams);
     }
 
+    /**
+     * @return \XF\Mvc\Reply\Error|View
+     */
     public function actionImportForm()
     {
         $mode = $this->filter('mode', 'str');
@@ -479,6 +475,9 @@ class SpecialChars extends AbstractController
         return $this->redirect($this->buildLink('em/special-chars'));
     }
 
+    /**
+     * @return View
+     */
     public function actionExport()
     {
         if ($this->isPost()) {
@@ -522,6 +521,10 @@ class SpecialChars extends AbstractController
         }
     }
 
+    /**
+     * @param $data
+     * @param $xml_data
+     */
     protected function arrayToXML($data, &$xml_data)
     {
         foreach ($data as $key => $value) {

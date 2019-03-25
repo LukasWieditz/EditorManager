@@ -1,5 +1,11 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\XF\Proxy;
 
 use KL\EditorManager\Repository\VideoProxy;
@@ -26,39 +32,31 @@ class Controller extends XFCP_Controller
 
         // Recursion can happen, mostly if people copy proxied image URLs.
         // Try to resolve that here.
-        do
-        {
+        do {
             $hasSubMatch = false;
 
-            if (strpos($subUrl, $subMatchTest) === 0)
-            {
+            if (strpos($subUrl, $subMatchTest) === 0) {
                 $subMatchQs = substr($subUrl, strlen($subMatchTest));
                 parse_str($subMatchQs, $subMatchParams);
                 if (isset($subMatchParams['video'])
                     && is_scalar($subMatchParams['video'])
                     && isset($subMatchParams['hash'])
                     && is_scalar($subMatchParams['hash'])
-                )
-                {
+                ) {
                     $subMatchUrl = trim(strval($subMatchParams['video']));
                     $subMatchHash = trim(strval($subMatchParams['hash']));
-                    if ($this->linker->verifyHash($subMatchUrl, $subMatchHash))
-                    {
+                    if ($this->linker->verifyHash($subMatchUrl, $subMatchHash)) {
                         $subUrl = $subMatchUrl;
                         $subHash = $subMatchHash;
                         $hasSubMatch = true;
                     }
                 }
             }
-        }
-        while ($hasSubMatch);
+        } while ($hasSubMatch);
 
-        if ($subHash)
-        {
+        if ($subHash) {
             return [$subUrl, $subHash];
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -73,64 +71,50 @@ class Controller extends XFCP_Controller
 
         // Recursion can happen, mostly if people copy proxied image URLs.
         // Try to resolve that here.
-        do
-        {
+        do {
             $hasSubMatch = false;
 
-            if (strpos($subUrl, $subMatchTest) === 0)
-            {
+            if (strpos($subUrl, $subMatchTest) === 0) {
                 $subMatchQs = substr($subUrl, strlen($subMatchTest));
                 parse_str($subMatchQs, $subMatchParams);
                 if (isset($subMatchParams['audio'])
                     && is_scalar($subMatchParams['audio'])
                     && isset($subMatchParams['hash'])
                     && is_scalar($subMatchParams['hash'])
-                )
-                {
+                ) {
                     $subMatchUrl = trim(strval($subMatchParams['audio']));
                     $subMatchHash = trim(strval($subMatchParams['hash']));
-                    if ($this->linker->verifyHash($subMatchUrl, $subMatchHash))
-                    {
+                    if ($this->linker->verifyHash($subMatchUrl, $subMatchHash)) {
                         $subUrl = $subMatchUrl;
                         $subHash = $subMatchHash;
                         $hasSubMatch = true;
                     }
                 }
             }
-        }
-        while ($hasSubMatch);
+        } while ($hasSubMatch);
 
-        if ($subHash)
-        {
+        if ($subHash) {
             return [$subUrl, $subHash];
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
     public function outputKLEMVideo($url, $hash)
     {
-        if ($this->validateKLEMVideoRequest($url, $hash, $error))
-        {
+        if ($this->validateKLEMVideoRequest($url, $hash, $error)) {
             /** @var \KL\EditorManager\Service\VideoProxy $videoProxy */
             $videoProxy = $this->app->service('KL\EditorManager:VideoProxy');
             $video = $videoProxy->getVideo($url);
-            if (!$video || !$video->isValid())
-            {
+            if (!$video || !$video->isValid()) {
                 $video = null;
             }
-        }
-        else
-        {
+        } else {
             $video = null;
         }
 
-        if (!$video)
-        {
-            if (!$error)
-            {
+        if (!$video) {
+            if (!$error) {
                 $error = self::ERROR_FAILED;
             }
 
@@ -139,13 +123,11 @@ class Controller extends XFCP_Controller
             $video = $proxyRepo->getPlaceholderVideo();
         }
 
-        if (!$error)
-        {
+        if (!$error) {
             $proxyRepo = $this->app->repository('KL\EditorManager:VideoProxy');
 
             $proxyRepo->logVideoView($video);
-            if ($this->referrer && $this->app->options()->klEMVideoAudioProxyReferrer['enabled'])
-            {
+            if ($this->referrer && $this->app->options()->klEMVideoAudioProxyReferrer['enabled']) {
                 $proxyRepo->logVideoReferrer($video, $this->referrer);
             }
         }
@@ -153,12 +135,9 @@ class Controller extends XFCP_Controller
         $response = $this->app->response();
         $this->applyKLEMVideoResponseHeaders($response, $video, $error);
 
-        if ($video->isPlaceholder())
-        {
+        if ($video->isPlaceholder()) {
             $body = $response->responseFile($video->getPlaceholderPath());
-        }
-        else
-        {
+        } else {
             $stream = $this->app->fs()->readStream($video->getAbstractedVideoPath());
             $body = $response->responseStream($stream, $video->file_size);
         }
@@ -170,25 +149,19 @@ class Controller extends XFCP_Controller
 
     public function outputKLEMAudio($url, $hash)
     {
-        if ($this->validateKLEMAudioRequest($url, $hash, $error))
-        {
+        if ($this->validateKLEMAudioRequest($url, $hash, $error)) {
             /** @var AudioProxy $audioProxy */
             $audioProxy = $this->app->service('KL\EditorManager:AudioProxy');
             $audio = $audioProxy->getAudio($url);
-            if (!$audio || !$audio->isValid())
-            {
+            if (!$audio || !$audio->isValid()) {
                 $audio = null;
             }
-        }
-        else
-        {
+        } else {
             $audio = null;
         }
 
-        if (!$audio)
-        {
-            if (!$error)
-            {
+        if (!$audio) {
+            if (!$error) {
                 $error = self::ERROR_FAILED;
             }
 
@@ -197,13 +170,11 @@ class Controller extends XFCP_Controller
             $audio = $proxyRepo->getPlaceholderAudio();
         }
 
-        if (!$error)
-        {
+        if (!$error) {
             $proxyRepo = $this->app->repository('KL\EditorManager:AudioProxy');
 
             $proxyRepo->logAudioView($audio);
-            if ($this->referrer && $this->app->options()->klEMVideoAudioProxyReferrer['enabled'])
-            {
+            if ($this->referrer && $this->app->options()->klEMVideoAudioProxyReferrer['enabled']) {
                 $proxyRepo->logAudioReferrer($audio, $this->referrer);
             }
         }
@@ -211,12 +182,9 @@ class Controller extends XFCP_Controller
         $response = $this->app->response();
         $this->applyKLEMAudioResponseHeaders($response, $audio, $error);
 
-        if ($audio->isPlaceholder())
-        {
+        if ($audio->isPlaceholder()) {
             $body = $response->responseFile($audio->getPlaceholderPath());
-        }
-        else
-        {
+        } else {
             $stream = $this->app->fs()->readStream($audio->getAbstractedAudioPath());
             $body = $response->responseStream($stream, $audio->file_size);
         }
@@ -226,19 +194,19 @@ class Controller extends XFCP_Controller
         return $response;
     }
 
-    public function applyKLEMVideoResponseHeaders(Response $response, \KL\EditorManager\Entity\VideoProxy $video, $error)
-    {
-        if (!$error)
-        {
+    public function applyKLEMVideoResponseHeaders(
+        Response $response,
+        \KL\EditorManager\Entity\VideoProxy $video,
+        $error
+    ) {
+        if (!$error) {
             $response->header('Cache-Control', 'public');
 
             $expectedETag = $video->getETagValue();
-            if ($expectedETag)
-            {
+            if ($expectedETag) {
                 $response->header('ETag', '"' . $expectedETag . '"', true);
 
-                if ($this->eTag && $this->eTag === "\"$expectedETag\"")
-                {
+                if ($this->eTag && $this->eTag === "\"$expectedETag\"") {
                     $response->httpCode(304);
                     $response->removeHeader('Last-Modified');
                     return;
@@ -251,38 +219,34 @@ class Controller extends XFCP_Controller
             'video/webm'
         ];
 
-        if (in_array($video->mime_type, $videoTypes))
-        {
+        if (in_array($video->mime_type, $videoTypes)) {
             $response->contentType($video->mime_type);
             $response->setDownloadFileName($video->file_name, true);
-        }
-        else
-        {
+        } else {
             $response->contentType('application/octet-stream');
             $response->setDownloadFileName($video->file_name);
         }
 
         $response->header('X-Content-Type-Options', 'nosniff');
 
-        if ($error)
-        {
+        if ($error) {
             $response->header('X-Proxy-Error', $error);
         }
     }
 
-    public function applyKLEMAudioResponseHeaders(Response $response, \KL\EditorManager\Entity\AudioProxy $audio, $error)
-    {
-        if (!$error)
-        {
+    public function applyKLEMAudioResponseHeaders(
+        Response $response,
+        \KL\EditorManager\Entity\AudioProxy $audio,
+        $error
+    ) {
+        if (!$error) {
             $response->header('Cache-Control', 'public');
 
             $expectedETag = $audio->getETagValue();
-            if ($expectedETag)
-            {
+            if ($expectedETag) {
                 $response->header('ETag', '"' . $expectedETag . '"', true);
 
-                if ($this->eTag && $this->eTag === "\"$expectedETag\"")
-                {
+                if ($this->eTag && $this->eTag === "\"$expectedETag\"") {
                     $response->httpCode(304);
                     $response->removeHeader('Last-Modified');
                     return;
@@ -295,35 +259,29 @@ class Controller extends XFCP_Controller
             'audio/mp3'
         ];
 
-        if (in_array($audio->mime_type, $videoTypes))
-        {
+        if (in_array($audio->mime_type, $videoTypes)) {
             $response->contentType($audio->mime_type);
             $response->setDownloadFileName($audio->file_name, true);
-        }
-        else
-        {
+        } else {
             $response->contentType('application/octet-stream');
             $response->setDownloadFileName($audio->file_name);
         }
 
         $response->header('X-Content-Type-Options', 'nosniff');
 
-        if ($error)
-        {
+        if ($error) {
             $response->header('X-Proxy-Error', $error);
         }
     }
 
     public function validateKLEMVideoRequest($url, $hash, &$error = null)
     {
-        if (!$this->linker->isTypeEnabled('video'))
-        {
+        if (!$this->linker->isTypeEnabled('video')) {
             $error = self::ERROR_DISABLED;
             return false;
         }
 
-        if (!$this->validateProxyRequestGeneric($url, $hash, $error))
-        {
+        if (!$this->validateProxyRequestGeneric($url, $hash, $error)) {
             return false;
         }
 
@@ -332,14 +290,12 @@ class Controller extends XFCP_Controller
 
     public function validateKLEMAudioRequest($url, $hash, &$error = null)
     {
-        if (!$this->linker->isTypeEnabled('video'))
-        {
+        if (!$this->linker->isTypeEnabled('video')) {
             $error = self::ERROR_DISABLED;
             return false;
         }
 
-        if (!$this->validateProxyRequestGeneric($url, $hash, $error))
-        {
+        if (!$this->validateProxyRequestGeneric($url, $hash, $error)) {
             return false;
         }
 

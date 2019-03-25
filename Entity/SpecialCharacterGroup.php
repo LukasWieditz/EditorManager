@@ -21,18 +21,25 @@ class SpecialCharacterGroup extends Entity
         return \XF::phrase($this->getPhraseName());
     }
 
+    /**
+     * @return string
+     */
     public function getPhraseName()
     {
         return 'kl_em_sc_group_id.' . $this->group_id;
     }
 
+    /**
+     * @return mixed|null|Entity
+     */
     public function getMasterPhrase()
     {
         $phrase = $this->MasterTitle;
-        if (!$phrase)
-        {
+        if (!$phrase) {
             $phrase = $this->_em->create('XF:Phrase');
-            $phrase->title = $this->_getDeferredValue(function() { return $this->getPhraseName(); }, 'save');
+            $phrase->title = $this->_getDeferredValue(function () {
+                return $this->getPhraseName();
+            }, 'save');
             $phrase->language_id = 0;
             $phrase->addon_id = '';
         }

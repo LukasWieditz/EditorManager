@@ -1,6 +1,14 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\XF\Pub\Controller;
+
+use KL\EditorManager\Repository\SpecialChars;
 
 /**
  * Class Editor
@@ -11,11 +19,11 @@ class Editor extends XFCP_Editor
     /**
      * @return \XF\Mvc\Reply\View
      */
-    public function actionFindGFont() {
+    public function actionFindGFont()
+    {
         $q = ltrim($this->filter('q', 'str', ['no-trim']));
 
-        if ($q !== '' && utf8_strlen($q) >= 2)
-        {
+        if ($q !== '' && utf8_strlen($q) >= 2) {
             /** @var \KL\EditorManager\Finder\GoogleFont $finder */
             $finder = $this->finder('KL\EditorManager:GoogleFont');
 
@@ -23,9 +31,7 @@ class Editor extends XFCP_Editor
                 ->where('font_id', 'like', $finder->escapeLike($q, '%?%'))
                 ->active()
                 ->fetch(10);
-        }
-        else
-        {
+        } else {
             $fonts = [];
             $q = '';
         }
@@ -83,4 +89,57 @@ class Editor extends XFCP_Editor
         return $data;
     }
 
+    public function actionKlEmSpecialChars()
+    {
+        /** @var SpecialChars $repo */
+        $repo = $this->repository('KL\EditorManager:SpecialChars');
+
+        $categories = $repo->getCategoriesForList();
+        $characters = $repo->getCharactersForList($categories->keys());
+        $groupedCharacters = $characters->groupBy('group_id');
+
+        $recent = [];
+        $recentlyUsed = $this->request->getCookie('klem_specialcharacter_usage', '');
+        if ($recentlyUsed) {
+            $recentlyUsed = array_reverse(explode(',', $recentlyUsed));
+
+            foreach ($recentlyUsed AS $id) {
+                if ($characters->offsetExists($id)) {
+                    $recent[$id] = $characters->offsetGet($id);
+                }
+            }
+        }
+
+        $viewParams = [
+            'recent' => $recent,
+            'groupedCharacters' => $groupedCharacters,
+            'categories' => $categories
+        ];
+
+        return $this->view('KL\EditorManager:Editor\SpecialCharacters', 'kl_em_editor_special_characters', $viewParams);
+    }
+
+    public function actionKlEmSpecialCharsSearch()
+    {
+        $q = ltrim($this->filter('q', 'str', ['no-trim']));
+
+        if ($q !== '' && utf8_strlen($q) >= 2) {
+            /** @var SpecialChars $repo */
+            $repo = $this->repository('KL\EditorManager:SpecialChars');
+
+            $results = $repo->getMatchingCharactersByString($q, [
+                'limit' => 20
+            ]);
+        } else {
+            $results = [];
+            $q = '';
+        }
+
+        $viewParams = [
+            'q' => $q,
+            'results' => $results
+        ];
+        return $this->view('KL\EditorManager:Editor\SpecialCharacters\Search',
+            'kl_em_editor_special_characters_search_results', $viewParams);
+    }
 }

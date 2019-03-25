@@ -7,6 +7,6 @@
     "validation_method": "",
     "default_value": "0",
     "relations": {
-        "klEM": 10040
+        "debug": 1
     }
 }

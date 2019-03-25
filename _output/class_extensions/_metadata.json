@@ -1,6 +1,18 @@
 {
+    "XF-Admin-Controller-BbCodeMediaSite_KL-EditorManager-XF-Admin-Controller-BbCodeMediaSite.json": {
+        "hash": "7a846c899bdca334a26db79a6145b68e"
+    },
+    "XF-Admin-Controller-BbCode_KL-EditorManager-XF-Admin-Controller-BbCode.json": {
+        "hash": "597363502605695dcd11e3920ff6dd8d"
+    },
+    "XF-Admin-Controller-ButtonManager_KL-EditorManager-XF-Admin-Controller-ButtonManager.json": {
+        "hash": "d374f89ec6d0223439438a30f91eb173"
+    },
     "XF-Admin-Controller-Log_KL-EditorManager-XF-Admin-Controller-Log.json": {
         "hash": "58d554ae27f00cbbb515ebe6136e1aae"
+    },
+    "XF-Admin-Controller-Option_KL-EditorManager-XF-Admin-Controller-Option.json": {
+        "hash": "7ffd579e40725a66ae8e59baf483ff13"
     },
     "XF-BbCode-Renderer-EditorHtml_KL-EditorManager-XF-BbCode-Renderer-EditorHtml.json": {
         "hash": "3c6d083f97a5d487f73e8853eb6353da"
@@ -9,7 +21,7 @@
         "hash": "7d84abe79746e7d571f1211360149906"
     },
     "XF-BbCode-RuleSet_KL-EditorManager-XF-BbCode-RuleSet.json": {
-        "hash": "c127541fc8cb3b8dad427b2baebdde96"
+        "hash": "e507d4e444eeb16f67e69530999d623f"
     },
     "XF-Html-Renderer-BbCode_KL-EditorManager-XF-Html-Renderer-BbCode.json": {
         "hash": "75aeb0cb5fad268e0c9ebadfc19f02d9"
@@ -31,6 +43,9 @@
     },
     "XF-Pub-View-Thread-NewPosts_KL-EditorManager-XF-Pub-View-Thread-NewPosts.json": {
         "hash": "ae0491f51d0643e43cd3e79464dd5689"
+    },
+    "XF-Repository-Option_KL-EditorManager-XF-Repository-Option.json": {
+        "hash": "e5fc8d3df253d9130307c9f3f9f78feb"
     },
     "XF-Str-Formatter_KL-EditorManager-XF-Str-Formatter.json": {
         "hash": "e8bdbf0f979ef156f8d68e370853b08d"

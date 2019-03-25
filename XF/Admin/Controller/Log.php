@@ -1,5 +1,11 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\XF\Admin\Controller;
 
 use XF\Mvc\Entity\Finder;
@@ -7,10 +13,13 @@ use XF\Mvc\ParameterBag;
 
 class Log extends XFCP_Log
 {
+    /**
+     * @param ParameterBag $params
+     * @return \XF\Mvc\Reply\Reroute|\XF\Mvc\Reply\View
+     */
     public function actionAudioProxy(ParameterBag $params)
     {
-        if ($params->audio_id)
-        {
+        if ($params->audio_id) {
             return $this->rerouteController(__CLASS__, 'audioProxyView', $params);
         }
 
@@ -37,6 +46,10 @@ class Log extends XFCP_Log
         return $this->view('KL\EditorManager:Log\AudioProxy\Listing', 'kl_em_log_audio_proxy_list', $viewParams);
     }
 
+    /**
+     * @param Finder $finder
+     * @param $filters
+     */
     protected function applyAudioProxyFilters(Finder $finder, &$filters)
     {
         $filters = [];
@@ -44,14 +57,12 @@ class Log extends XFCP_Log
         $url = $this->filter('url', 'str');
         $order = $this->filter('order', 'str');
 
-        if ($url !== '')
-        {
+        if ($url !== '') {
             $finder->where('url', 'like', $finder->escapeLike($url, '%?%'));
             $filters['url'] = $url;
         }
 
-        switch ($order)
-        {
+        switch ($order) {
             case 'first_request_date':
             case 'views':
             case 'file_size':
@@ -59,25 +70,24 @@ class Log extends XFCP_Log
                 $filters['order'] = $order;
         }
     }
-    
+
     /**
      * @param ParameterBag $params
      * @return \XF\Mvc\Reply\View
      * @throws \XF\Mvc\Reply\Exception
+     * @throws \XF\PrintableException
      */
     public function actionAudioProxyAudio(ParameterBag $params)
     {
         $audio = $this->assertAudioProxyExists($params->audio_id);
 
-        if (!$audio->isValid() || $audio->isRefreshRequired())
-        {
+        if (!$audio->isValid() || $audio->isRefreshRequired()) {
             /** @var \KL\EditorManager\Service\AudioProxy $proxyService */
             $proxyService = $this->service('KL\EditorManager:AudioProxy');
             $audio = $proxyService->refetchAudio($audio);
         }
 
-        if (!$audio->isValid())
-        {
+        if (!$audio->isValid()) {
             /** @var \KL\EditorManager\Repository\AudioProxy $proxyRepo */
             $proxyRepo = $this->app->repository('KL\EditorManager:AudioProxy');
             $audio = $proxyRepo->getPlaceholderAudio();
@@ -118,10 +128,14 @@ class Log extends XFCP_Log
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->assertRecordExists('KL\EditorManager:AudioProxy', $id, $with, $phraseKey);
     }
+
+    /**
+     * @param ParameterBag $params
+     * @return \XF\Mvc\Reply\Reroute|\XF\Mvc\Reply\View
+     */
     public function actionVideoProxy(ParameterBag $params)
     {
-        if ($params->video_id)
-        {
+        if ($params->video_id) {
             return $this->rerouteController(__CLASS__, 'videoProxyView', $params);
         }
 
@@ -148,6 +162,10 @@ class Log extends XFCP_Log
         return $this->view('KL\EditorManager:Log\VideoProxy\Listing', 'kl_em_log_video_proxy_list', $viewParams);
     }
 
+    /**
+     * @param Finder $finder
+     * @param $filters
+     */
     protected function applyVideoProxyFilters(Finder $finder, &$filters)
     {
         $filters = [];
@@ -155,14 +173,12 @@ class Log extends XFCP_Log
         $url = $this->filter('url', 'str');
         $order = $this->filter('order', 'str');
 
-        if ($url !== '')
-        {
+        if ($url !== '') {
             $finder->where('url', 'like', $finder->escapeLike($url, '%?%'));
             $filters['url'] = $url;
         }
 
-        switch ($order)
-        {
+        switch ($order) {
             case 'first_request_date':
             case 'views':
             case 'file_size':
@@ -175,20 +191,19 @@ class Log extends XFCP_Log
      * @param ParameterBag $params
      * @return \XF\Mvc\Reply\View
      * @throws \XF\Mvc\Reply\Exception
+     * @throws \XF\PrintableException
      */
     public function actionVideoProxyVideo(ParameterBag $params)
     {
         $video = $this->assertVideoProxyExists($params->video_id);
 
-        if (!$video->isValid() || $video->isRefreshRequired())
-        {
+        if (!$video->isValid() || $video->isRefreshRequired()) {
             /** @var \KL\EditorManager\Service\VideoProxy $proxyService */
             $proxyService = $this->service('KL\EditorManager:VideoProxy');
             $video = $proxyService->refetchVideo($video);
         }
 
-        if (!$video->isValid())
-        {
+        if (!$video->isValid()) {
             /** @var \KL\EditorManager\Repository\VideoProxy $proxyRepo */
             $proxyRepo = $this->app->repository('KL\EditorManager:VideoProxy');
             $video = $proxyRepo->getPlaceholderVideo();

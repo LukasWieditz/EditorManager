@@ -1,0 +1,43 @@
+<xf:title>
+	{{ phrase('kl_em_custom_emotes') }}
+</xf:title>
+
+<xf:if is="$user.user_id == $xf.visitor.user_id">
+	<xf:pageaction>
+		<xf:if is="$xf.visitor.hasPermission('klEM', 'klEMEmotesMaxAmount') > $emotes.count()
+				   || $xf.visitor.hasPermission('klEM', 'klEMEmotesMaxAmount') == -1">
+			<xf:button href="{{ link('account/kl-custom-emotes/add') }}">
+				{{ phrase('kl_em_add_emote') }}
+			</xf:button>
+		</xf:if>
+	</xf:pageaction>
+</xf:if>
+
+<div class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:datalist>
+				<xf:foreach loop="$emotes" value="$emote">
+					<xf:datarow>
+						<xf:cell href="{{ link('account/kl-custom-emote/delete', $emote) }}" class="dataList-cell--min">
+							{{ kl_em_emote($emote.shortcode, $xf.visitor) }}
+						</xf:cell>
+						<xf:cell href="{{ link('account/kl-custom-emote/delete', $emote) }}">
+							{$emote.title}
+						</xf:cell>
+						<xf:cell href="{{ link('account/kl-custom-emote/delete', $emote) }}">
+							:{$emote.shortcode}:
+						</xf:cell>
+						<xf:delete href="{{ link('account/kl-custom-emote/delete', $emote) }}" />
+					</xf:datarow>
+					<xf:else />
+					<xf:datarow rowclass="dataList-row--noHover dataList-row--note">
+						<xf:cell colspan="4" class="dataList-cell--noSearch">
+							{{ phrase('kl_em_no_emotes_have_been_added_yet') }}
+						</xf:cell>
+					</xf:datarow>
+				</xf:foreach>
+			</xf:datalist>
+		</div>
+	</div>
+</div>

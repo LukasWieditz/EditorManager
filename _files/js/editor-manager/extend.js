@@ -17,31 +17,6 @@
 			}
 		}
 	}
-	
-	$.FE.DefineIcon('xfKLEMiSpoiler', { NAME: 'eye-slash'});
-	$.FE.RegisterCommand('xfKLEMiSpoiler', {
-		title: 'Inline Spoiler',
-		icon: 'xfKLEMiSpoiler',
-		undo: true,
-		focus: true,
-		callback: function() {
-			var ed = this,
-				beforeShow = function(overlay) {
-					var $title = $('#editor_spoiler_title').val('');
-					setTimeout(function() {$title.autofocus();}, 0);
-				},
-				init = function(overlay) {
-					$('#editor_spoiler_submit').click(function(e) {
-						e.preventDefault();
-						ed.selection.restore();
-						XF.EditorHelpers.insertKLEMiSpoiler(ed, $('#editor_spoiler_title').val());
-						overlay.hide();
-					});
-				};
-
-			XF.EditorHelpers.loadDialog(ed, 'spoiler', init, beforeShow, true);
-		}
-	});
 
 	$.FE.DefineIcon('klEMParseHtml', { NAME: 'code'});
 	$.FE.RegisterCommand('klEMParseHtml', {
@@ -53,19 +28,6 @@
 			XF.EditorHelpers.wrapSelectionText(this, '[PARSEHTML]', '[/PARSEHTML]', true);
 		}
 	});
-	
-	/* Additional Helpers */
-	XF.EditorHelpers.insertKLEMiSpoiler = function(ed, title) {
-		var open;
-		if (title) {
-			open = '[ISPOILER="' + title + '"]';
-		}
-		else {
-			open = '[ISPOILER]';
-		}
-
-		XF.EditorHelpers.wrapSelectionText(ed, open, '[/ISPOILER]', true);
-	};
 
 	$(document).on('editor:config', function(event, config, xfEditor) {
 		var newConfig,

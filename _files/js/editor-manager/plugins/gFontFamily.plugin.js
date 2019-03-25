@@ -9,7 +9,7 @@
 
 (function ($) {
     $(document).one('editor:start', function() {
-        $.FE.DefineIcon('xfKLEMgFontFamily', {NAME: 'google'});
+        $.FE.DefineIcon('xfKLEMgFontFamily', {NAME: 'google fab'});
 
         $.FE.RegisterCommand('gFontFamily', {
             title: 'Google Font',

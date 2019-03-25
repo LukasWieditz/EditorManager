@@ -1,5 +1,11 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\Entity;
 
 use XF\Mvc\Entity\Entity;
@@ -12,8 +18,12 @@ use XF\Mvc\Entity\Structure;
  * @property string bb_code_id
  * @property array user_criteria
  */
-class BbCode extends Entity {
-
+class BbCode extends Entity
+{
+    /**
+     * @param $criteria
+     * @return bool
+     */
     protected function verifyUserCriteria(&$criteria)
     {
         $userCriteria = $this->app()->criteria('XF:User', $criteria);
@@ -25,13 +35,16 @@ class BbCode extends Entity {
      * @param Structure $structure
      * @return Structure
      */
-    public static function getStructure(Structure $structure) {
+    public static function getStructure(Structure $structure)
+    {
         $structure->table = 'xf_kl_em_bb_codes';
         $structure->shortName = 'KL\EditorManager:BbCode';
         $structure->primaryKey = 'bb_code_id';
 
         $structure->columns = [
-            'bb_code_id' => ['type' => self::STR, 'maxLength' => 25,
+            'bb_code_id' => [
+                'type' => self::STR,
+                'maxLength' => 25,
                 'required' => 'please_enter_valid_bb_code_tag',
                 'unique' => 'bb_code_tags_must_be_unique',
                 'match' => 'alphanumeric'

@@ -1,1 +1,0 @@
-When enabled, the image Bb Code will support optional parameters that allows people to resize the images they include into their posts manually.

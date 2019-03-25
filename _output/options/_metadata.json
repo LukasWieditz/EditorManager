@@ -1,59 +1,71 @@
 {
     "kLEMVideoCacheRefresh.json": {
-        "hash": "a6320971405fe5eed2f11fd3a27a7b8e"
+        "hash": "3ea6a1264dcbb2a73bd64d28059b79db"
     },
     "klEMAudioCacheRefresh.json": {
-        "hash": "6f4e43c0ff3e2814e210e4ee9f815c7f"
+        "hash": "3ea6a1264dcbb2a73bd64d28059b79db"
     },
     "klEMAudioCacheTTL.json": {
-        "hash": "fc334de9d8602b267f41c68864b7350b"
+        "hash": "1b21cce332304465c9c4b4b5cf879af4"
     },
     "klEMAudioProxyMaxSize.json": {
-        "hash": "f51d7b3f22628786973815618cfd4823"
+        "hash": "40e0fe8500b2e940964913440b3658d6"
+    },
+    "klEMBGColors.json": {
+        "hash": "4f15904abfdbfb3903aa772da34db4f0"
     },
     "klEMCharCounter.json": {
-        "hash": "c798748c2b9f950dd9e3878a270ba3da"
+        "hash": "f99d6f3b16925b72a19d040b708c3e8f"
+    },
+    "klEMColorStep.json": {
+        "hash": "946ee2678db2f0a9a01c4af759bb3d6f"
     },
     "klEMColors.json": {
-        "hash": "52df7e998a5c0657979431dd0bf73f1f"
+        "hash": "4f15904abfdbfb3903aa772da34db4f0"
+    },
+    "klEMDefaultHide.json": {
+        "hash": "d958a9fd702c7a763a6f64dd74ef4ba2"
     },
     "klEMEnabledBBCodes.json": {
-        "hash": "8528f7030e8a98abd58a59ecd8488a48"
+        "hash": "da255359c4f5186d8c51f615d7e59da0"
+    },
+    "klEMExternalFontPolling.json": {
+        "hash": "99f001dcefab2b1e7a3f5eaa2d9abd5d"
+    },
+    "klEMFontSizes.json": {
+        "hash": "22c248114f3979049e0b480462a2698f"
+    },
+    "klEMGeneralOptions.json": {
+        "hash": "84c4dbb3f47f7830de163963f99406af"
     },
     "klEMGoogleApiKey.json": {
-        "hash": "618788bdb8002285562e9a1baa37e59c"
+        "hash": "a9be56d3e85bf7dbe7f312227a1ce540"
     },
     "klEMHexColor.json": {
-        "hash": "8ac565a797f3931d7f461e44dac683ad"
+        "hash": "99f001dcefab2b1e7a3f5eaa2d9abd5d"
     },
     "klEMHideControllers.json": {
-        "hash": "44f749f73c282bbbf884dfaaab85fd75"
+        "hash": "21275e9cbfb245cfc854360e5e282a1b"
     },
-    "klEMImageAlignment.json": {
-        "hash": "e18136cdc3f3c70463cb3d8f5ae7ee40"
+    "klEMMaxFontSize.json": {
+        "hash": "0041665791d68543adcb1472a222717f"
     },
-    "klEMImageDimensions.json": {
-        "hash": "58db532690eced1f2a2a93b334ab9a5b"
-    },
-    "klEMLateLoad.json": {
-        "hash": "6b7f7b1be464b00b0946e08bd6a4a697"
-    },
-    "klEMLayout.json": {
-        "hash": "b284d594108e632546ec3c0305d316b1"
+    "klEMMinFontSize.json": {
+        "hash": "e69baff299d0f8548eeba12bf1f2790d"
     },
     "klEMProxy.json": {
-        "hash": "c06da77eaaf15dee26206aefc0a9182b"
+        "hash": "8c914f9bc5b60ba9f3f4964ca162ca6b"
     },
     "klEMVideoAudioProxyLogLength.json": {
-        "hash": "2f2513ffe3a1c9acf00ce4d30bb79d53"
+        "hash": "a9fa2fb267341875fe475030442fcf79"
     },
     "klEMVideoAudioProxyReferrer.json": {
-        "hash": "da42c31b77da06eeb5ac69128ae0c785"
+        "hash": "2fdb7a8e6ac20cd92aeb844e01c63b87"
     },
     "klEMVideoCacheTTL.json": {
-        "hash": "7c6f2c5d24800f30fbb4889e340d33d3"
+        "hash": "1b21cce332304465c9c4b4b5cf879af4"
     },
     "klEMVideoProxyMaxSize.json": {
-        "hash": "bee221e649afed80a909a0b7095bbe82"
+        "hash": "895f5d265158e91f4c1a8b66bd5cb1c4"
     }
 }

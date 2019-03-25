@@ -38,7 +38,8 @@ class Formatter extends XFCP_Formatter
      */
     public function snippetString($string, $maxLength = 0, array $options = [])
     {
-        $string = preg_replace("#\[(HIDE(?:REPLY|POSTS|THANKS|REPLYTHANKS){0,1})].*?\[\/\g1]#si", \XF::phrase('kl_em_hidden_content'), $string);
+        $string = preg_replace("#\[(HIDE(?:REPLY|POSTS|THANKS|REPLYTHANKS){0,1})].*?\[\/\g1]#si",
+            \XF::phrase('kl_em_hidden_content'), $string);
         $string = parent::snippetString($string, $maxLength, $options);
         return $string;
     }

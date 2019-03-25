@@ -1,5 +1,11 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\Entity;
 
 use XF\Mvc\Entity\Entity;
@@ -20,30 +26,34 @@ use XF\Mvc\Entity\Structure;
  */
 class VideoProxyReferrer extends Entity
 {
-	public static function getStructure(Structure $structure)
-	{
-		$structure->table = 'xf_kl_em_video_proxy_referrer';
-		$structure->shortName = 'KL\EditorManager:VideoProxyReferrer';
-		$structure->primaryKey = 'referrer_id';
-		$structure->columns = [
-			'referrer_id' => ['type' => self::UINT, 'nullable' => true, 'autoIncrement' => true],
-			'video_id' => ['type' => self::UINT, 'required' => true],
-			'referrer_hash' => ['type' => self::STR, 'maxLength' => 32, 'required' => true],
-			'referrer_url' => ['type' => self::STR, 'required' => true],
-			'hits' => ['type' => self::UINT, 'default' => 0],
-			'first_date' => ['type' => self::UINT, 'default' => \XF::$time],
-			'last_date' => ['type' => self::UINT, 'default' => \XF::$time],
-		];
-		$structure->getters = [];
-		$structure->relations = [
-			'Video' => [
-				'entity' => 'KL\EditorManager:VideoProxy',
-				'type' => self::TO_ONE,
-				'conditions' => 'video_id',
-				'primary' => true
-			],
-		];
+    /**
+     * @param Structure $structure
+     * @return Structure
+     */
+    public static function getStructure(Structure $structure)
+    {
+        $structure->table = 'xf_kl_em_video_proxy_referrer';
+        $structure->shortName = 'KL\EditorManager:VideoProxyReferrer';
+        $structure->primaryKey = 'referrer_id';
+        $structure->columns = [
+            'referrer_id' => ['type' => self::UINT, 'nullable' => true, 'autoIncrement' => true],
+            'video_id' => ['type' => self::UINT, 'required' => true],
+            'referrer_hash' => ['type' => self::STR, 'maxLength' => 32, 'required' => true],
+            'referrer_url' => ['type' => self::STR, 'required' => true],
+            'hits' => ['type' => self::UINT, 'default' => 0],
+            'first_date' => ['type' => self::UINT, 'default' => \XF::$time],
+            'last_date' => ['type' => self::UINT, 'default' => \XF::$time],
+        ];
+        $structure->getters = [];
+        $structure->relations = [
+            'Video' => [
+                'entity' => 'KL\EditorManager:VideoProxy',
+                'type' => self::TO_ONE,
+                'conditions' => 'video_id',
+                'primary' => true
+            ],
+        ];
 
-		return $structure;
-	}
+        return $structure;
+    }
 }

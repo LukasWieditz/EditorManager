@@ -53,7 +53,7 @@ class Template extends Repository
 
         $templates = $finder->order(['user_id', 'display_order'])->fetch();
 
-        if($userid) {
+        if ($userid) {
             $visitor = \XF::visitor();
             foreach ($templates as $key => $template) {
                 $userCriteria = \XF::app()->criteria('XF:User', $template->user_criteria);

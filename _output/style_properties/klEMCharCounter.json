@@ -1,6 +1,6 @@
 {
     "group_name": "rte",
-    "title": "[KL] Editor Manager - Character Counter",
+    "title": "Editor Manager - Character Counter",
     "description": "Styling properties for the character counter.",
     "property_type": "css",
     "css_components": [
@@ -27,7 +27,7 @@
         "border-left-width": "1px",
         "border-left-color": "#ebebeb",
         "padding": "5px",
-        "extra": "position: absolute;\nbottom: 0;\nright: 0;\ncontent: attr(data-chars);\nfont-family: \"Times New Roman\", Georgia, Serif;\nz-index: 1;\nbackground-clip: padding-box;"
+        "extra": "position: absolute;\nbottom: 0;\nright: 0;\nfont-family: \"Times New Roman\", Georgia, Serif;"
     },
     "display_order": 1200
 }

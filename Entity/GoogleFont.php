@@ -23,7 +23,11 @@ use XF\Mvc\Entity\Structure;
  */
 class GoogleFont extends Entity
 {
-    public function getFontIdEscaped() {
+    /**
+     * @return string
+     */
+    public function getFontIdEscaped()
+    {
         return strtr($this->font_id, [' ' => '+']);
     }
 

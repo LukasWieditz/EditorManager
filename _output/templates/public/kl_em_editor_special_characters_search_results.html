@@ -1,0 +1,13 @@
+<div class="block-body block-body--emoji js-specialCharacterSearchResults">
+	<div class="block-row">
+		<xf:if is="$results">
+			<ul class="specialCharacterList">
+				<xf:foreach loop="$results" value="{$result}">
+					<li><a class="js-specialCharacter" title="{$character.title}" data-id="{$result.character_id}" data-shortname="{$result.title}">{$result.code|raw}</a></li>
+				</xf:foreach>
+			</ul>
+		<xf:else />
+			{{ phrase('no_results_found') }}
+		</xf:if>
+	</div>
+</div>

@@ -1,6 +1,15 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\Setup;
+
+use XF\Db\Schema\Create;
+use XF\Db\Schema\Alter;
 
 trait Patch1010030 {
 
@@ -8,7 +17,7 @@ trait Patch1010030 {
     /* CREATE xf_kl_em_bb_codes */
     public function upgrade1010031Step1()
     {
-        $this->schemaManager()->createTable('xf_kl_em_bb_codes', function (Create $table) {
+        \XF::db()->getSchemaManager()->createTable('xf_kl_em_bb_codes', function (Create $table) {
             $table->addColumn('bb_code_id', 'varbinary', 25);
             $table->addColumn('user_criteria', 'mediumblob');
             $table->addColumn('aliases', 'mediumblob');
@@ -19,7 +28,7 @@ trait Patch1010030 {
     /* CREATE xf_kl_em_bb_codes */
     public function upgrade1010031Step2()
     {
-        $this->schemaManager()->alterTable('xf_kl_em_templates', function (Alter $table) {
+        \XF::db()->getSchemaManager()->alterTable('xf_kl_em_templates', function (Alter $table) {
             $table->addColumn('user_criteria', 'mediumblob');
         });
     }
@@ -27,7 +36,7 @@ trait Patch1010030 {
     /* CREATE xf_kl_em_special_chars_groups */
     public function upgrade1010031Step3()
     {
-        $this->schemaManager()->createTable('xf_kl_em_special_chars_groups', function (Create $table) {
+        \XF::db()->getSchemaManager()->createTable('xf_kl_em_special_chars_groups', function (Create $table) {
             $table->addColumn('group_id', 'int')->autoIncrement();
             $table->addColumn('user_criteria', 'mediumblob');
             $table->addColumn('display_order', 'int')->setDefault(10);
@@ -38,7 +47,7 @@ trait Patch1010030 {
     /* CREATE xf_kl_em_special_chars */
     public function upgrade1010031Step4()
     {
-        $this->schemaManager()->createTable('xf_kl_em_special_chars', function (Create $table) {
+        \XF::db()->getSchemaManager()->createTable('xf_kl_em_special_chars', function (Create $table) {
             $table->addColumn('character_id', 'int')->autoIncrement();
             $table->addColumn('code', 'varchar', 25);
             $table->addColumn('group_id', 'int');
@@ -50,7 +59,7 @@ trait Patch1010030 {
     /* CREATE xf_kl_em_special_chars */
     public function upgrade1010032Step1()
     {
-        $this->schemaManager()->alterTable('xf_kl_em_bb_codes', function (Alter $table) {
+        \XF::db()->getSchemaManager()->alterTable('xf_kl_em_bb_codes', function (Alter $table) {
             $table->changeColumn('user_criteria')->nullable();
             $table->changeColumn('aliases')->nullable();
         });
@@ -59,7 +68,7 @@ trait Patch1010030 {
     /* CREATE xf_kl_em_video_proxy */
     public function upgrade1010033Step1()
     {
-        $this->schemaManager()->createTable('xf_kl_em_video_proxy', function (Create $table) {
+        \XF::db()->getSchemaManager()->createTable('xf_kl_em_video_proxy', function (Create $table) {
             $table->addColumn('video_id', 'int')->autoIncrement();
             $table->addColumn('url', 'text');
             $table->addColumn('url_hash', 'varbinary', 32);
@@ -84,7 +93,7 @@ trait Patch1010030 {
     /* CREATE xf_kl_em_audio_proxy */
     public function upgrade1010033Step2()
     {
-        $this->schemaManager()->createTable('xf_kl_em_audio_proxy', function (Create $table) {
+        \XF::db()->getSchemaManager()->createTable('xf_kl_em_audio_proxy', function (Create $table) {
             $table->addColumn('audio_id', 'int')->autoIncrement();
             $table->addColumn('url', 'text');
             $table->addColumn('url_hash', 'varbinary', 32);
@@ -109,7 +118,7 @@ trait Patch1010030 {
     /* CREATE xf_kl_em_video_proxy_referrer */
     public function upgrade1010033Step3()
     {
-        $this->schemaManager()->createTable('xf_kl_em_video_proxy_referrer', function (Create $table) {
+        \XF::db()->getSchemaManager()->createTable('xf_kl_em_video_proxy_referrer', function (Create $table) {
             $table->addColumn('referrer_id', 'int')->autoIncrement();
             $table->addColumn('video_id', 'int');
             $table->addColumn('referrer_hash', 'varbinary', 32);
@@ -125,7 +134,7 @@ trait Patch1010030 {
     /* CREATE xf_kl_em_audio_proxy_referrer */
     public function upgrade1010033Step4()
     {
-        $this->schemaManager()->createTable('xf_kl_em_audio_proxy_referrer', function (Create $table) {
+        \XF::db()->getSchemaManager()->createTable('xf_kl_em_audio_proxy_referrer', function (Create $table) {
             $table->addColumn('referrer_id', 'int')->autoIncrement();
             $table->addColumn('audio_id', 'int');
             $table->addColumn('referrer_hash', 'varbinary', 32);
@@ -140,7 +149,7 @@ trait Patch1010030 {
 
     public function upgrade1010072Step1()
     {
-        $this->schemaManager()->alterTable('xf_user', function (Alter $table) {
+        \XF::db()->getSchemaManager()->alterTable('xf_user', function (Alter $table) {
             $table->addColumn('kl_em_wordcount_mode', 'enum', ['letter', 'word'])->setDefault('letter');
         });
     }

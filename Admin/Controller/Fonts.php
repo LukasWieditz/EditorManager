@@ -42,7 +42,7 @@ class Fonts extends AbstractController
             'externalFontCount' => $external
         ];
 
-        return $this->view('KL\EditorManager:ListFont', 'kl_em_fonts_list', $viewParams);
+        return $this->view('KL\EditorManager:ListFont', 'kl_em_font_list', $viewParams);
     }
 
     /**
@@ -131,28 +131,20 @@ class Fonts extends AbstractController
     /**
      * @param ParameterBag $params
      * @return \XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
-     * @throws \XF\PrintableException
      * @throws \XF\Mvc\Reply\Exception
      */
     public function actionDelete(ParameterBag $params)
     {
         $font = $this->assertFontExists($params['font_id']);
-
-        if ($this->isPost()) {
-            $font->delete();
-            $return = $this->redirect($this->buildLink('em/fonts'));
-        } else {
-            $viewParams = [
-                'font' => $font
-            ];
-            $return = $this->view('KL\EditorManager:Font\Delete', 'kl_em_font_delete', $viewParams);
-        }
-
-        /** @var \KL\EditorManager\Repository\Font $repo */
-        $repo = $this->repository('KL\EditorManager:Font');
-        $repo->rebuildFontCache();
-
-        return $return;
+        /** @var \XF\ControllerPlugin\Delete $plugin */
+        $plugin = $this->plugin('XF:Delete');
+        return $plugin->actionDelete(
+            $font,
+            $this->buildLink('em/fonts/delete', $font),
+            $this->buildLink('em/fonts/edit', $font),
+            $this->buildLink('em/fonts'),
+            $font->title
+        );
     }
 
     /**
@@ -243,49 +235,61 @@ class Fonts extends AbstractController
                 'filetypes' => $fileList[$name]['types']
             ];
 
-        } else if ($entityInput['type'] === 'web') {
-            $entityInput['extra_data'] = $this->filter([
-                'web_service' => 'str',
-                'web_url' => 'str'
-            ]);
-
-            /*
-             * Processes service provider inputs to required format.
-             */
-            switch ($entityInput['extra_data']['web_service']) {
-                case 'gfonts':
-                    if (strpos($entityInput['extra_data']['web_url'], 'https://fonts.googleapis.com/css?family=') === 0) {
-                        $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 40);
-                    } else {
-                        return $this->throwInvalidServiceError();
-                    }
-                    break;
-                case 'typekit':
-                    if (strpos($entityInput['extra_data']['web_url'], 'https://use.typekit.net/') === 0 && substr($entityInput['extra_data']['web_url'], -3) === '.js') {
-                        $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 24, -3);
-                    } else {
-                        return $this->throwInvalidServiceError();
-                    }
-                    break;
-                case 'webtype':
-                    if (strpos($entityInput['extra_data']['web_url'], '//cloud.webtype.com/css/') === 0 && substr($entityInput['extra_data']['web_url'], -4) === '.css') {
-                        $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 24, -4);
-                    } else {
-                        return $this->throwInvalidServiceError();
-                    }
-                    break;
-                case 'fonts':
-                    if (strpos($entityInput['extra_data']['web_url'], '//fast.fonts.net/jsapi/') === 0 && substr($entityInput['extra_data']['web_url'], -3) === '.js') {
-                        $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 23, -3);
-                    } else {
-                        return $this->throwInvalidServiceError();
-                    }
-                    break;
-                default:
-                    break;
-            }
         } else {
-            $entityInput['extra_data'] = [];
+            if ($entityInput['type'] === 'web') {
+                $entityInput['extra_data'] = $this->filter([
+                    'web_service' => 'str',
+                    'web_url' => 'str'
+                ]);
+
+                /*
+                 * Processes service provider inputs to required format.
+                 */
+                switch ($entityInput['extra_data']['web_service']) {
+                    case 'gfonts':
+                        if (strpos($entityInput['extra_data']['web_url'],
+                                'https://fonts.googleapis.com/css?family=') === 0) {
+                            $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 40);
+                        } else {
+                            return $this->throwInvalidServiceError();
+                        }
+                        break;
+                    case 'typekit':
+                        if (strpos($entityInput['extra_data']['web_url'],
+                                'https://use.typekit.net/') === 0 && substr($entityInput['extra_data']['web_url'],
+                                -3) === '.js') {
+                            $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 24,
+                                -3);
+                        } else {
+                            return $this->throwInvalidServiceError();
+                        }
+                        break;
+                    case 'webtype':
+                        if (strpos($entityInput['extra_data']['web_url'],
+                                '//cloud.webtype.com/css/') === 0 && substr($entityInput['extra_data']['web_url'],
+                                -4) === '.css') {
+                            $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 24,
+                                -4);
+                        } else {
+                            return $this->throwInvalidServiceError();
+                        }
+                        break;
+                    case 'fonts':
+                        if (strpos($entityInput['extra_data']['web_url'],
+                                '//fast.fonts.net/jsapi/') === 0 && substr($entityInput['extra_data']['web_url'],
+                                -3) === '.js') {
+                            $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 23,
+                                -3);
+                        } else {
+                            return $this->throwInvalidServiceError();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                $entityInput['extra_data'] = [];
+            }
         }
 
         $form = $this->formAction();
@@ -332,7 +336,7 @@ class Fonts extends AbstractController
             $viewParams = [
                 'fonts' => $finder->fetch()
             ];
-            return $this->view('KL\EditorManager:Fonts\Sort', 'kl_em_fonts_sort', $viewParams);
+            return $this->view('KL\EditorManager:Fonts\Sort', 'kl_em_font_sort', $viewParams);
         }
     }
 

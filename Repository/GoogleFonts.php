@@ -1,5 +1,11 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\Repository;
 
 use GuzzleHttp\Exception\RequestException;
@@ -9,16 +15,18 @@ use XF\Mvc\Entity\Repository;
  * Class GoogleFonts
  * @package KL\EditorManager\Repository
  */
-class GoogleFonts extends Repository {
+class GoogleFonts extends Repository
+{
     /**
      * @throws \Exception
      * @throws \XF\PrintableException
      */
-    public function updateFontList() {
+    public function updateFontList()
+    {
         $options = \XF::app()->options();
         $apiKey = $options->klEMGoogleApiKey;
 
-        if($apiKey) {
+        if ($apiKey) {
             try {
                 $client = \XF::app()->http()->client();
                 $params = http_build_query(['key' => $apiKey]);

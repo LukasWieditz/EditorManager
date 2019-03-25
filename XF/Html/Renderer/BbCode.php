@@ -39,66 +39,7 @@ class BbCode extends XFCP_BbCode
         $this->_handlers['sub'] = ['wrap' => '[SUB]%s[/SUB]'];
         $this->_handlers['sup'] = ['wrap' => '[SUP]%s[/SUP]'];
 
-        /* Tables */
-        $this->_handlers['table'] = ['filterCallback' => ['$this', 'handleKLEMTable']];
-        $this->_handlers['tr'] = ['wrap' => '[TR]%s[/TR]'];
-        $this->_handlers['th'] = ['filterCallback' => ['$this', 'handleKLEMTH']];
-        $this->_handlers['td'] = ['filterCallback' => ['$this', 'handleKLEMTD']];
-
         $this->_cssHandlers['font-size'] = ['$this', 'handleKLEMCssFontSize'];
-        $this->_cssHandlers['width'] = ['$this', 'handleKLEMCssWidth'];
-        $this->_cssHandlers['height'] = ['$this', 'handleKLEMCssHeight'];
-    }
-
-    public function handleTagImg($text, Tag $tag)
-    {
-        $render = parent::handleTagImg($text, $tag);
-
-        $classes = explode(' ', $tag->attribute('class'));
-        $align = false;
-        if (in_array('fr-fil', $classes)) {
-            $align = 'left';
-        } else {
-            if (in_array('fr-fir', $classes)) {
-                $align = 'right';
-            }
-        }
-        if ($align) {
-            $render = $this->handleKLEmCssFloat($render, $align);
-        }
-
-        return $render;
-    }
-
-    public function handleKLEMCssFloat($text, $align)
-    {
-        if (strpos($text, '[IMG') === 0) {
-            return preg_replace('/\[IMG(?:=\')?(.*?)(?:\')?\]/', "[IMG='align:{$align};$1']", $text);
-        }
-
-        return $text;
-    }
-
-    public function handleKLEMCssWidth($text, $width)
-    {
-        if (preg_match("/^\d+(px|pt|%)$/", $width)) {
-            if (strpos($text, '[IMG') === 0) {
-                return preg_replace('/\[IMG(?:=\')?(.*?)(?:\')?\]/', "[IMG='width:{$width};$1']", $text);
-            }
-        }
-
-        return $text;
-    }
-
-    public function handleKLEMCssHeight($text, $height)
-    {
-        if (preg_match("/!\d+(px|pt|%)$/", $height)) {
-            if (strpos($text, '[IMG') === 0) {
-                return preg_replace('/\[IMG(?:=\'(.*?)\')?\]/', "[IMG='height:{$height};$1']", $text);
-            }
-        }
-
-        return $text;
     }
 
     public function handleKLEMCssFontSize($text, $fontSize)
@@ -171,65 +112,6 @@ class BbCode extends XFCP_BbCode
     }
 
     /**
-     * Handles table td elements.
-     *
-     * @param string $text Child text of the tag
-     * @param Tag $tag The tag, containing all parser information
-     *
-     * @return string
-     */
-    public function handleKLEMTable($text, $tag)
-    {
-        $attributes = $tag->attributes();
-        $classes = str_replace('post-table', '', isset($attributes['class']) ? $attributes['class'] : '');
-        $classes = implode('-', array_filter(explode(' ', $classes)));
-        $option = $classes ? "={$classes}" : '';
-
-        return "[TABLE$option]{$text}[/TABLE]";
-    }
-
-
-    /**
-     * Handles table td elements.
-     *
-     * @param string $text Child text of the tag
-     * @param Tag $tag The tag, containing all parser information
-     *
-     * @return string
-     */
-    public function handleKLEMTD($text, $tag)
-    {
-        $styles = isset($tag->attributes()['style']) ? $tag->attributes()['style'] : [];
-
-        $option = isset($styles['vertical-align']) ? "='" . $styles['vertical-align'] . "'" : '';
-
-        $text = trim($text);
-
-        if (strlen($text)) {
-            return "[TD$option]\n{$text}\n[/TD]";
-        } else {
-            return "[TD][/TD]";
-        }
-    }
-
-    /**
-     * Handles table th elements.
-     *
-     * @param string $text Child text of the tag
-     * @param Tag $tag The tag, containing all parser information
-     *
-     * @return string
-     */
-    public function handleKLEMTH($text, $tag)
-    {
-        $styles = isset($tag->attributes()['style']) ? $tag->attributes()['style'] : [];
-
-        $option = isset($styles['vertical-align']) ? "='" . $styles['vertical-align'] . "'" : '';
-
-        return "[TH$option]{$text}[/TH]";
-    }
-
-    /**
      * Handles CSS text-align rules.
      *
      * @param string $text Child text of the tag with the CSS
@@ -261,22 +143,29 @@ class BbCode extends XFCP_BbCode
     public function handleCssFontFamily($text, $cssValue)
     {
         list($fontFamily) = explode(',', $cssValue);
-        if (preg_match('/^(\'|")(.*)\\1$/', $fontFamily, $match))
-        {
+        if (preg_match('/^(\'|")(.*)\\1$/', $fontFamily, $match)) {
             $fontFamily = $match[2];
             $fontFamilies = explode(',', $fontFamily);
-            if(count($fontFamilies)) {
+            if (count($fontFamilies)) {
                 $fontFamily = trim(array_shift($fontFamilies));
             }
         }
 
-        if ($fontFamily && preg_match('/^[a-z0-9 \-]+$/i', $fontFamily))
-        {
+        if ($fontFamily && preg_match('/^[a-z0-9 \-]+$/i', $fontFamily)) {
             return "[FONT=$fontFamily]{$text}[/FONT]";
-        }
-        else
-        {
+        } else {
             return $text;
         }
+    }
+
+    public function handleTagTable($text, Tag $tag)
+    {
+        $option = str_replace(' ', ',', $tag->attribute('class'));
+        if ($option) {
+            $option = '=' . $option;
+        }
+
+        $output = "[TABLE{$option}]\n{$text}\n[/TABLE]";
+        return $this->renderCss($tag, $output);
     }
 }

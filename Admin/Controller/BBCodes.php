@@ -1,5 +1,11 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\Admin\Controller;
 
 use KL\EditorManager\Entity\BbCode;
@@ -8,6 +14,10 @@ use XF\Mvc\ParameterBag;
 
 class BBCodes extends AbstractController
 {
+    /**
+     * @param ParameterBag $params
+     * @return \XF\Mvc\Reply\Reroute|\XF\Mvc\Reply\View
+     */
     public function actionIndex(ParameterBag $params)
     {
         /** @noinspection PhpUndefinedFieldInspection */
@@ -108,6 +118,10 @@ class BBCodes extends AbstractController
         return $this->redirect($this->buildLink('em/bb-codes'));
     }
 
+    /**
+     * @param BbCode $bbCode
+     * @return \XF\Mvc\FormAction
+     */
     protected function bbCodeSaveProcess(BbCode $bbCode)
     {
         $form = $this->formAction();
@@ -124,6 +138,9 @@ class BBCodes extends AbstractController
         return $form;
     }
 
+    /**
+     * @return array
+     */
     protected function getBBCodeLists()
     {
         return [
@@ -136,7 +153,7 @@ class BBCodes extends AbstractController
                 'font',
                 'size',
                 'url',
-                'image',
+                'img',
                 'media',
                 'quote',
                 'spoiler',
@@ -144,12 +161,12 @@ class BBCodes extends AbstractController
                 'icode',
                 'align',
                 'list',
-                'attach'
+                'attach',
+                'ispoiler',
+                'table',
             ],
             'klem' => [
                 'bgcolor',
-                'ispoiler',
-                'table',
                 'hide',
                 'parsehtml',
                 'sub',

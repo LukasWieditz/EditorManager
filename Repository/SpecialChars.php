@@ -1,5 +1,11 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\Repository;
 
 use KL\EditorManager\Entity\SpecialCharacter;
@@ -7,9 +13,73 @@ use XF\Mvc\Entity\Repository;
 
 class SpecialChars extends Repository
 {
+    public function getMatchingCharactersByString($string, array $options = [])
+    {
+        $options = array_replace([
+            'includeEmoji' => true,
+            'includeSmilies' => true,
+            'limit' => 5
+        ], $options);
+
+        $characters = $this->getCharactersForList();
+
+        $results = [];
+
+        foreach ($characters AS $id => $character) {
+            if (stripos($character->title, $string) !== false) {
+                $results[$id] = $character;
+            }
+        }
+
+        uasort($results, function ($a, $b) {
+            return (strlen($a->title) > strlen($b->title));
+        });
+
+        return array_slice($results, 0, $options['limit'], true);
+    }
+
+    public function getCategoriesForList()
+    {
+        $groups = $this->finder('KL\EditorManager:SpecialCharacterGroup')
+            ->where('active', '=', 1)
+            ->order('display_order')
+            ->fetch();
+
+        $visitor = \XF::visitor();
+
+        foreach ($groups as $key => $group) {
+            $userCriteria = \XF::app()->criteria('XF:User', $group->user_criteria);
+            $userCriteria->setMatchOnEmpty(true);
+
+            if (!$userCriteria->isMatched($visitor)) {
+                $groups->offsetUnset($key);
+            }
+        }
+
+        return $groups;
+    }
+
+    public function getCharactersForList($groupIds = [])
+    {
+        $finder = $this->finder('KL\EditorManager:SpecialCharacter');
+
+        if (!empty($groupIds)) {
+            $finder->where('group_id', '=', $groupIds);
+        }
+
+        $characters = $finder->order('display_order')
+            ->fetch();
+
+        return $characters;
+    }
+
+    /**
+     * @return array
+     */
     public function getCharacters()
     {
         $groups = $this->finder('KL\EditorManager:SpecialCharacterGroup')->order('display_order')->fetch();
+
 
         $visitor = \XF::visitor();
 

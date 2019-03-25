@@ -2,14 +2,38 @@
     "admin/kl_em_app_less.json": {
         "hash": "1a221fcc8370fdfafd4a4d22bcfb4828"
     },
+    "public/KL_EM_editor_phrases.json": {
+        "hash": "1faa996ab7f7111e16c082a029cc2acb"
+    },
+    "public/kl_em_PAGE_CONTAINER.json": {
+        "hash": "7a6f7b4b70b02cc127cec26ff2b5619e"
+    },
     "public/kl_em_account_preferences.json": {
-        "hash": "e0a43aec822692a7dad76f6cd720646c"
+        "hash": "98907b5cfc594035ba56f7b5b302256e"
+    },
+    "public/kl_em_account_visitor_menu.json": {
+        "hash": "6301b36881e3a0dd6d261355aa0a3e0e"
+    },
+    "public/kl_em_account_wrapper.json": {
+        "hash": "701b4ae3ce697e860bf021c400231c48"
+    },
+    "public/kl_em_bb_code_less.json": {
+        "hash": "6c03746b6eb35c420fc2ef57839973d8"
     },
     "public/kl_em_bb_code_tag_img.json": {
         "hash": "fe46793954292711f68da39eddbda023"
     },
+    "public/kl_em_core_block_less.json": {
+        "hash": "3e3ecdf2c8f92d79410b1fc63ba3bce4"
+    },
     "public/kl_em_editor.json": {
         "hash": "3e5f67fa7fae6c6d79529541f22fc90a"
+    },
+    "public/kl_em_editor_less.json": {
+        "hash": "a32711ff24f82d5849f453b7f08ab474"
+    },
+    "public/kl_em_help_page_bb_codes.json": {
+        "hash": "e28aa84147124d24a72afeff771cb501"
     },
     "public/kl_em_lightbox_less.json": {
         "hash": "363c7f7c714b8b8c1708d9b0be3b2866"

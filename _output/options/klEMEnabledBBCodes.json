@@ -1,6 +1,6 @@
 {
     "edit_format": "template",
-    "edit_format_params": "kl_em_option_enabled_bbcodes",
+    "edit_format_params": "option_template_uneditable",
     "data_type": "array",
     "sub_options": [
         "bold",
@@ -34,6 +34,6 @@
     "validation_method": "",
     "default_value": "{\"bold\":\"1\",\"italic\":\"1\",\"underline\":\"1\",\"strike\":\"1\",\"color\":\"1\",\"font\":\"1\",\"size\":\"1\",\"url\":\"1\",\"img\":\"1\",\"media\":\"1\",\"quote\":\"1\",\"spoiler\":\"1\",\"code\":\"1\",\"icode\":\"1\",\"align\":\"1\",\"list\":\"1\",\"bgcolor\":\"\",\"ispoiler\":\"\",\"table\":\"\",\"hide\":\"\",\"parsehtml\":\"\",\"sub\":\"\",\"sup\":\"\",\"attach\":\"1\",\"video\":\"\",\"audio\":\"\"}",
     "relations": {
-        "klEM": 400
+        "debug": 99999999
     }
 }

@@ -10,6 +10,6 @@
     "validation_method": "",
     "default_value": "{\"videos\":false,\"audios\":false}",
     "relations": {
-        "klEM": 10000
+        "debug": 1
     }
 }

@@ -237,11 +237,78 @@ class Setup extends AbstractSetup
         });
     }
 
+    /* CREATE xf_kl_em_audio_proxy */
     public function installStep10()
+    {
+        $this->schemaManager()->createTable('xf_kl_em_video_proxy', function (Create $table) {
+            $table->addColumn('video_id', 'int')->autoIncrement();
+            $table->addColumn('url', 'text');
+            $table->addColumn('url_hash', 'varbinary', 32);
+            $table->addColumn('file_size', 'int')->setDefault(0);
+            $table->addColumn('file_name', 'varchar', 250)->setDefault('');
+            $table->addColumn('mime_type', 'varchar', 100)->setDefault('');
+            $table->addColumn('fetch_date', 'int')->setDefault(0);
+            $table->addColumn('first_request_date', 'int')->setDefault(0);
+            $table->addColumn('last_request_date', 'int')->setDefault(0);
+            $table->addColumn('views', 'int')->setDefault(0);
+            $table->addColumn('pruned', 'int')->setDefault(0);
+            $table->addColumn('is_processing', 'int')->setDefault(0);
+            $table->addColumn('failed_date', 'int')->setDefault(0);
+            $table->addColumn('fail_count', 'smallint', 5)->setDefault(0);
+            $table->addUniqueKey('url_hash');
+            $table->addKey(['pruned', 'fetch_date']);
+            $table->addKey('last_request_date');
+            $table->addKey('is_processing');
+        });
+    }
+
+    /* CREATE xf_kl_em_video_proxy_referrer */
+    public function installStep11()
+    {
+        $this->schemaManager()->createTable('xf_kl_em_video_proxy_referrer', function (Create $table) {
+            $table->addColumn('referrer_id', 'int')->autoIncrement();
+            $table->addColumn('video_id', 'int');
+            $table->addColumn('referrer_hash', 'varbinary', 32);
+            $table->addColumn('referrer_url', 'text');
+            $table->addColumn('hits', 'int');
+            $table->addColumn('first_date', 'int');
+            $table->addColumn('last_date', 'int');
+            $table->addUniqueKey(['video_id', 'referrer_hash'], 'video_id_hash');
+            $table->addKey('last_date');
+        });
+    }
+
+    public function installStep12()
     {
         $this->schemaManager()->alterTable('xf_user', function (Alter $table) {
             $table->addColumn('kl_em_wordcount_mode', 'enum', ['letter', 'word'])->setDefault('letter');
         });
+    }
+
+    public function installStep13()
+    {
+        $this->db()->insertBulk('xf_option_group_relation', [
+            [
+                'option_id' => 'emojiStyle',
+                'group_id' => 'klEM',
+                'display_order' => 100
+            ],
+            [
+                'option_id' => 'emojiSource',
+                'group_id' => 'klEM',
+                'display_order' => 110
+            ],
+            [
+                'option_id' => 'showEmojiInSmilieMenu',
+                'group_id' => 'klEM',
+                'display_order' => 130
+            ],
+            [
+                'option_id' => 'convertMarkdownToBbCode',
+                'group_id' => 'klEM',
+                'display_order' => 210
+            ]
+        ]);
     }
 
     /**
@@ -250,8 +317,22 @@ class Setup extends AbstractSetup
      * ----------------
      */
 
+    /** Patch 1.1.0 **/
     use Patch1010030;
+
+    /** Patch 1.2.0 **/
     use Patch1020030;
+
+    public function upgrade1020093Step1()
+    {
+        $this->db()->insertBulk('xf_option_group_relation', [
+            [
+                'option_id' => 'convertMarkdownToBbCode',
+                'group_id' => 'klEM',
+                'display_order' => 210
+            ]
+        ]);
+    }
 
     /**
      * ----------------
@@ -272,42 +353,54 @@ class Setup extends AbstractSetup
     }
 
     /* DROP xf_kl_em_google_fonts */
-    public function uninstallStep4()
+    public function uninstallStep3()
     {
         $this->schemaManager()->dropTable('xf_kl_em_google_fonts');
     }
 
     /* DROP xf_kl_em_bb_codes */
-    public function uninstallStep5()
+    public function uninstallStep4()
     {
         $this->schemaManager()->dropTable('xf_kl_em_bb_codes');
     }
 
     /* DROP xf_kl_em_special_chars_groups */
-    public function uninstallStep6()
+    public function uninstallStep5()
     {
         $this->schemaManager()->dropTable('xf_kl_em_special_chars_groups');
     }
 
     /* DROP xf_kl_em_special_chars */
-    public function uninstallStep7()
+    public function uninstallStep6()
     {
         $this->schemaManager()->dropTable('xf_kl_em_special_chars');
     }
 
     /* DROP xf_kl_em_audio_proxy */
-    public function uninstallStep9()
+    public function uninstallStep7()
     {
         $this->schemaManager()->dropTable('xf_kl_em_audio_proxy');
     }
 
     /* DROP xf_kl_em_audio_proxy_referrer */
-    public function uninstallStep11()
+    public function uninstallStep8()
     {
         $this->schemaManager()->dropTable('xf_kl_em_audio_proxy_referrer');
     }
 
-    public function uninstallStep12()
+    /* DROP xf_kl_em_audio_proxy */
+    public function uninstallStep9()
+    {
+        $this->schemaManager()->dropTable('xf_kl_em_video_proxy');
+    }
+
+    /* DROP xf_kl_em_audio_proxy_referrer */
+    public function uninstallStep10()
+    {
+        $this->schemaManager()->dropTable('xf_kl_em_video_proxy_referrer');
+    }
+
+    public function uninstallStep11()
     {
         $this->schemaManager()->alterTable('xf_user', function (Alter $table) {
             $table->dropColumns(['kl_em_wordcount_mode']);

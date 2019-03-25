@@ -3,7 +3,16 @@
         "hash": "fede5a23faa563fad983e705359cb4d0"
     },
     "klEMCharCounter.json": {
-        "hash": "c3c9333103405bf634a97c8cff78e259"
+        "hash": "ef108253188eca7c2e855aadba69f702"
+    },
+    "klEMHide.json": {
+        "hash": "663209f6b4c2bf38fcb8ef08f44eb3d8"
+    },
+    "klEMHideHidden.json": {
+        "hash": "d9f3f7e3ff524c579e2c1f79227ed154"
+    },
+    "klEMHideShown.json": {
+        "hash": "5059b4790ccda574faa06d878979444e"
     },
     "klEMVideoAudioControls.json": {
         "hash": "85e61f4016f31bab8f413bc96d4c6464"

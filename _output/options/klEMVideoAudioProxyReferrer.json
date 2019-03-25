@@ -10,7 +10,7 @@
     "validation_method": "",
     "default_value": "{\"enabled\":\"1\",\"length\":\"60\"}",
     "relations": {
-        "klEM": 10070,
+        "debug": 1,
         "logging": 325
     }
 }

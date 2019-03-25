@@ -1,5 +1,11 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\XF\Pub\Controller;
 
 use XF\Mvc\ParameterBag;
@@ -18,7 +24,7 @@ class Thread extends XFCP_Thread
 
         if ($return instanceof View) {
             $messagesPerPage = \XF::options()->messagesPerPage;
-            $offset = max(0 , ($this->filter('klPage', 'uint') ?: 0) - 1) * $messagesPerPage;
+            $offset = max(0, ($this->filter('klPage', 'uint') ?: 0) - 1) * $messagesPerPage;
 
             $thread = $this->assertViewableThread($params->thread_id);
 

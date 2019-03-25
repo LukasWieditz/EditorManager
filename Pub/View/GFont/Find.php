@@ -1,5 +1,11 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\Pub\View\GFont;
 
 use XF\Mvc\View;
@@ -16,8 +22,7 @@ class Find extends View
     public function renderJson()
     {
         $results = [];
-        foreach ($this->params['fonts'] AS $font)
-        {
+        foreach ($this->params['fonts'] AS $font) {
             $results[] = [
                 'id' => $font->font_id,
                 'text' => $font->font_id,

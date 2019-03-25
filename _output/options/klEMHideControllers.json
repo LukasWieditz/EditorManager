@@ -7,6 +7,6 @@
     "validation_method": "",
     "default_value": "XF:Forum\nXF:Thread\nXF:Post",
     "relations": {
-        "klEM": 210
+        "debug": 1
     }
 }

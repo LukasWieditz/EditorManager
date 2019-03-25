@@ -1,0 +1,39 @@
+<xf:title>{{ phrase('kl_em_editor_templates') }}</xf:title>
+
+<xf:wrap template="account_wrapper" />
+
+<xf:pageaction>
+	<div class="buttonGroup">
+		<xf:if is="$canCreateTemplates">
+			<xf:button href="{{ link('account/kl-editor-templates/add') }}" icon="add" overlay="true">{{ phrase('kl_em_add_template') }}</xf:button>
+		</xf:if>
+		<xf:button href="{{ link('account/kl-editor-templates/sort') }}" icon="sort" overlay="true" />
+	</div>
+</xf:pageaction>
+
+<xf:form action="{{ link('account/kl-editor-templates/toggle') }}"
+		ajax="true" class="block">
+	
+	<div class="block-container">
+		<div class="block-body">
+			<xf:datalist>
+				<xf:foreach loop="$templates" value="$template">
+					<xf:datarow>
+						<xf:cell class="dataList-cell--link dataList-cell--main" hash="{$template.template_id}">
+							<a href="{{ link('account/kl-editor-templates/edit', $template) }}">
+								<div class="dataList-mainRow">{$template.title}</div>
+							</a>
+						</xf:cell>
+						<xf:toggle name="active[{$template.template_id}]" selected="$template.active"
+								   class="dataList-cell--separated" submit="true"
+								   tooltip="{{ phrase('enable_disable_x', {'title': $template.title }) }}" />
+						<xf:delete href="{{ link('account/kl-editor-templates/delete', $template) }}" />
+					</xf:datarow>
+				</xf:foreach>
+			</xf:datalist>
+		</div>
+		<div class="block-footer">
+			<span class="block-footer-counter">{{ display_totals($templates) }}</span>
+		</div>
+	</div>
+</xf:form>

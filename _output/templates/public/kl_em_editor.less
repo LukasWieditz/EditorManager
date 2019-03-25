@@ -5,14 +5,82 @@
 		top: 0;
 		left: 0;
 		padding: 10px;
-		
+
 		> .fr-placeholder {
 			top: 5px;
 			left: 5px;
 		}
 	}
-	
+
 	.fr-counter {
 		.xf-klEMCharCounter();
+		content: attr(data-chars);
+		background-clip: padding-box;
+		z-index: 1;
+	}
+}
+
+.fr-element {
+	table {
+		&.noborder {
+			border: 1px dotted @xf-borderColorFaint;
+
+			> tbody, > thead {
+				> tr {
+					border: 1px dotted @xf-borderColorFaint;
+
+					> td, >th {
+						border: 1px dotted @xf-borderColorFaint;
+					}
+				}
+			}
+		}
+
+		&.alternate {
+			> tbody > tr:nth-child(2n) {
+				> td, > th {
+					background: @xf-contentAltBg;
+				}
+			}
+
+			> thead + tbody > tr:nth-child(2n + 1) {
+				> td, > th {
+					background: @xf-contentAltBg;
+				}
+			}
+
+			> thead + tbody > tr:nth-child(2n) {
+				> td, > th {
+					background: @xf-contentBg;
+				}
+			}
+		}
+
+		&.nobackground {
+			background: none;
+
+			> thead + tbody,
+			> tbody, > thead {
+				> tr:nth-child(n) {
+					background: none;
+
+					> th, > td {
+						background: none;
+					}
+				}
+			}
+		}
+
+		&.centered {
+			margin: 0 auto;
+		}
+
+		&.right {
+			float: right;
+		}
+
+		&.collapse {
+			width: auto !important;
+		}
 	}
 }

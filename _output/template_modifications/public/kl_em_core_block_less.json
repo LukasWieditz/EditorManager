@@ -1,0 +1,9 @@
+{
+    "template": "core_block.less",
+    "description": "",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "/$/",
+    "replace": "$0\n\n\n.fr-wrapper,\n.bbWrapper {\n\tb, strong {\n\t\tfont-weight: bold;\n\t}\n}"
+}

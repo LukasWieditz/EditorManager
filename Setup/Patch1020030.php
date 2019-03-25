@@ -1,11 +1,15 @@
 <?php
 
+/*!
+ * KL/EditorManager/Admin/Controller/Fonts.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2017 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\Setup;
 
-use KL\EditorManager\Entity\Dropdown;
 use XF\Db\SchemaManager;
 use XF\Entity\EditorDropdown;
-use XF\Entity\Option;
 use XF\Entity\Phrase;
 
 trait Patch1020030
@@ -25,25 +29,28 @@ trait Patch1020030
      */
     public function upgrade1020031Step2()
     {
-        $klDropdowns = \XF::finder('KL\EditorManager:Dropdown')
-            ->fetch();
+        try {
+            $klDropdowns = \XF::db()->fetchAll('SELECT * FROM xf_kl_em_dropdowns');
 
-        foreach($klDropdowns as $dropdown) {
-            /** @var Dropdown $dropdown */
-            /** @var EditorDropdown $xfDropdown */
-            $xfDropdown = \XF::em()->create('XF:EditorDropdown');
-            $xfDropdown->bulkSet([
-                'icon' => "fa-{$dropdown->icon}",
-                'active' => true,
-                'buttons' => $dropdown->buttons,
-                "cmd" => "kl_{$dropdown->dropdown_id}"
-            ]);
-            $xfDropdown->save();
+            foreach ($klDropdowns as $dropdown) {
+                /** @var EditorDropdown $xfDropdown */
+                $xfDropdown = \XF::em()->create('XF:EditorDropdown');
+                $xfDropdown->bulkSet([
+                    'icon' => "fa-{$dropdown['icon']}",
+                    'active' => true,
+                    'buttons' => json_decode($dropdown['buttons']) ?: [],
+                    "cmd" => "kl_{$dropdown['dropdown_id']}"
+                ]);
+                $xfDropdown->save();
 
-            /** @var Phrase $masterTitle */
-            $masterTitle = $xfDropdown->getMasterPhrase();
-            $masterTitle->phrase_text = $dropdown->title;
-            $masterTitle->save();
+                /** @var Phrase $masterTitle */
+                $masterTitle = $xfDropdown->getMasterPhrase();
+                $masterTitle->phrase_text = $dropdown['title'];
+                $masterTitle->save();
+            }
+        }
+        catch (\Exception $e) {
+
         }
     }
 
@@ -55,19 +62,29 @@ trait Patch1020030
         $schemaManager->dropTable('xf_kl_em_dropdowns');
     }
 
-    /* DROP xf_kl_em_video_proxy */
     public function upgrade1020031Step4()
     {
-        /** @var SchemaManager $schemaManager */
-        $schemaManager = $this->schemaManager();
-        $schemaManager->dropTable('xf_kl_em_video_proxy');
-    }
-
-    /* DROP xf_kl_em_video_proxy_referrer */
-    public function upgrade1020031Step5()
-    {
-        /** @var SchemaManager $schemaManager */
-        $schemaManager = $this->schemaManager();
-        $schemaManager->dropTable('xf_kl_em_video_proxy_referrer');
+        \XF::db()->insertBulk('xf_option_group_relation', [
+            [
+                'option_id' => 'emojiStyle',
+                'group_id' => 'klEM',
+                'display_order' => 100
+            ],
+            [
+                'option_id' => 'emojiSource',
+                'group_id' => 'klEM',
+                'display_order' => 110
+            ],
+            [
+                'option_id' => 'emojiSource ',
+                'group_id' => 'klEM',
+                'display_order' => 120
+            ],
+            [
+                'option_id' => 'showEmojiInSmilieMenu',
+                'group_id' => 'klEM',
+                'display_order' => 130
+            ],
+        ]);
     }
 }

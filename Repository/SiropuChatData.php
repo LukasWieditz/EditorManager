@@ -12,8 +12,8 @@ namespace KL\EditorManager\Repository;
  * Class SiropuChatData
  * @package KL\EditorManager\Repository
  */
-class SiropuChatData extends XFCP_SiropuChatData {
-
+class SiropuChatData extends XFCP_SiropuChatData
+{
     /**
      * Disable additional buttons for Siropus Chat.
      * @return array
@@ -26,7 +26,7 @@ class SiropuChatData extends XFCP_SiropuChatData {
         $buttons[] = 'table';
         $buttons[] = 'templates';
 
-        if(in_array('xfInlineCode', $buttons)) {
+        if (in_array('xfInlineCode', $buttons)) {
             $buttons[] = 'ispoiler';
         }
         return $buttons;

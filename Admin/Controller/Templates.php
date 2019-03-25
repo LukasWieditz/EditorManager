@@ -30,7 +30,7 @@ class Templates extends AbstractController
             'templates' => $repo->getTemplatesForUser(0)
         ];
 
-        return $this->view('KL\EditorManager:ListTemplates', 'kl_em_templates_list', $viewParams);
+        return $this->view('KL\EditorManager:ListTemplates', 'kl_em_template_list', $viewParams);
     }
 
     /**
@@ -72,23 +72,20 @@ class Templates extends AbstractController
     /**
      * @param ParameterBag $params
      * @return \XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
-     * @throws \XF\PrintableException
      * @throws \XF\Mvc\Reply\Exception
      */
     public function actionDelete(ParameterBag $params)
     {
         $template = $this->assertTemplateExists($params['template_id']);
-        if ($this->isPost()) {
-            $template->delete();
-            $return = $this->redirect($this->buildLink('em/templates'));
-        } else {
-            $viewParams = [
-                'template' => $template
-            ];
-            $return = $this->view('KL\EditorManager:Template\Delete', 'kl_em_template_delete', $viewParams);
-        }
-
-        return $return;
+        /** @var \XF\ControllerPlugin\Delete $plugin */
+        $plugin = $this->plugin('XF:Delete');
+        return $plugin->actionDelete(
+            $template,
+            $this->buildLink('em/templates/delete', $template),
+            $this->buildLink('em/templates/edit', $template),
+            $this->buildLink('em/templates'),
+            $template->title
+        );
     }
 
     /**
@@ -166,7 +163,7 @@ class Templates extends AbstractController
             $viewParams = [
                 'templates' => $templates
             ];
-            return $this->view('KL\EditorManager:Templates\Sort', 'kl_em_templates_sort', $viewParams);
+            return $this->view('KL\EditorManager:Templates\Sort', 'kl_em_template_sort', $viewParams);
         }
     }
 

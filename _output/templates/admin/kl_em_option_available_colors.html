@@ -24,11 +24,9 @@
 				  name="input_name"
 				  arg-id="{$option.option_id}" />
 	</xf:set>
-	<xf:set var="$listedHtml">
-		<xf:macro template="option_macros"
-				  name="listed_html"
-				  arg-id="{$option.option_id}" />
-	</xf:set>
+	<xf:macro template="option_macros"
+			  name="listed_html"
+			  arg-id="{$option.option_id}" />
 	<input type="hidden" name="{$inputName}" value="{$option.option_value}" class="js-ColorValue" />
 
 	<ul class="inputList split-row">
@@ -36,39 +34,39 @@
 			<li>
 				<xf:macro name="color_picker"
 						  template="public:color_picker_macros"
-						  arg-name="color_adder[]"
+						  arg-name="{$option.option_id}[]"
 						  arg-row="{{false}}"
 						  arg-rowClass="js-ColorAdder"
 						  arg-value="{$color}" />
 			</li>
 		</xf:foreach>
 		<li data-xf-init="field-adder">
-				<xf:macro name="color_picker"
-						  template="public:color_picker_macros"
-						  arg-row="{{false}}"
-						  arg-name="color_adder[]"
-						  arg-rowClass="js-ColorAdder" />
+			<xf:macro name="color_picker"
+					  template="public:color_picker_macros"
+					  arg-row="{{false}}"
+					  arg-name="{$option.option_id}[]"
+					  arg-rowClass="js-ColorAdder" />
 		</li>
 	</ul>
 	<xf:css>
 		.split-row li {
-			display: inline-block;
-			width: calc({{100/{$xf.options.klEMColorStep}}}% - 6px);
-			transition: width 100ms;
-			will-change: width;
+		display: inline-block;
+		width: calc({{100/{$xf.options.klEMColorStep}}}% - 6px);
+		transition: width 100ms;
+		will-change: width;
 		}
-		
+
 		.split-row .inputGroup-text {
-			border-radius: 4px;
+		border-radius: 4px;
 		}
-		
+
 		.split-row .input {
-			display: none;
+		display: none;
 		}
-		
+
 		.split-row li:last-child .colorPickerBox::before {
 			content: "\f067";
-			font-family: "FontAwesome";
+			font-family: 'Font Awesome 5 Pro';
 			color: #777;
 			position: absolute;
 			left: calc(50% - .5em);
@@ -77,14 +75,14 @@
 	</xf:css>
 	<xf:js>
 		$('.js-ColorAdder').on('change', function() {
-			var values = [];
-			$('.js-ColorAdder').each(function() {
-				$values.push($(this).val());
-			});
-			$values.push('REMOVE');
+		var values = [];
+		$('.js-ColorAdder').each(function() {
+			$values.push($(this).val());
+		});
+		$values.push('REMOVE');
 			$('.js-ColorValue').val(values.join())
 		});
-		
+
 		$('[name="options[klEMColorStep]"]').on('change', function() {
 			var cols = $(this).val();
 			console.log(cols);

@@ -1,62 +1,30 @@
-.post-table-container {
-	max-width: 100%;
-	height: auto;
-	
-	&::after {
-		content: ".";
-		clear: both;
-		display: block;
-		visibility: hidden;
-		height: 0px;
-	}
-
-	.post-table {
-		.xf-klEMTableBlock();
-
-		td > p:first-child {
-			margin-top: 0;
-		}
-		td > p:last-child {
-			margin-bottom: 0;
-		}
-			
-		> thead,
-		> tbody {
+.bbTable {
+	table {
+		&.noborder {
 			> tr {
 				> td,
 				> th {
-					.xf-klEMTableCell();
+					border: none;
 				}
+			}
+		}
 
+		&.alternate {
+			> tr:nth-child(2n) {
+				> td,
 				> th {
-					.xf-klEMTableTH();
+					background: @xf-contentAltBg;
 				}
 			}
 		}
 		
-		
-		&:not(.nobackground):not(.no-background) {
-			> thead,
-			> tbody {
+		&.nobackground {
+			> tr {
+				background: none;
 
-				> tr:nth-child(2n) {
-					> td,
-					> th {
-						.xf-klEMTableAlternatingCell();
-					}
-				}
-			}
-		}
-
-		&.no-border,
-		&.noborder {
-			> tbody,
-			> thead {
-				> tr {
-					> td,
-					> th {
-						border: none;
-					}
+				> td,
+				> th {
+					background: none;
 				}
 			}
 		}
@@ -69,42 +37,10 @@
 		&.right {
 			float: right;
 		}
-		
-		&.nofullwidth,
-		&.no-full-width {
+
+		&.collapse,
+		&.nofullwidth {
 			width: auto !important;
-		}
-	}
-}
-
-.klEMiSpoiler {
-	.xf-klEMiSpoiler();
-	
-	&--button {
-		.xf-klEMiSpoilerButton();
-
-		> span::before {
-			.xf-klEMiSpoilerButtonIcon();
-		}
-
-		&.is-active {
-			.xf-klEMiSpoilerButtonActive();
-
-			> span::before {
-				.xf-klEMiSpoilerButtonIconActive();
-			}
-		}
-	}
-
-	&--title {
-		.xf-klEMiSpoilerButtonTitle();
-	}
-
-	&--content {
-		.xf-klEMiSpoilerContent();
-
-		&.is-active {
-			.xf-klEMiSpoilerContentActive();
 		}
 	}
 }

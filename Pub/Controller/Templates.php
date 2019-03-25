@@ -110,7 +110,7 @@ class Templates extends AbstractController
             'canCreateTemplates' => $canCreateTemplates
         ];
 
-        $view = $this->view('KL\EditorManager:ListTemplates', 'kl_em_templates_list', $viewParams);
+        $view = $this->view('KL\EditorManager:ListTemplates', 'kl_em_template_list', $viewParams);
         return $this->addAccountWrapperParams($view, 'editor_templates');
     }
 
@@ -159,25 +159,19 @@ class Templates extends AbstractController
      * @param ParameterBag $params
      * @return \XF\Mvc\Reply\Redirect|View
      * @throws \XF\Mvc\Reply\Exception
-     * @throws \XF\PrintableException
      */
     public function actionDelete(ParameterBag $params)
     {
         $template = $this->assertTemplateExists($params['template_id']);
-
-        $this->assertUserTemplate($template);
-
-        if ($this->isPost()) {
-            $template->delete();
-            $return = $this->redirect($this->buildLink('account/editor-templates'));
-        } else {
-            $viewParams = [
-                'template' => $template
-            ];
-            $return = $this->view('KL\EditorManager:Template\Delete', 'kl_em_template_delete', $viewParams);
-        }
-
-        return $return;
+        /** @var \XF\ControllerPlugin\Delete $plugin */
+        $plugin = $this->plugin('XF:Delete');
+        return $plugin->actionDelete(
+            $template,
+            $this->buildLink('account/kl-editor-templates/delete', $template),
+            $this->buildLink('account/kl-editor-templates/edit', $template),
+            $this->buildLink('account/kl-editor-templates'),
+            $template->title
+        );
     }
 
     /**
@@ -206,7 +200,7 @@ class Templates extends AbstractController
             $form->run();
         }
 
-        return $this->redirect($this->buildLink('account/editor-templates'));
+        return $this->redirect($this->buildLink('account/kl-editor-templates'));
     }
 
     /**
@@ -254,12 +248,12 @@ class Templates extends AbstractController
                 $template->saveIfChanged();
             }
 
-            return $this->redirect($this->buildLink('account/editor-templates'));
+            return $this->redirect($this->buildLink('account/kl-editor-templates'));
         } else {
             $viewParams = [
                 'templates' => $templates
             ];
-            return $this->view('KL\EditorManager:Templates\Sort', 'kl_em_templates_sort', $viewParams);
+            return $this->view('KL\EditorManager:Templates\Sort', 'kl_em_template_sort', $viewParams);
         }
     }
 

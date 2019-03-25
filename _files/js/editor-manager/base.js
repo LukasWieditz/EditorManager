@@ -16,7 +16,7 @@
 				to[key] = from[key];
 			}
 		}
-	}
+	};
 
 	$(document).on('editor:config', function(event, config, xfEditor) {
 		var newConfig;
@@ -28,8 +28,7 @@
 		try {
 			newConfig = $.parseJSON($('.js-klEditorConfig').first().html()) || {};
 			copyProperties(config, newConfig);
-			// Object.assign(config, newConfig);
-
+			Object.assign(config, newConfig);
 		} catch (e) {
 			console.error(e);
 		}
