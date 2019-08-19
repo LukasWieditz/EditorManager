@@ -12,6 +12,10 @@ namespace KL\EditorManager\XF\BbCode\Renderer;
  * Class EditorHtml
  * @package KL\EditorManager\BbCode\Renderer
  */
+/**
+ * Class EditorHtml
+ * @package KL\EditorManager\XF\BbCode\Renderer
+ */
 class EditorHtml extends XFCP_EditorHtml
 {
     use EditorManager;

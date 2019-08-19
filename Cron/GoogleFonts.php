@@ -2,6 +2,10 @@
 
 namespace KL\EditorManager\Cron;
 
+/**
+ * Class GoogleFonts
+ * @package KL\EditorManager\Cron
+ */
 class GoogleFonts
 {
     /**

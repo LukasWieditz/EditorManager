@@ -10,7 +10,20 @@ namespace KL\EditorManager\Entity;
 
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
+use XF\Phrase;
 
+/**
+ * Class SpecialCharacterGroup
+ * @package KL\EditorManager\Entity
+ *
+ * @property Phrase MasterTitle
+ * @property Phrase title
+ *
+ * @property integer group_id
+ * @property integer display_order
+ * @property boolean active
+ * @property array user_criteria
+ */
 class SpecialCharacterGroup extends Entity
 {
     /**
@@ -36,6 +49,7 @@ class SpecialCharacterGroup extends Entity
     {
         $phrase = $this->MasterTitle;
         if (!$phrase) {
+            /** @var \XF\Entity\Phrase $phrase */
             $phrase = $this->_em->create('XF:Phrase');
             $phrase->title = $this->_getDeferredValue(function () {
                 return $this->getPhraseName();

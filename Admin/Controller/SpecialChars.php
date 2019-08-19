@@ -55,7 +55,7 @@ class SpecialChars extends AbstractController
     public function actionEdit(ParameterBag $params)
     {
         /** @var SpecialCharacterGroup $group */
-        $group = $this->assertGroupExists($params->group_id);
+        $group = $this->assertGroupExists($params['group_id']);
 
         return $this->actionAddEdit($group);
     }
@@ -83,9 +83,9 @@ class SpecialChars extends AbstractController
      */
     public function actionSave(ParameterBag $params)
     {
-        if ($params->group_id) {
+        if ($params['group_id']) {
             /** @var SpecialCharacterGroup $group */
-            $group = $this->em()->find('KL\EditorManager:SpecialCharacterGroup', $params->group_id);
+            $group = $this->em()->find('KL\EditorManager:SpecialCharacterGroup', $params['group_id']);
         } else {
             /** @var SpecialCharacterGroup $group */
             $group = $this->em()->create('KL\EditorManager:SpecialCharacterGroup');
@@ -176,7 +176,8 @@ class SpecialChars extends AbstractController
     public function actionDelete(ParameterBag $params)
     {
         /** @var SpecialCharacterGroup $group */
-        $group = $this->assertGroupExists($params->group_id);
+        $group = $this->assertGroupExists($params['group_id']);
+
         /** @var \XF\ControllerPlugin\Delete $plugin */
         $plugin = $this->plugin('XF:Delete');
         return $plugin->actionDelete(
@@ -197,12 +198,12 @@ class SpecialChars extends AbstractController
     public function actionCharacter(ParameterBag $params)
     {
         /** @var SpecialCharacterGroup $group */
-        $group = $this->assertGroupExists($params->group_id);
+        $group = $this->assertGroupExists($params['group_id']);
 
         $viewParams = [
             'group' => $group,
             'specialChars' => \XF::finder('KL\EditorManager:SpecialCharacter')->where('group_id', '=',
-                $params->group_id)->order('display_order')->fetch()
+                $params['group_id'])->order('display_order')->fetch()
         ];
 
         return $this->view('KL\EditorManager:SpecialChars\Character\List', 'kl_em_special_chars_character_list',
@@ -215,8 +216,9 @@ class SpecialChars extends AbstractController
      */
     public function actionCharacterAdd(ParameterBag $params)
     {
+        /** @var SpecialCharacter $character */
         $character = $this->em()->create('KL\EditorManager:SpecialCharacter');
-        $character->group_id = $params->group_id;
+        $character->group_id = $params['group_id'];
 
         /** @noinspection PhpParamsInspection */
         return $this->characterAddEdit($character);
@@ -230,11 +232,15 @@ class SpecialChars extends AbstractController
     public function actionCharacterEdit(ParameterBag $params)
     {
         /** @var SpecialCharacter $character */
-        $character = $this->assertCharacterExists($params->character_id);
+        $character = $this->assertCharacterExists($params['character_id']);
 
         return $this->characterAddEdit($character);
     }
 
+    /**
+     * @param SpecialCharacter $character
+     * @return View
+     */
     protected function characterAddEdit(SpecialCharacter $character)
     {
         $viewParams = [
@@ -254,9 +260,9 @@ class SpecialChars extends AbstractController
      */
     public function actionCharacterSave(ParameterBag $params)
     {
-        if ($params->character_id) {
+        if ($params['character_id']) {
             /** @var SpecialCharacter $character */
-            $character = $this->assertCharacterExists($params->character_id);
+            $character = $this->assertCharacterExists($params['character_id']);
         } else {
             /** @var SpecialCharacterGroup $group */
             $character = $this->em()->create('KL\EditorManager:SpecialCharacter');
@@ -314,13 +320,14 @@ class SpecialChars extends AbstractController
     }
 
     /**
+     * @param ParameterBag $params
      * @return \XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
      * @throws \XF\Mvc\Reply\Exception
      */
     public function actionCharacterSort(ParameterBag $params)
     {
         $characters = $this->finder('KL\EditorManager:SpecialCharacter')->where('group_id', '=',
-            $params->group_id)->order('display_order')->fetch();
+            $params['group_id'])->order('display_order')->fetch();
 
         if ($this->isPost()) {
             $lastOrder = 0;
@@ -336,7 +343,7 @@ class SpecialChars extends AbstractController
             return $this->redirect($this->buildLink('em/special-chars/characters', $params));
         } else {
             $viewParams = [
-                'group' => $this->assertGroupExists($params->group_id),
+                'group' => $this->assertGroupExists($params['group_id']),
                 'characters' => $characters
             ];
             return $this->view('KL\EditorManager:SpecialChars\Character\Sort', 'kl_em_special_chars_character_sort',
@@ -351,7 +358,8 @@ class SpecialChars extends AbstractController
      */
     public function actionCharacterDelete(ParameterBag $params)
     {
-        $character = $this->assertCharacterExists($params->character_id);
+        /** @var SpecialCharacter $character */
+        $character = $this->assertCharacterExists($params['character_id']);
         /** @var \XF\ControllerPlugin\Delete $plugin */
         $plugin = $this->plugin('XF:Delete');
         return $plugin->actionDelete(
@@ -375,7 +383,7 @@ class SpecialChars extends AbstractController
     }
 
     /**
-     * @param $groupId
+     * @param $charId
      * @return \XF\Mvc\Entity\Entity
      * @throws \XF\Mvc\Reply\Exception
      */
@@ -385,6 +393,9 @@ class SpecialChars extends AbstractController
         return $this->assertRecordExists('KL\EditorManager:SpecialCharacter', $charId);
     }
 
+    /**
+     * @return View
+     */
     public function actionImport()
     {
         $sourceDir = \XF::getSourceDirectory();
@@ -434,8 +445,8 @@ class SpecialChars extends AbstractController
         }
 
         $viewParams = [
-            'categoryName' => $xml->title,
-            'characters' => (array)$xml->characters
+            'categoryName' => $xml ? $xml->title : '',
+            'characters' => $xml ? (array)$xml->characters : []
         ];
 
         return $this->view('KL\EditorManager:SpecialChars\Import', 'kl_em_special_chars_import_form', $viewParams);
@@ -483,6 +494,7 @@ class SpecialChars extends AbstractController
         if ($this->isPost()) {
             $categoryId = $this->filter('category', 'uint');
 
+            /** @var SpecialCharacterGroup $category */
             $category = $this->em()->find('KL\EditorManager:SpecialCharacterGroup', $categoryId);
             $icons = $this->finder('KL\EditorManager:SpecialCharacter')->where('group_id', '=',
                 $categoryId)->order('display_order')->fetch();
@@ -522,10 +534,10 @@ class SpecialChars extends AbstractController
     }
 
     /**
-     * @param $data
-     * @param $xml_data
+     * @param array $data
+     * @param \SimpleXMLElement $xml_data
      */
-    protected function arrayToXML($data, &$xml_data)
+    protected function arrayToXML(array $data, \SimpleXMLElement &$xml_data)
     {
         foreach ($data as $key => $value) {
             if (is_numeric($key)) {

@@ -67,5 +67,11 @@
     },
     "klEMVideoProxyMaxSize.json": {
         "hash": "895f5d265158e91f4c1a8b66bd5cb1c4"
+    },
+    "kleditormanager_customEmoteHeight.json": {
+        "hash": "8556bde30f16e1e1a8cdf1b46d91b643"
+    },
+    "kleditormanager_customEmoteWidth.json": {
+        "hash": "2f9eaf6bf0b58664003af273d8637321"
     }
 }

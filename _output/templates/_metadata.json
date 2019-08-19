@@ -15,9 +15,9 @@
         "hash": "e15ee75ae54a7ae7bca9c4f756f1470e"
     },
     "admin/kl_em_font_edit.html": {
-        "version_id": 1010072,
-        "version_string": "1.1.0.2",
-        "hash": "e8dca02ea11c192f861646bf48dc6203"
+        "version_id": 1020093,
+        "version_string": "1.2.0 Patch Level 3",
+        "hash": "69c56b77424978409d17c64e997096db"
     },
     "admin/kl_em_font_edit.less": {
         "version_id": 1010072,
@@ -33,11 +33,6 @@
         "version_id": 1010072,
         "version_string": "1.1.0.2",
         "hash": "ce42bad19edbcf4f9e621f0fa2536b98"
-    },
-    "admin/kl_em_layout.html": {
-        "version_id": 1010070,
-        "version_string": "1.1.0",
-        "hash": "c99a8901cc39d4d302d0bf8aaf9a167d"
     },
     "admin/kl_em_log_audio_proxy_list.html": {
         "version_id": 1010033,
@@ -73,6 +68,11 @@
         "version_id": 1010032,
         "version_string": "1.1.0 Beta 2",
         "hash": "e21901e1b785d2160e65bdd16374621a"
+    },
+    "admin/kl_em_smilie_edit_macros.html": {
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "f723060a31bb81d1c7ce770a9beed935"
     },
     "admin/kl_em_special_chars_character_delete.html": {
         "version_id": 1010070,
@@ -155,9 +155,9 @@
         "hash": "69ef95088fa42e15471ea85959ad19f5"
     },
     "public/kl_em_bb_code.less": {
-        "version_id": 1010072,
-        "version_string": "1.1.0.2",
-        "hash": "65d483a3101125fed0517bb03661d0d5"
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "80df6177bdd37b8ee246e77c8d8ac66f"
     },
     "public/kl_em_bb_code_tag_audio.html": {
         "version_id": 1010032,
@@ -199,10 +199,15 @@
         "version_string": "1.1.0 Beta 2",
         "hash": "2e7dfd724b5d6c1a7905e0a355ac8c49"
     },
+    "public/kl_em_custom_emote_edit.html": {
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "658715716797cc92410fb9b04c11b8bc"
+    },
     "public/kl_em_custom_emote_list.html": {
-        "version_id": 1010072,
-        "version_string": "1.1.0.2",
-        "hash": "17d04ab7838104f4c511247313430407"
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "55139cd2892dd9b161c7ed92c3bb3b37"
     },
     "public/kl_em_editor.html": {
         "version_id": 1010072,
@@ -275,13 +280,18 @@
         "hash": "f1f1bf4ecfe89a71d32cc3c3821536e6"
     },
     "public/kl_em_template_list.html": {
-        "version_id": 1010072,
-        "version_string": "1.1.0.2",
-        "hash": "e78b5d322ad97e04e84b638694bd319b"
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "1076f0960ed0da37a773c7b2a913587f"
     },
     "public/kl_em_template_sort.html": {
         "version_id": 1010072,
         "version_string": "1.1.0.2",
         "hash": "abc1693b1e03ae281e7557cd98485d0e"
+    },
+    "public/rpg_location.less": {
+        "version_id": 1020093,
+        "version_string": "1.2.0 Patch Level 3",
+        "hash": "f394a83bc11dcb07e9f3eed83096ef92"
     }
 }

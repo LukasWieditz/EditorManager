@@ -14,6 +14,9 @@
     "XF-Admin-Controller-Option_KL-EditorManager-XF-Admin-Controller-Option.json": {
         "hash": "7ffd579e40725a66ae8e59baf483ff13"
     },
+    "XF-Admin-Controller-Smilie_KL-EditorManager-XF-Admin-Controller-Smilie.json": {
+        "hash": "f1882662f1665f1e1977398c38e383a5"
+    },
     "XF-BbCode-Renderer-EditorHtml_KL-EditorManager-XF-BbCode-Renderer-EditorHtml.json": {
         "hash": "3c6d083f97a5d487f73e8853eb6353da"
     },
@@ -22,6 +25,9 @@
     },
     "XF-BbCode-RuleSet_KL-EditorManager-XF-BbCode-RuleSet.json": {
         "hash": "e507d4e444eeb16f67e69530999d623f"
+    },
+    "XF-Entity-Smilie_KL-EditorManager-XF-Entity-Smilie.json": {
+        "hash": "8bbf093fa7b0170ce438b3781ff7d8c1"
     },
     "XF-Html-Renderer-BbCode_KL-EditorManager-XF-Html-Renderer-BbCode.json": {
         "hash": "75aeb0cb5fad268e0c9ebadfc19f02d9"
@@ -47,10 +53,16 @@
     "XF-Repository-Option_KL-EditorManager-XF-Repository-Option.json": {
         "hash": "e5fc8d3df253d9130307c9f3f9f78feb"
     },
+    "XF-Repository-Smilie_KL-EditorManager-XF-Repository-Smilie.json": {
+        "hash": "193ad68d28607d2f11e50361f0cd174a"
+    },
     "XF-Str-Formatter_KL-EditorManager-XF-Str-Formatter.json": {
         "hash": "e8bdbf0f979ef156f8d68e370853b08d"
     },
     "XF-SubContainer-Proxy_KL-EditorManager-XF-SubContainer-Proxy.json": {
         "hash": "2cf7323eb1d381a92f2e5ed082b91089"
+    },
+    "XF-Template-Templater_KL-EditorManager-XF-Template-Templater.json": {
+        "hash": "371dc1984f422dbfdb3818491192d037"
     }
 }

@@ -10,6 +10,10 @@ namespace KL\EditorManager\Finder;
 
 use XF\Mvc\Entity\Finder;
 
+/**
+ * Class GoogleFont
+ * @package KL\EditorManager\Finder
+ */
 class GoogleFont extends Finder
 {
     /**

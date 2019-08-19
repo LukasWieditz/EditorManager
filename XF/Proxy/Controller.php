@@ -15,13 +15,28 @@ use XF\Http\Request;
 use XF\Http\Response;
 use XF\Proxy\Linker;
 
+/**
+ * Class Controller
+ * @package KL\EditorManager\XF\Proxy
+ */
 class Controller extends XFCP_Controller
 {
+    /**
+     * Controller constructor.
+     * @param App $app
+     * @param Linker $linker
+     * @param Request|null $request
+     */
     public function __construct(App $app, Linker $linker, Request $request = null)
     {
         parent::__construct($app, $linker, $request);
     }
 
+    /**
+     * @param Request $request
+     * @param $url
+     * @return array|null
+     */
     public function resolveKLEMVideoProxyRecursion(Request $request, $url)
     {
         $uriParts = explode('?', $request->getFullRequestUri(), 2);
@@ -61,6 +76,11 @@ class Controller extends XFCP_Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $url
+     * @return array|null
+     */
     public function resolveKLEMAudioProxyRecursion(Request $request, $url)
     {
         $uriParts = explode('?', $request->getFullRequestUri(), 2);
@@ -100,6 +120,15 @@ class Controller extends XFCP_Controller
         }
     }
 
+    /**
+     * @param $url
+     * @param $hash
+     * @return Response
+     * @throws \League\Flysystem\FileNotFoundException
+     * @throws \XF\Db\Exception
+     * @throws \XF\PrintableException
+     * @throws \XF\PrintableException
+     */
     public function outputKLEMVideo($url, $hash)
     {
         if ($this->validateKLEMVideoRequest($url, $hash, $error)) {
@@ -147,6 +176,15 @@ class Controller extends XFCP_Controller
         return $response;
     }
 
+    /**
+     * @param $url
+     * @param $hash
+     * @return Response
+     * @throws \League\Flysystem\FileNotFoundException
+     * @throws \XF\Db\Exception
+     * @throws \XF\PrintableException
+     * @throws \XF\PrintableException
+     */
     public function outputKLEMAudio($url, $hash)
     {
         if ($this->validateKLEMAudioRequest($url, $hash, $error)) {
@@ -194,6 +232,11 @@ class Controller extends XFCP_Controller
         return $response;
     }
 
+    /**
+     * @param Response $response
+     * @param \KL\EditorManager\Entity\VideoProxy $video
+     * @param $error
+     */
     public function applyKLEMVideoResponseHeaders(
         Response $response,
         \KL\EditorManager\Entity\VideoProxy $video,
@@ -234,6 +277,11 @@ class Controller extends XFCP_Controller
         }
     }
 
+    /**
+     * @param Response $response
+     * @param \KL\EditorManager\Entity\AudioProxy $audio
+     * @param $error
+     */
     public function applyKLEMAudioResponseHeaders(
         Response $response,
         \KL\EditorManager\Entity\AudioProxy $audio,
@@ -274,6 +322,12 @@ class Controller extends XFCP_Controller
         }
     }
 
+    /**
+     * @param $url
+     * @param $hash
+     * @param null $error
+     * @return bool
+     */
     public function validateKLEMVideoRequest($url, $hash, &$error = null)
     {
         if (!$this->linker->isTypeEnabled('video')) {
@@ -288,6 +342,12 @@ class Controller extends XFCP_Controller
         return true;
     }
 
+    /**
+     * @param $url
+     * @param $hash
+     * @param null $error
+     * @return bool
+     */
     public function validateKLEMAudioRequest($url, $hash, &$error = null)
     {
         if (!$this->linker->isTypeEnabled('video')) {

@@ -12,6 +12,10 @@ use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Manager;
 use XF\Mvc\Entity\Structure;
 
+/**
+ * Class EntityStructure
+ * @package KL\EditorManager\Listener
+ */
 class EntityStructure
 {
     /**

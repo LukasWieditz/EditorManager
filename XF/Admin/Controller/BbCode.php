@@ -10,8 +10,16 @@ namespace KL\EditorManager\XF\Admin\Controller;
 
 use XF\Mvc\ParameterBag;
 
+/**
+ * Class BbCode
+ * @package KL\EditorManager\XF\Admin\Controller
+ */
 class BbCode extends XFCP_BbCode
 {
+    /**
+     * @param $action
+     * @param ParameterBag $params
+     */
     protected function preDispatchController($action, ParameterBag $params)
     {
         $this->setSectionContext('kl_em_customBBC');

@@ -34,6 +34,9 @@ use XF\Util\File;
  */
 class AudioProxy extends Entity
 {
+    /**
+     * @var
+     */
     protected $placeholderPath;
 
     /**
@@ -249,6 +252,9 @@ class AudioProxy extends Entity
         return true;
     }
 
+    /**
+     *
+     */
     protected function _preSave()
     {
         if ($this->placeholderPath) {

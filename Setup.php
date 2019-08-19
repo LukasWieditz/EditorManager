@@ -16,6 +16,7 @@ use XF\AddOn\StepRunnerUninstallTrait;
 use XF\AddOn\StepRunnerUpgradeTrait;
 use XF\Db\Schema\Alter;
 use XF\Db\Schema\Create;
+use XF\Repository\Smilie;
 
 /**
  * Class Setup
@@ -34,6 +35,9 @@ class Setup extends AbstractSetup
      */
 
     /* CREATE xf_kl_em_fonts */
+    /**
+     *
+     */
     public function installStep1()
     {
         $this->schemaManager()->createTable(
@@ -51,6 +55,9 @@ class Setup extends AbstractSetup
     }
 
     /* INSERT INTO xf_kl_em_fonts */
+    /**
+     *
+     */
     public function installStep2()
     {
         $this->db()->insertBulk('xf_kl_em_fonts', [
@@ -130,6 +137,9 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_templates */
+    /**
+     *
+     */
     public function installStep3()
     {
         $this->schemaManager()->createTable(
@@ -148,6 +158,9 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_google_fonts */
+    /**
+     *
+     */
     public function installStep4()
     {
         $this->schemaManager()->createTable(
@@ -163,6 +176,9 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_bb_codes */
+    /**
+     *
+     */
     public function installStep5()
     {
         $this->schemaManager()->createTable('xf_kl_em_bb_codes', function (Create $table) {
@@ -174,6 +190,9 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_special_chars_groups */
+    /**
+     *
+     */
     public function installStep6()
     {
         $this->schemaManager()->createTable('xf_kl_em_special_chars_groups', function (Create $table) {
@@ -185,6 +204,9 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_special_chars */
+    /**
+     *
+     */
     public function installStep7()
     {
         $this->schemaManager()->createTable('xf_kl_em_special_chars', function (Create $table) {
@@ -197,6 +219,9 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_audio_proxy */
+    /**
+     *
+     */
     public function installStep8()
     {
         $this->schemaManager()->createTable('xf_kl_em_audio_proxy', function (Create $table) {
@@ -222,6 +247,9 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_audio_proxy_referrer */
+    /**
+     *
+     */
     public function installStep9()
     {
         $this->schemaManager()->createTable('xf_kl_em_audio_proxy_referrer', function (Create $table) {
@@ -238,6 +266,9 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_audio_proxy */
+    /**
+     *
+     */
     public function installStep10()
     {
         $this->schemaManager()->createTable('xf_kl_em_video_proxy', function (Create $table) {
@@ -263,6 +294,9 @@ class Setup extends AbstractSetup
     }
 
     /* CREATE xf_kl_em_video_proxy_referrer */
+    /**
+     *
+     */
     public function installStep11()
     {
         $this->schemaManager()->createTable('xf_kl_em_video_proxy_referrer', function (Create $table) {
@@ -278,6 +312,10 @@ class Setup extends AbstractSetup
         });
     }
 
+    /* ALTER xf_user */
+    /**
+     *
+     */
     public function installStep12()
     {
         $this->schemaManager()->alterTable('xf_user', function (Alter $table) {
@@ -285,6 +323,10 @@ class Setup extends AbstractSetup
         });
     }
 
+    /* INSERT INTO xf_option_group_relation */
+    /**
+     *
+     */
     public function installStep13()
     {
         $this->db()->insertBulk('xf_option_group_relation', [
@@ -311,6 +353,46 @@ class Setup extends AbstractSetup
         ]);
     }
 
+    /* ALTER xf_smilie */
+    /**
+     *
+     */
+    public function installStep14()
+    {
+        $this->schemaManager()->alterTable('xf_smilie', function (Alter $table) {
+            $table->addColumn('kl_em_active', 'bool')->setDefault(1);
+            $table->addColumn('kl_em_user_criteria', 'blob')->nullable();
+        });
+
+        /** @var Smilie $smilieRepo */
+        $smilieRepo = \XF::repository('XF:Smilie');
+        $smilieRepo->rebuildSmilieCache();
+    }
+
+    public function installStep15()
+    {
+        $this->schemaManager()->createTable('kl_em_custom_emote_prefix', function (\XF\Db\Schema\Create $table) {
+            $table->addColumn('prefix_id', 'int')->autoIncrement();
+            $table->addColumn('user_id', 'int');
+            $table->addColumn('prefix', 'varchar', 10);
+        });
+    }
+
+    public function installStep16()
+    {
+        $this->schemaManager()->createTable('kl_em_custom_emotes', function(\XF\Db\Schema\Create $table)
+        {
+            $table->addColumn('emote_id', 'int')->autoIncrement();
+            $table->addColumn('user_id', 'int')->setDefault(0);
+            $table->addColumn('prefix_id', 'text');
+            $table->addColumn('title', 'varchar', 100);
+            $table->addColumn('replacement', 'varchar', 100);
+            $table->addColumn('image_date', 'int')->setDefault(0);
+            $table->addColumn('extension', 'enum')->values(['png', 'jpg', 'jpeg', 'gif'])->nullable();
+        });
+
+    }
+
     /**
      * ----------------
      *     UPGRADES
@@ -323,6 +405,9 @@ class Setup extends AbstractSetup
     /** Patch 1.2.0 **/
     use Patch1020030;
 
+    /**
+     *
+     */
     public function upgrade1020093Step1()
     {
         $this->db()->insertBulk('xf_option_group_relation', [
@@ -335,71 +420,119 @@ class Setup extends AbstractSetup
     }
 
     /**
+     *
+     */
+    public function upgrade1030031Step1()
+    {
+        $this->schemaManager()->alterTable('xf_smilie', function (Alter $table) {
+            $table->addColumn('kl_em_active', 'bool')->setDefault(1);
+            $table->addColumn('kl_em_user_criteria', 'blob')->nullable();
+        });
+
+        /** @var Smilie $smilieRepo */
+        $smilieRepo = \XF::repository('XF:Smilie');
+        $smilieRepo->rebuildSmilieCache();
+    }
+
+    /**
      * ----------------
      *  UNINSTALLATION
      * ----------------
      */
 
     /* DROP xf_kl_em_fonts */
+    /**
+     *
+     */
     public function uninstallStep1()
     {
         $this->schemaManager()->dropTable('xf_kl_em_fonts');
     }
 
     /* DROP xf_kl_em_templates */
+    /**
+     *
+     */
     public function uninstallStep2()
     {
         $this->schemaManager()->dropTable('xf_kl_em_templates');
     }
 
     /* DROP xf_kl_em_google_fonts */
+    /**
+     *
+     */
     public function uninstallStep3()
     {
         $this->schemaManager()->dropTable('xf_kl_em_google_fonts');
     }
 
     /* DROP xf_kl_em_bb_codes */
+    /**
+     *
+     */
     public function uninstallStep4()
     {
         $this->schemaManager()->dropTable('xf_kl_em_bb_codes');
     }
 
     /* DROP xf_kl_em_special_chars_groups */
+    /**
+     *
+     */
     public function uninstallStep5()
     {
         $this->schemaManager()->dropTable('xf_kl_em_special_chars_groups');
     }
 
     /* DROP xf_kl_em_special_chars */
+    /**
+     *
+     */
     public function uninstallStep6()
     {
         $this->schemaManager()->dropTable('xf_kl_em_special_chars');
     }
 
     /* DROP xf_kl_em_audio_proxy */
+    /**
+     *
+     */
     public function uninstallStep7()
     {
         $this->schemaManager()->dropTable('xf_kl_em_audio_proxy');
     }
 
     /* DROP xf_kl_em_audio_proxy_referrer */
+    /**
+     *
+     */
     public function uninstallStep8()
     {
         $this->schemaManager()->dropTable('xf_kl_em_audio_proxy_referrer');
     }
 
     /* DROP xf_kl_em_audio_proxy */
+    /**
+     *
+     */
     public function uninstallStep9()
     {
         $this->schemaManager()->dropTable('xf_kl_em_video_proxy');
     }
 
     /* DROP xf_kl_em_audio_proxy_referrer */
+    /**
+     *
+     */
     public function uninstallStep10()
     {
         $this->schemaManager()->dropTable('xf_kl_em_video_proxy_referrer');
     }
 
+    /**
+     *
+     */
     public function uninstallStep11()
     {
         $this->schemaManager()->alterTable('xf_user', function (Alter $table) {

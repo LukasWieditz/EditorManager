@@ -10,11 +10,19 @@ namespace KL\EditorManager\XF\Admin\Controller;
 
 use XF\Mvc\ParameterBag;
 
+/**
+ * Class Option
+ * @package KL\EditorManager\XF\Admin\Controller
+ */
 class Option extends XFCP_Option
 {
+    /**
+     * @param ParameterBag $params
+     * @return \XF\Mvc\Reply\Error|\XF\Mvc\Reply\View
+     */
     public function actionGroup(ParameterBag $params)
     {
-        if ($params->group_id === 'klEM') {
+        if ($params['group_id'] === 'klEM') {
             $this->setSectionContext('emOptions');
         }
 

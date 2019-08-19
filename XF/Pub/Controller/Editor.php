@@ -9,6 +9,8 @@
 namespace KL\EditorManager\XF\Pub\Controller;
 
 use KL\EditorManager\Repository\SpecialChars;
+use KL\EditorManager\XF\Repository\Smilie;
+use XF\Mvc\Reply\View;
 
 /**
  * Class Editor
@@ -89,6 +91,9 @@ class Editor extends XFCP_Editor
         return $data;
     }
 
+    /**
+     * @return \XF\Mvc\Reply\View
+     */
     public function actionKlEmSpecialChars()
     {
         /** @var SpecialChars $repo */
@@ -119,6 +124,9 @@ class Editor extends XFCP_Editor
         return $this->view('KL\EditorManager:Editor\SpecialCharacters', 'kl_em_editor_special_characters', $viewParams);
     }
 
+    /**
+     * @return \XF\Mvc\Reply\View
+     */
     public function actionKlEmSpecialCharsSearch()
     {
         $q = ltrim($this->filter('q', 'str', ['no-trim']));
@@ -141,5 +149,28 @@ class Editor extends XFCP_Editor
         ];
         return $this->view('KL\EditorManager:Editor\SpecialCharacters\Search',
             'kl_em_editor_special_characters_search_results', $viewParams);
+    }
+
+    public function actionSmiliesEmoji()
+    {
+        $response = parent::actionSmiliesEmoji();
+
+        if ($response instanceof View) {
+            /** @var Smilie $smilieRepo */
+            $smilieRepo = $this->repository('XF:Smilie');
+
+            $smilies = $response->getParam('groupedSmilies');
+
+            foreach ($smilies as &$smilieCategory) {
+                $smilieRepo->filterSmilies($smilieCategory);
+            }
+            $response->setParam('groupedSmilies', $smilies);
+
+            $recent = $response->getParam('recent');
+            $smilieRepo->filterSmilies($recent);
+            $response->setParam('recent', $recent);
+        }
+
+        return $response;
     }
 }

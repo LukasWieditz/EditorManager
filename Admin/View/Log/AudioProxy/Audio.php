@@ -10,6 +10,10 @@ namespace KL\EditorManager\Admin\View\Log\AudioProxy;
 
 use XF\Mvc\View;
 
+/**
+ * Class Audio
+ * @package KL\EditorManager\Admin\View\Log\AudioProxy
+ */
 class Audio extends View
 {
     /**

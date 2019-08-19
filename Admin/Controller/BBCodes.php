@@ -12,6 +12,10 @@ use KL\EditorManager\Entity\BbCode;
 use XF\Admin\Controller\AbstractController;
 use XF\Mvc\ParameterBag;
 
+/**
+ * Class BBCodes
+ * @package KL\EditorManager\Admin\Controller
+ */
 class BBCodes extends AbstractController
 {
     /**
@@ -21,7 +25,7 @@ class BBCodes extends AbstractController
     public function actionIndex(ParameterBag $params)
     {
         /** @noinspection PhpUndefinedFieldInspection */
-        if ($params->bb_code_id) {
+        if ($params['bb_code_id']) {
             return $this->rerouteController('KL\EditorManager:BBCodes', 'edit', $params);
         }
 
@@ -45,10 +49,10 @@ class BBCodes extends AbstractController
     {
         /** @var BbCode $bbCode */
         /** @noinspection PhpUndefinedFieldInspection */
-        $bbCode = \XF::em()->find('KL\EditorManager:BbCode', $params->bb_code_id);
+        $bbCode = \XF::em()->find('KL\EditorManager:BbCode', $params['bb_code_id']);
         if (!$bbCode) {
             $bbCode = \XF::em()->create('KL\EditorManager:BbCode');
-            $bbCode->bb_code_id = $params->bb_code_id;
+            $bbCode->bb_code_id = $params['bb_code_id'];
             $bbCode->save();
         }
         $userCriteria = $this->app->criteria('XF:User', $bbCode->user_criteria);
@@ -56,8 +60,8 @@ class BBCodes extends AbstractController
         /** @var \KL\EditorManager\Repository\BbCodes $bbCodeRepo */
         $bbCodeRepo = $this->repository('KL\EditorManager:BbCodes');
         $bbCodeOptions = $bbCodeRepo->getRelatedBbCodeOptions();
-        if (isset($bbCodeOptions[$params->bb_code_id])) {
-            $optionConfig = $bbCodeOptions[$params->bb_code_id];
+        if (isset($bbCodeOptions[$params['bb_code_id']])) {
+            $optionConfig = $bbCodeOptions[$params['bb_code_id']];
 
             $optionFinder = $this->finder('XF:Option')
                 ->where('option_id', '=', $optionConfig['options']);
@@ -94,7 +98,7 @@ class BBCodes extends AbstractController
         $this->assertPostOnly();
         /** @var BbCode $bbCode */
         /** @noinspection PhpUndefinedFieldInspection */
-        $bbCode = \XF::em()->find('KL\EditorManager:BbCode', $params->bb_code_id);
+        $bbCode = \XF::em()->find('KL\EditorManager:BbCode', $params['bb_code_id']);
 
         $this->bbCodeSaveProcess($bbCode)->run();
 

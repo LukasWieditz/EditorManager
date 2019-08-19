@@ -12,6 +12,10 @@ use KL\EditorManager\Repository\BbCodes;
 use KL\EditorManager\Repository\Font;
 use XF\Template\Templater;
 
+/**
+ * Class TemplaterTemplatePreRender
+ * @package KL\EditorManager\Listener
+ */
 class TemplaterTemplatePreRender
 {
     /**
@@ -45,6 +49,7 @@ class TemplaterTemplatePreRender
                 'otf' => 'opentype'
             ];
 
+            #\XF::dump($repo->getFontsCached());
             foreach ($repo->getFontsCached() as $font) {
                 if ($font->type === 'web') {
                     switch ($font->extra_data['web_service']) {
@@ -88,13 +93,15 @@ class TemplaterTemplatePreRender
 
             $gfonts = array_unique(array_merge($gfonts, $webfonts));
 
+            #\XF::dump($gfonts);
+
             $params['em_gfonts'] = $gfonts ? 'https://fonts.googleapis.com/css?' . http_build_query(['family' => join('|', $gfonts)]) : false;
             $params['em_typekit'] = $typekit;
             $params['em_webtype'] = $webtype;
             $params['em_fonts'] = $fonts;
             $params['em_serverFonts'] = $serverFonts;
-            $params['em_templates'] = self::getTemplates();
         }
+        $params['em_templates'] = self::getTemplates();
     }
 
     /**
@@ -182,8 +189,9 @@ class TemplaterTemplatePreRender
             self::removeBbCode($name, $toolbars, $dropdowns);
         }
 
-        $bbCodes = \XF::finder('KL\EditorManager:BbCode')
-            ->fetch();
+        /** @var BbCodes $bbCodeRepo */
+        $bbCodeRepo = \XF::repository('KL\EditorManager:BbCodes');
+        $bbCodes = $bbCodeRepo->getBbCodeSettings();
 
         $visitor = \XF::visitor();
         foreach ($bbCodes as $bbCodeId => $bbCode) {

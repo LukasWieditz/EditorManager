@@ -31,6 +31,7 @@ class GoogleFonts extends Repository
                 $client = \XF::app()->http()->client();
                 $params = http_build_query(['key' => $apiKey]);
 
+                /** @noinspection PhpParamsInspection */
                 $response = $client->get('https://www.googleapis.com/webfonts/v1/webfonts?' . $params)->json();
                 $webfonts = $this->finder('KL\EditorManager:GoogleFont')->fetch();
 

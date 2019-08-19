@@ -94,6 +94,18 @@
 					</xf:select>
 				</xf:formrow>
 				
+				<xf:textboxrow name="extra_data[title]" value="{$font.extra_data.title}"
+							   label="{{ phrase('kl_em_font_title') }}"
+							   explain="{{ phrase('kl_em_font_title_explain') }}"/>
+				
+				<xf:checkboxrow>
+					<xf:option value="1" name="extra_data[async]"
+							   hint="{{ phrase('kl_em_load_lazy_hint') }}"
+							   checked="{{ $font.isInsert() ? 1 : $font.extra_data.async }}">
+						{{ phrase('kl_em_load_lazy') }}
+					</xf:option>
+				</xf:checkboxrow>
+				
 				<xf:textboxrow name="web_url" value="{$font.extra_data.web_url}"
 					label="{{ phrase('kl_em_font_url') }}" />
 				

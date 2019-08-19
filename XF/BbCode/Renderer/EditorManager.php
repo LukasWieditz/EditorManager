@@ -2,8 +2,14 @@
 
 namespace KL\EditorManager\XF\BbCode\Renderer;
 
-use function GuzzleHttp\debug_resource;
+use KL\EditorManager\XF\Str\Formatter;
 
+/**
+ * Trait EditorManager
+ * @package KL\EditorManager\XF\BbCode\Renderer
+ *
+ * @property Formatter formatter
+ */
 trait EditorManager
 {
 
@@ -19,8 +25,14 @@ trait EditorManager
      */
     protected $klConfig;
 
+    /**
+     * @var
+     */
     protected $klBbCodes;
 
+    /**
+     * @param array $tags
+     */
     public function klFilterTags(array $tags = [])
     {
         $config = $this->getKLConfig();
@@ -142,10 +154,12 @@ trait EditorManager
         return $this->klFontList;
     }
 
+    /**
+     * @return array
+     */
     private function getKLBbCodes() {
         if(!$this->klBbCodes) {
-            $bbCodes = \XF::finder('KL\EditorManager:BbCode')
-                ->fetch();
+            $bbCodes = \XF::repository('KL\EditorManager:BbCodes')->getBbCodeSettings();
 
             $codes = [];
             foreach($bbCodes as $tag => $bbCode) {
@@ -318,5 +332,21 @@ trait EditorManager
 
             return $size . 'px';
         }
+    }
+
+    /**
+     * @param $string
+     * @param array $options
+     * @return null|string|string[]
+     */
+    public function filterString($string, array $options)
+    {
+        if(isset($options['user'])) {
+            $this->formatter->setKlEmContextUser($options['user']);
+        }
+
+        $filteredString = parent::filterString($string, $options);
+        $this->formatter->setKlEmContextUser(null);
+        return $filteredString;
     }
 }

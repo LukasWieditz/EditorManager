@@ -83,6 +83,12 @@
         "version_string": "1.1.0.2",
         "hash": "4d3d769b812b6faa6b76e1a8abaece2d"
     },
+    "kl_em_add_custom_emote.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "84814dac7ac985cbdf2372786dcbcc77"
+    },
     "kl_em_add_dropdown.txt": {
         "global_cache": false,
         "version_id": 1000291,
@@ -455,6 +461,12 @@
         "version_string": "1.1.0.2",
         "hash": "7fe6e8b50dcb29da25340182c6b8dec6"
     },
+    "kl_em_custom_prefix_change_explain.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "d4a5fba2b0aabdb5efa9ffdb69802483"
+    },
     "kl_em_delay_load.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -485,6 +497,12 @@
         "version_string": "1.0.2 Patch Level 1",
         "hash": "ccb17c84e0556de747a36b1b5a9cbe2d"
     },
+    "kl_em_edit_custom_emote.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "e14837b3801fe5c7fec54515eea512b7"
+    },
     "kl_em_edit_font.txt": {
         "global_cache": false,
         "version_id": 1000291,
@@ -508,6 +526,18 @@
         "version_id": 1000291,
         "version_string": "1.0.2 Patch Level 1",
         "hash": "3f6bd9b6c742b48078c4ad95aa914b42"
+    },
+    "kl_em_emote_prefix_already_taken.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "90008b487fc46873107d018753510e7e"
+    },
+    "kl_em_emote_upload_failed.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "406262ab57b874dbe8595323f16fdce2"
     },
     "kl_em_enable_charcounter.txt": {
         "global_cache": false,
@@ -773,6 +803,18 @@
         "version_string": "1.1.0.2",
         "hash": "d32a2db04b2dfffac9ebb3287edfb195"
     },
+    "kl_em_no_custom_emotes_yet.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "00c711125f93475056e9a056df09d0c1"
+    },
+    "kl_em_no_editor_templates_yet.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "1933eadf7b4becb40f3d37738e2faee4"
+    },
     "kl_em_no_emotes_have_been_added_yet.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -815,6 +857,12 @@
         "version_string": "1.1.0",
         "hash": "eaf9d9bc3961e4db1cbd5bdf40d506a4"
     },
+    "kl_em_prefix.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "716de874a0d74f25c0aa8c444c3a7539"
+    },
     "kl_em_private.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -851,6 +899,24 @@
         "version_string": "1.0.2 Patch Level 1",
         "hash": "4c59359637398d9d1be1cd4d0ab51e50"
     },
+    "kl_em_replacement.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "bc9f7bf4eb0da7be897ea1d789a7bf33"
+    },
+    "kl_em_replacement_already_in_use.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "54df4f4f9b728d8725078cf7aa2748dd"
+    },
+    "kl_em_replacement_explain.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "fc945a6ac526619d4dcb4957071dcaf2"
+    },
     "kl_em_revealed_content.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -868,6 +934,12 @@
         "version_id": 1010072,
         "version_string": "1.1.0.2",
         "hash": "80bf5629c26c1d752bbe853fcbeca27a"
+    },
+    "kl_em_smilie_options.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "ac0009e4716d4db60a6805141f0bfbde"
     },
     "kl_em_sort_fonts.txt": {
         "global_cache": false,
@@ -1289,6 +1361,18 @@
         "version_string": "1.1.0 Beta 3",
         "hash": "15ccb0ad5c43c2fa7508a4f0f63fe4a4"
     },
+    "option.kleditormanager_customEmoteHeight.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "89cf21a4ec036efaf0eb0f5a5e92a7fa"
+    },
+    "option.kleditormanager_customEmoteWidth.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "fd43878dadbe4a191790208d17d15710"
+    },
     "option_explain.kLEMVideoCacheRefresh.txt": {
         "global_cache": false,
         "version_id": 1010033,
@@ -1427,6 +1511,18 @@
         "version_string": "1.1.0 Beta 3",
         "hash": "3783308dbdabb6096bd864b2158b1c9a"
     },
+    "option_explain.kleditormanager_customEmoteHeight.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "option_explain.kleditormanager_customEmoteWidth.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
     "option_group.klEM.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -1438,6 +1534,24 @@
         "version_id": 1010072,
         "version_string": "1.1.0.2",
         "hash": "86c3c585b3e90156c524bffee6b74223"
+    },
+    "permission.klEM_animatedEmotes.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "70b4ecefb87b4cf117a3c8c68d29a2c1"
+    },
+    "permission.klEM_changeEmotePrefix.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "1e4030715acaa5b484adadcfd460a2c5"
+    },
+    "permission.klEM_emotes.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "0d59a8e5aaba9c7f1af77f4240ecefd8"
     },
     "permission.klEM_klEMBypassHide.txt": {
         "global_cache": false,
@@ -1481,6 +1595,12 @@
         "version_string": "1.1.0.2",
         "hash": "7edc7b7a918d11ee81df3b03f10f98ba"
     },
+    "permission.klEM_maxEmotes.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "6c415dbf730ff43778757247efa720aa"
+    },
     "permission_interface.klEM.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -1492,6 +1612,12 @@
         "version_id": 1010072,
         "version_string": "1.1.0.2",
         "hash": "d24735bbcd035b1312597e543f9ae1e1"
+    },
+    "rpgs_reactivate_location.txt": {
+        "global_cache": false,
+        "version_id": 1020093,
+        "version_string": "1.2.0 Patch Level 3",
+        "hash": "0264ffe4bc2907be61e40b9a34c427c3"
     },
     "style_prop.klEMAudioControls.txt": {
         "global_cache": false,

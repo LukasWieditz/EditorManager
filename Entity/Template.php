@@ -21,7 +21,8 @@ use XF\Mvc\Entity\Structure;
  * @property integer user_id
  * @property integer display_order
  * @property boolean active
- * @property mixed extra_data
+ * @property array extra_data
+ * @property array user_criteria
  */
 class Template extends Entity
 {

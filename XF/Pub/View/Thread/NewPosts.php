@@ -8,8 +8,17 @@
 
 namespace KL\EditorManager\XF\Pub\View\Thread;
 
+/**
+ * Class NewPosts
+ * @package KL\EditorManager\XF\Pub\View\Thread
+ *
+ * @property array params
+ */
 class NewPosts extends XFCP_NewPosts
 {
+    /**
+     *
+     */
     public function renderJson()
     {
         if (isset($this->params['klEMPosts'])) {

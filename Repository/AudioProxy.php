@@ -12,6 +12,10 @@ use XF\Db\DeadlockException;
 use XF\Mvc\Entity\Finder;
 use XF\Mvc\Entity\Repository;
 
+/**
+ * Class AudioProxy
+ * @package KL\EditorManager\Repository
+ */
 class AudioProxy extends Repository
 {
     /**

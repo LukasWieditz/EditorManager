@@ -1,4 +1,13 @@
 {
+    "klEM-animatedEmotes.json": {
+        "hash": "de7d0ab2bda81778bb1d6a0ad82fde2a"
+    },
+    "klEM-changeEmotePrefix.json": {
+        "hash": "8e9edc58e2cea9bae38a12101ff00f71"
+    },
+    "klEM-emotes.json": {
+        "hash": "f1b7f85642d6d6c85c1f91f7848682b3"
+    },
     "klEM-klEMBypassHide.json": {
         "hash": "ee50f2bdc83557d52c2f89897a7d7068"
     },
@@ -19,5 +28,8 @@
     },
     "klEM-klEMUseGoogleFonts.json": {
         "hash": "e9b7a0663b3d4ed6db090e538de90ebd"
+    },
+    "klEM-maxEmotes.json": {
+        "hash": "a218dbe61db5a2ad2bf06060ea745cc6"
     }
 }

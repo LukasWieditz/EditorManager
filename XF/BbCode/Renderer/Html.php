@@ -11,8 +11,6 @@ namespace KL\EditorManager\XF\BbCode\Renderer;
 use XF\Entity\User;
 use XF\Mvc\Entity\ArrayCollection;
 use XF\PreEscaped;
-use XF\Str\Formatter;
-use XF\Template\Templater;
 
 /**
  * Class Html
@@ -40,7 +38,8 @@ class Html extends XFCP_Html
                 continue;
             }
 
-            list($c, $optionName, $optionVal) = $matches;
+            array_shift($matches);
+            list($optionName, $optionVal) = $matches;
 
             switch ($optionName) {
                 case 'width':
@@ -118,6 +117,9 @@ class Html extends XFCP_Html
         return $this->templater->renderTemplate("public:kl_em_bb_code_tag_{$type}", $params);
     }
 
+    /**
+     *
+     */
     public function addDefaultTags()
     {
         parent::addDefaultTags();
@@ -430,8 +432,14 @@ class Html extends XFCP_Html
         ]);
     }
 
+    /**
+     * @var
+     */
     protected $userGroups;
 
+    /**
+     * @return ArrayCollection
+     */
     protected function getUserGroups()
     {
         if (!$this->userGroups) {
@@ -440,6 +448,13 @@ class Html extends XFCP_Html
         return $this->userGroups;
     }
 
+    /**
+     * @param array $children
+     * @param $option
+     * @param array $tag
+     * @param array $options
+     * @return string
+     */
     public function renderTagHideGroup(array $children, $option, array $tag, array $options)
     {
         if (!$children) {
@@ -554,6 +569,11 @@ class Html extends XFCP_Html
         return false;
     }
 
+    /**
+     * @param array $options
+     * @param ArrayCollection $groups
+     * @return bool
+     */
     protected function isInGroup(array $options, ArrayCollection $groups)
     {
         $ids = $groups->keys();
@@ -566,9 +586,15 @@ class Html extends XFCP_Html
         return count($match) >= 1;
     }
 
+    /**
+     * @param $tableHtml
+     * @param $tagOption
+     * @param $extraContent
+     * @return string
+     */
     protected function renderFinalTableHtml($tableHtml, $tagOption, $extraContent)
     {
-        $tagOption = preg_split('/\s|,/', $tagOption);
+        $tagOption = preg_split('/\s|,|-/', $tagOption);
         $classes = array_map('htmlspecialchars', $tagOption);
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_table', [

@@ -2,6 +2,21 @@
     "admin/kl_em_app_less.json": {
         "hash": "1a221fcc8370fdfafd4a4d22bcfb4828"
     },
+    "admin/kl_em_smilie_edit_tabpanes.json": {
+        "hash": "462103af975ce1af15fde361ef248bc5"
+    },
+    "admin/kl_em_smilie_edit_tabs.json": {
+        "hash": "5b05fdadf53baa1da06f96e35c1195d5"
+    },
+    "admin/kl_em_smilie_list_colspan.json": {
+        "hash": "831b9a1f2f68be3e0e72b8634087f644"
+    },
+    "admin/kl_em_smilie_list_colspan2.json": {
+        "hash": "7cc27b455db6f0f00e5f2fc676f40fdd"
+    },
+    "admin/kl_em_smilie_list_toggle.json": {
+        "hash": "28b41e2fa002550344844342032051f4"
+    },
     "public/KL_EM_editor_phrases.json": {
         "hash": "1faa996ab7f7111e16c082a029cc2acb"
     },

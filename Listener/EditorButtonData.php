@@ -11,6 +11,10 @@ namespace KL\EditorManager\Listener;
 use KL\EditorManager\Repository\BbCodes;
 use XF\Data\Editor;
 
+/**
+ * Class EditorButtonData
+ * @package KL\EditorManager\Listener
+ */
 class EditorButtonData
 {
     /**

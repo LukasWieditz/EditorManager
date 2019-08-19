@@ -10,6 +10,10 @@ namespace KL\EditorManager\Admin\View\SpecialCharacters;
 
 use XF\Mvc\View;
 
+/**
+ * Class XML
+ * @package KL\EditorManager\Admin\View\SpecialCharacters
+ */
 class XML extends View
 {
     /**

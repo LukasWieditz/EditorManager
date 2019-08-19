@@ -10,8 +10,15 @@ namespace KL\EditorManager\XF\Html\Renderer;
 
 use XF\Html\Tag;
 
+/**
+ * Class BbCode
+ * @package KL\EditorManager\XF\Html\Renderer
+ */
 class BbCode extends XFCP_BbCode
 {
+    /**
+     * @var array
+     */
     protected $klEMFontSizes;
 
     /**
@@ -42,6 +49,11 @@ class BbCode extends XFCP_BbCode
         $this->_cssHandlers['font-size'] = ['$this', 'handleKLEMCssFontSize'];
     }
 
+    /**
+     * @param $text
+     * @param $fontSize
+     * @return string
+     */
     public function handleKLEMCssFontSize($text, $fontSize)
     {
         switch (strtolower($fontSize)) {
@@ -136,8 +148,7 @@ class BbCode extends XFCP_BbCode
      * Handles CSS font-family rules. The first font is used.
      *
      * @param string $text Child text of the tag with the CSS
-     * @param string $alignment Value of the CSS rule
-     *
+     * @param $cssValue
      * @return string
      */
     public function handleCssFontFamily($text, $cssValue)
@@ -158,6 +169,11 @@ class BbCode extends XFCP_BbCode
         }
     }
 
+    /**
+     * @param string $text
+     * @param Tag $tag
+     * @return string
+     */
     public function handleTagTable($text, Tag $tag)
     {
         $option = str_replace(' ', ',', $tag->attribute('class'));
@@ -167,5 +183,16 @@ class BbCode extends XFCP_BbCode
 
         $output = "[TABLE{$option}]\n{$text}\n[/TABLE]";
         return $this->renderCss($tag, $output);
+    }
+
+    public function handleTagImg($text, Tag $tag)
+    {
+        if (($tag->hasClass('kl-em-emote') || $tag->attribute('data-emote')) && $tag->attribute('alt'))
+        {
+
+            return $this->renderCss($tag, trim($tag->attribute('alt')));
+        }
+
+        return parent::handleTagImg($text, $tag);
     }
 }

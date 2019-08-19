@@ -11,6 +11,10 @@ namespace KL\EditorManager\XF\Pub\Controller;
 use XF\Mvc\ParameterBag;
 use XF\Mvc\Reply\View;
 
+/**
+ * Class Thread
+ * @package KL\EditorManager\XF\Pub\Controller
+ */
 class Thread extends XFCP_Thread
 {
     /**
@@ -26,7 +30,7 @@ class Thread extends XFCP_Thread
             $messagesPerPage = \XF::options()->messagesPerPage;
             $offset = max(0, ($this->filter('klPage', 'uint') ?: 0) - 1) * $messagesPerPage;
 
-            $thread = $this->assertViewableThread($params->thread_id);
+            $thread = $this->assertViewableThread($params['thread_id']);
 
             $finder = \XF::finder('XF:Post');
 

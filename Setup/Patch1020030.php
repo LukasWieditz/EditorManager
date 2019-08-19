@@ -12,8 +12,15 @@ use XF\Db\SchemaManager;
 use XF\Entity\EditorDropdown;
 use XF\Entity\Phrase;
 
+/**
+ * Trait Patch1020030
+ * @package KL\EditorManager\Setup
+ */
 trait Patch1020030
 {
+    /**
+     *
+     */
     public function upgrade1020031Step1()
     {
         $oldValue = \XF::options()->klEMLayout;
@@ -25,7 +32,6 @@ trait Patch1020030
     }
 
     /**
-     * @throws \XF\PrintableException
      */
     public function upgrade1020031Step2()
     {
@@ -55,6 +61,9 @@ trait Patch1020030
     }
 
     /* DROP xf_kl_em_dropdowns */
+    /**
+     *
+     */
     public function upgrade1020031Step3()
     {
         /** @var SchemaManager $schemaManager */
@@ -62,6 +71,9 @@ trait Patch1020030
         $schemaManager->dropTable('xf_kl_em_dropdowns');
     }
 
+    /**
+     *
+     */
     public function upgrade1020031Step4()
     {
         \XF::db()->insertBulk('xf_option_group_relation', [

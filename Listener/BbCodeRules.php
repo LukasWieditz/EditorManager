@@ -4,7 +4,16 @@ namespace KL\EditorManager\Listener;
 
 use XF\BbCode\RuleSet;
 
+/**
+ * Class BbCodeRules
+ * @package KL\EditorManager\Listener
+ */
 class BbCodeRules {
+    /**
+     * @param RuleSet $ruleSet
+     * @param $context
+     * @param $subContext
+     */
     public static function extend(RuleSet $ruleSet, $context, $subContext) {
         $tags = [
             'bgcolor' => [

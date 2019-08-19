@@ -11,10 +11,17 @@ namespace KL\EditorManager\Setup;
 use XF\Db\Schema\Create;
 use XF\Db\Schema\Alter;
 
+/**
+ * Trait Patch1010030
+ * @package KL\EditorManager\Setup
+ */
 trait Patch1010030 {
 
     /* 1.1.0 */
     /* CREATE xf_kl_em_bb_codes */
+    /**
+     *
+     */
     public function upgrade1010031Step1()
     {
         \XF::db()->getSchemaManager()->createTable('xf_kl_em_bb_codes', function (Create $table) {
@@ -26,6 +33,9 @@ trait Patch1010030 {
     }
 
     /* CREATE xf_kl_em_bb_codes */
+    /**
+     *
+     */
     public function upgrade1010031Step2()
     {
         \XF::db()->getSchemaManager()->alterTable('xf_kl_em_templates', function (Alter $table) {
@@ -34,6 +44,9 @@ trait Patch1010030 {
     }
 
     /* CREATE xf_kl_em_special_chars_groups */
+    /**
+     *
+     */
     public function upgrade1010031Step3()
     {
         \XF::db()->getSchemaManager()->createTable('xf_kl_em_special_chars_groups', function (Create $table) {
@@ -45,6 +58,9 @@ trait Patch1010030 {
     }
 
     /* CREATE xf_kl_em_special_chars */
+    /**
+     *
+     */
     public function upgrade1010031Step4()
     {
         \XF::db()->getSchemaManager()->createTable('xf_kl_em_special_chars', function (Create $table) {
@@ -57,6 +73,9 @@ trait Patch1010030 {
     }
 
     /* CREATE xf_kl_em_special_chars */
+    /**
+     *
+     */
     public function upgrade1010032Step1()
     {
         \XF::db()->getSchemaManager()->alterTable('xf_kl_em_bb_codes', function (Alter $table) {
@@ -66,6 +85,9 @@ trait Patch1010030 {
     }
 
     /* CREATE xf_kl_em_video_proxy */
+    /**
+     *
+     */
     public function upgrade1010033Step1()
     {
         \XF::db()->getSchemaManager()->createTable('xf_kl_em_video_proxy', function (Create $table) {
@@ -91,6 +113,9 @@ trait Patch1010030 {
     }
 
     /* CREATE xf_kl_em_audio_proxy */
+    /**
+     *
+     */
     public function upgrade1010033Step2()
     {
         \XF::db()->getSchemaManager()->createTable('xf_kl_em_audio_proxy', function (Create $table) {
@@ -116,6 +141,9 @@ trait Patch1010030 {
     }
 
     /* CREATE xf_kl_em_video_proxy_referrer */
+    /**
+     *
+     */
     public function upgrade1010033Step3()
     {
         \XF::db()->getSchemaManager()->createTable('xf_kl_em_video_proxy_referrer', function (Create $table) {
@@ -132,6 +160,9 @@ trait Patch1010030 {
     }
 
     /* CREATE xf_kl_em_audio_proxy_referrer */
+    /**
+     *
+     */
     public function upgrade1010033Step4()
     {
         \XF::db()->getSchemaManager()->createTable('xf_kl_em_audio_proxy_referrer', function (Create $table) {
@@ -147,6 +178,9 @@ trait Patch1010030 {
         });
     }
 
+    /**
+     *
+     */
     public function upgrade1010072Step1()
     {
         \XF::db()->getSchemaManager()->alterTable('xf_user', function (Alter $table) {

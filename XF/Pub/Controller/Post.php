@@ -11,6 +11,10 @@ namespace KL\EditorManager\XF\Pub\Controller;
 use XF\Mvc\ParameterBag;
 use XF\Mvc\Reply\View;
 
+/**
+ * Class Post
+ * @package KL\EditorManager\XF\Pub\Controller
+ */
 class Post extends XFCP_Post
 {
     /**
@@ -23,7 +27,7 @@ class Post extends XFCP_Post
         $return = parent::actionReact($params);
 
         if ($return instanceof View) {
-            $post = $this->assertViewablePost($params->post_id);
+            $post = $this->assertViewablePost($params['post_id']);
 
             if (stripos($post->message, '[hide') !== false) {
                 $message = \XF::app()->bbCode()->render($post->message, 'html', 'post', $post);

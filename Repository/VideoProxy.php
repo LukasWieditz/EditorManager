@@ -12,6 +12,10 @@ use XF\Db\DeadlockException;
 use XF\Mvc\Entity\Finder;
 use XF\Mvc\Entity\Repository;
 
+/**
+ * Class VideoProxy
+ * @package KL\EditorManager\Repository
+ */
 class VideoProxy extends Repository
 {
     /**
@@ -36,6 +40,10 @@ class VideoProxy extends Repository
         return $this->finder('KL\EditorManager:VideoProxy')->where('url_hash', $hash)->fetchOne();
     }
 
+    /**
+     * @param int $activeLength
+     * @return bool|null
+     */
     public function getTotalActiveFetches($activeLength = 60)
     {
         return $this->db()->fetchOne("

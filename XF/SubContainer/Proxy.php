@@ -10,10 +10,20 @@ namespace KL\EditorManager\XF\SubContainer;
 
 use XF\Proxy\Linker;
 
+/**
+ * Class Proxy
+ * @package KL\EditorManager\XF\SubContainer
+ */
 class Proxy extends XFCP_Proxy
 {
+    /**
+     * @var array
+     */
     protected $linkerTypes = [];
 
+    /**
+     *
+     */
     public function initialize()
     {
         parent::initialize();
@@ -56,6 +66,11 @@ class Proxy extends XFCP_Proxy
         };
     }
 
+    /**
+     * @param $type
+     * @param $url
+     * @return null|string
+     */
     public function generate($type, $url)
     {
         if ($type == 'video' || $type == 'audio') {

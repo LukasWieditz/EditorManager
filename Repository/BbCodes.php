@@ -26,6 +26,9 @@ class BbCodes extends Repository
         return $controllers;
     }
 
+    /**
+     * @var bool
+     */
     protected $bbCodeSettings = false;
 
     /**

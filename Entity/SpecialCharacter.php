@@ -17,6 +17,13 @@ use XF\Phrase;
  * @package KL\EditorManager\Entity
  *
  * @property Phrase title
+ * @property Phrase MasterTitle
+ *
+ * @property integer character_id
+ * @property integer group_id
+ * @property integer display_order
+ * @property boolean active
+ * @property string code
  */
 class SpecialCharacter extends Entity
 {
@@ -43,6 +50,7 @@ class SpecialCharacter extends Entity
     {
         $phrase = $this->MasterTitle;
         if (!$phrase) {
+            /** @var \XF\Entity\Phrase $phrase */
             $phrase = $this->_em->create('XF:Phrase');
             $phrase->title = $this->_getDeferredValue(function () {
                 return $this->getPhraseName();

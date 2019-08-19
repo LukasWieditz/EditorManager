@@ -10,6 +10,10 @@ namespace KL\EditorManager\Admin\View\Log\VideoProxy;
 
 use XF\Mvc\View;
 
+/**
+ * Class Video
+ * @package KL\EditorManager\Admin\View\Log\VideoProxy
+ */
 class Video extends View
 {
     /**

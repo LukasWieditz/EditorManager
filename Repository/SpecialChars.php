@@ -11,8 +11,17 @@ namespace KL\EditorManager\Repository;
 use KL\EditorManager\Entity\SpecialCharacter;
 use XF\Mvc\Entity\Repository;
 
+/**
+ * Class SpecialChars
+ * @package KL\EditorManager\Repository
+ */
 class SpecialChars extends Repository
 {
+    /**
+     * @param $string
+     * @param array $options
+     * @return array
+     */
     public function getMatchingCharactersByString($string, array $options = [])
     {
         $options = array_replace([
@@ -38,6 +47,9 @@ class SpecialChars extends Repository
         return array_slice($results, 0, $options['limit'], true);
     }
 
+    /**
+     * @return \XF\Mvc\Entity\ArrayCollection
+     */
     public function getCategoriesForList()
     {
         $groups = $this->finder('KL\EditorManager:SpecialCharacterGroup')
@@ -59,6 +71,10 @@ class SpecialChars extends Repository
         return $groups;
     }
 
+    /**
+     * @param array $groupIds
+     * @return \XF\Mvc\Entity\ArrayCollection
+     */
     public function getCharactersForList($groupIds = [])
     {
         $finder = $this->finder('KL\EditorManager:SpecialCharacter');

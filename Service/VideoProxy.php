@@ -8,12 +8,23 @@
 
 namespace KL\EditorManager\Service;
 
+use XF\Db\Exception;
 use XF\Service\AbstractService;
 use XF\Util\File;
 
+/**
+ * Class VideoProxy
+ * @package KL\EditorManager\Service
+ */
 class VideoProxy extends AbstractService
 {
+    /**
+     * @var bool
+     */
     protected $forceRefresh = false;
+    /**
+     * @var int
+     */
     protected $maxConcurrent = 10;
 
     /**
@@ -21,6 +32,9 @@ class VideoProxy extends AbstractService
      */
     protected $proxyRepo;
 
+    /**
+     *
+     */
     protected function setup()
     {
         $this->proxyRepo = $this->repository('KL\EditorManager:VideoProxy');
@@ -45,6 +59,8 @@ class VideoProxy extends AbstractService
     /**
      * @param $url
      * @return \KL\EditorManager\Entity\VideoProxy|null
+     * @throws \XF\PrintableException
+     * @throws \XF\PrintableException
      */
     public function getVideo($url)
     {
@@ -103,7 +119,7 @@ class VideoProxy extends AbstractService
 
         try {
             $video->save();
-        } catch (\XF\Db\Exception $e) {
+        } catch (Exception $e) {
             // this is mostly a duplicate key issue
             return null;
         }

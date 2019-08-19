@@ -12,6 +12,10 @@ namespace KL\EditorManager\Repository;
  * Class SiropuChatData
  * @package KL\EditorManager\Repository
  */
+/**
+ * Class SiropuChatData
+ * @package KL\EditorManager\Repository
+ */
 class SiropuChatData extends XFCP_SiropuChatData
 {
     /**

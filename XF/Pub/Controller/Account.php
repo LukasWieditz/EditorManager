@@ -11,6 +11,10 @@ namespace KL\EditorManager\XF\Pub\Controller;
 use XF\Entity\User;
 use \XF\Mvc\ParameterBag;
 
+/**
+ * Class Account
+ * @package KL\EditorManager\XF\Pub\Controller
+ */
 class Account extends XFCP_Account
 {
     /**
@@ -23,6 +27,10 @@ class Account extends XFCP_Account
         return $this->redirectPermanently($this->buildLink('account/templates', $params));
     }
 
+    /**
+     * @param User $visitor
+     * @return \XF\Mvc\FormAction
+     */
     protected function preferencesSaveProcess(User $visitor)
     {
         $form = parent::preferencesSaveProcess($visitor);

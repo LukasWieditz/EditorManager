@@ -10,12 +10,23 @@ namespace KL\EditorManager\XF\Admin\Controller
 	class XFCP_ButtonManager extends \XF\Admin\Controller\ButtonManager {}
 	class XFCP_Log extends \XF\Admin\Controller\Log {}
 	class XFCP_Option extends \XF\Admin\Controller\Option {}
+	class XFCP_Smilie extends \XF\Admin\Controller\Smilie {}
 }
 
 namespace KL\EditorManager\XF\BbCode\Renderer
 {
 	class XFCP_EditorHtml extends \XF\BbCode\Renderer\EditorHtml {}
 	class XFCP_Html extends \XF\BbCode\Renderer\Html {}
+}
+
+namespace KL\EditorManager\XF\BbCode
+{
+	class XFCP_RuleSet extends \XF\BbCode\RuleSet {}
+}
+
+namespace KL\EditorManager\XF\Entity
+{
+	class XFCP_Smilie extends \XF\Entity\Smilie {}
 }
 
 namespace KL\EditorManager\XF\Html\Renderer
@@ -44,6 +55,7 @@ namespace KL\EditorManager\XF\Pub\View\Thread
 namespace KL\EditorManager\XF\Repository
 {
 	class XFCP_Option extends \XF\Repository\Option {}
+	class XFCP_Smilie extends \XF\Repository\Smilie {}
 }
 
 namespace KL\EditorManager\XF\Str
@@ -54,4 +66,9 @@ namespace KL\EditorManager\XF\Str
 namespace KL\EditorManager\XF\SubContainer
 {
 	class XFCP_Proxy extends \XF\SubContainer\Proxy {}
+}
+
+namespace KL\EditorManager\XF\Template
+{
+	class XFCP_Templater extends \XF\Template\Templater {}
 }

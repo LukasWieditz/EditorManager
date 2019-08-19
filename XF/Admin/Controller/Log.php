@@ -11,6 +11,10 @@ namespace KL\EditorManager\XF\Admin\Controller;
 use XF\Mvc\Entity\Finder;
 use XF\Mvc\ParameterBag;
 
+/**
+ * Class Log
+ * @package KL\EditorManager\XF\Admin\Controller
+ */
 class Log extends XFCP_Log
 {
     /**
@@ -19,7 +23,7 @@ class Log extends XFCP_Log
      */
     public function actionAudioProxy(ParameterBag $params)
     {
-        if ($params->audio_id) {
+        if ($params['audio_id']) {
             return $this->rerouteController(__CLASS__, 'audioProxyView', $params);
         }
 
@@ -79,7 +83,7 @@ class Log extends XFCP_Log
      */
     public function actionAudioProxyAudio(ParameterBag $params)
     {
-        $audio = $this->assertAudioProxyExists($params->audio_id);
+        $audio = $this->assertAudioProxyExists($params['audio_id']);
 
         if (!$audio->isValid() || $audio->isRefreshRequired()) {
             /** @var \KL\EditorManager\Service\AudioProxy $proxyService */
@@ -108,7 +112,7 @@ class Log extends XFCP_Log
      */
     public function actionAudioProxyView(ParameterBag $params)
     {
-        $audio = $this->assertAudioProxyExists($params->audio_id);
+        $audio = $this->assertAudioProxyExists($params['audio_id']);
 
         $viewParams = [
             'audio' => $audio
@@ -135,7 +139,7 @@ class Log extends XFCP_Log
      */
     public function actionVideoProxy(ParameterBag $params)
     {
-        if ($params->video_id) {
+        if ($params['video_id']) {
             return $this->rerouteController(__CLASS__, 'videoProxyView', $params);
         }
 
@@ -195,7 +199,7 @@ class Log extends XFCP_Log
      */
     public function actionVideoProxyVideo(ParameterBag $params)
     {
-        $video = $this->assertVideoProxyExists($params->video_id);
+        $video = $this->assertVideoProxyExists($params['video_id']);
 
         if (!$video->isValid() || $video->isRefreshRequired()) {
             /** @var \KL\EditorManager\Service\VideoProxy $proxyService */
@@ -224,7 +228,7 @@ class Log extends XFCP_Log
      */
     public function actionVideoProxyView(ParameterBag $params)
     {
-        $video = $this->assertVideoProxyExists($params->video_id);
+        $video = $this->assertVideoProxyExists($params['video_id']);
 
         $viewParams = [
             'video' => $video

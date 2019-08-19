@@ -12,6 +12,10 @@ namespace KL\EditorManager\XF\BbCode;
  * Class RuleSet
  * @package KL\EditorManager\BbCode
  */
+/**
+ * Class RuleSet
+ * @package KL\EditorManager\XF\BbCode
+ */
 class RuleSet extends XFCP_Ruleset
 {
     /**
