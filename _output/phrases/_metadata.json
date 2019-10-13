@@ -791,6 +791,12 @@
         "version_string": "1.1.0.1",
         "hash": "cd8d64cdb20ce5679ebe747747c3cc4c"
     },
+    "kl_em_need_x_more_posts_to_view_content.txt": {
+        "global_cache": false,
+        "version_id": 1020093,
+        "version_string": "1.2.0 Patch Level 3",
+        "hash": "01d21cae193d53baaf801f7fb9441a2a"
+    },
     "kl_em_no_background.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -826,6 +832,12 @@
         "version_id": 1010070,
         "version_string": "1.1.0",
         "hash": "8b60044b395c270ad672e42818a98a2d"
+    },
+    "kl_em_not_allowed_to_view_this_content.txt": {
+        "global_cache": false,
+        "version_id": 1020093,
+        "version_string": "1.2.0 Patch Level 3",
+        "hash": "f2fc6c7f80ae2830c8f856c0226485a6"
     },
     "kl_em_option_debug_mode_only.txt": {
         "global_cache": false,
