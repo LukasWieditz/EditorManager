@@ -21,7 +21,7 @@ class NewPosts extends XFCP_NewPosts
     /**
      *
      */
-    public function renderJson()
+    public function renderJson(): void
     {
         if (isset($this->params['klEMPosts'])) {
             $posts = $this->params['klEMPosts'];

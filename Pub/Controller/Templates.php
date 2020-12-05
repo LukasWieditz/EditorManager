@@ -14,6 +14,7 @@ use XF\ControllerPlugin\Editor;
 use XF\ControllerPlugin\Toggle;
 use XF\Entity\Smilie;
 use XF\Mvc\FormAction;
+use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\Exception;
 use XF\Mvc\Reply\Message;
 use XF\Mvc\Reply\Redirect;
@@ -34,7 +35,7 @@ class Templates extends AbstractController
      * @param ParameterBag $params
      * @throws Exception
      */
-    protected function preDispatchController($action, ParameterBag $params)
+    protected function preDispatchController($action, ParameterBag $params): void
     {
         $this->assertRegistrationRequired();
         $this->assertCanHaveTemplates();
@@ -44,7 +45,7 @@ class Templates extends AbstractController
      * Checks if a user is allowed to generally create private templates.
      * @throws Exception
      */
-    protected function assertCanHaveTemplates()
+    protected function assertCanHaveTemplates(): void
     {
         if (!XF::visitor()->hasPermission('klEM', 'klEMPrivateTemplates')) {
             throw $this->exception($this->noPermission());
@@ -55,7 +56,7 @@ class Templates extends AbstractController
      * Checks if a user is allowed to create a new template or has hit his template limit.
      * @throws Exception
      */
-    protected function assertCanCreateTemplate()
+    protected function assertCanCreateTemplate(): void
     {
         $visitor = XF::visitor();
 
@@ -75,7 +76,7 @@ class Templates extends AbstractController
      * @param Template $template
      * @throws Exception
      */
-    protected function assertUserTemplate(Template $template)
+    protected function assertUserTemplate(Template $template): void
     {
         if (XF::visitor()->user_id !== $template->user_id) {
             throw $this->exception($this->noPermission());
@@ -87,7 +88,7 @@ class Templates extends AbstractController
      * @param $selected
      * @return View
      */
-    protected function addAccountWrapperParams(View $view, $selected)
+    protected function addAccountWrapperParams(View $view, $selected): View
     {
         $view->setParam('pageSelected', $selected);
         return $view;
@@ -97,7 +98,7 @@ class Templates extends AbstractController
      * Displays a list of all user templates.
      * @return View
      */
-    public function actionIndex()
+    public function actionIndex(): AbstractReply
     {
         /** @var \KL\EditorManager\Repository\Template $repo */
         $repo = $this->repository('KL\EditorManager:Template');
@@ -129,7 +130,7 @@ class Templates extends AbstractController
      * @param Template $template
      * @return View
      */
-    public function templateAddEdit(Template $template)
+    public function templateAddEdit(Template $template): AbstractReply
     {
         $viewParams = [
             'template' => $template
@@ -142,7 +143,7 @@ class Templates extends AbstractController
      * @return View
      * @throws Exception
      */
-    public function actionEdit(ParameterBag $params)
+    public function actionEdit(ParameterBag $params): AbstractReply
     {
         $template = $this->assertTemplateExists($params['template_id']);
 
@@ -155,7 +156,7 @@ class Templates extends AbstractController
      * @return View
      * @throws Exception
      */
-    public function actionAdd()
+    public function actionAdd(): AbstractReply
     {
         $this->assertCanCreateTemplate();
 
@@ -170,7 +171,7 @@ class Templates extends AbstractController
      * @return Redirect|View
      * @throws Exception
      */
-    public function actionDelete(ParameterBag $params)
+    public function actionDelete(ParameterBag $params): AbstractReply
     {
         $template = $this->assertTemplateExists($params['template_id']);
         /** @var Delete $plugin */
@@ -191,7 +192,7 @@ class Templates extends AbstractController
      * @throws Exception
      * @throws PrintableException
      */
-    public function actionSave(ParameterBag $params)
+    public function actionSave(ParameterBag $params): AbstractReply
     {
         $this->assertPostOnly();
 
@@ -217,7 +218,7 @@ class Templates extends AbstractController
      * @param Template $template
      * @return FormAction
      */
-    protected function templateSaveProcess(Template $template)
+    protected function templateSaveProcess(Template $template): FormAction
     {
         $entityInput = $this->filter([
             'title' => 'str',
@@ -240,7 +241,7 @@ class Templates extends AbstractController
      * @return Redirect|View
      * @throws Exception
      */
-    public function actionSort()
+    public function actionSort(): AbstractReply
     {
         /** @var \KL\EditorManager\Repository\Template $repo */
         $repo = $this->repository('KL\EditorManager:Template');
@@ -271,7 +272,7 @@ class Templates extends AbstractController
      * Toggles templates on or off.
      * @return Message
      */
-    public function actionToggle()
+    public function actionToggle(): AbstractReply
     {
         /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');
@@ -286,7 +287,7 @@ class Templates extends AbstractController
      * @return Template
      * @throws Exception
      */
-    protected function assertTemplateExists($id, $with = null, $phraseKey = null)
+    protected function assertTemplateExists($id, $with = null, $phraseKey = null): Template
     {
         /** @var Template $template */
         $template = $this->assertRecordExists('KL\EditorManager:Template', $id, $with, $phraseKey);

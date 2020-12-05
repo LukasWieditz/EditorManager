@@ -38,7 +38,7 @@ class Audio extends View
         if ($audio->isPlaceholder()) {
             return $this->response->responseFile($audio->getPlaceholderPath());
         } else {
-            $resource = XF::fs()->readStream($audio->getAbstractedAudioPath());
+            $resource = XF::fs()->readStream($audio->getAbstractedFilePath());
             return $this->response->responseStream($resource, $audio->file_size);
         }
     }

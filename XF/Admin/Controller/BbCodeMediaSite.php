@@ -1,9 +1,9 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/XF/Admin/Controller/BbCodeMediaSite.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\XF\Admin\Controller;
@@ -20,7 +20,7 @@ class BbCodeMediaSite extends XFCP_BbCodeMediaSite
      * @param $action
      * @param ParameterBag $params
      */
-    protected function preDispatchController($action, ParameterBag $params)
+    protected function preDispatchController($action, ParameterBag $params): void
     {
         $this->setSectionContext('kl_em_bbMedia');
         parent::preDispatchController($action, $params);

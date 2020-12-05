@@ -3,7 +3,7 @@
 /*!
  * KL/EditorManager/Pub/Controller/Account.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\XF\Pub\Controller;
@@ -11,6 +11,7 @@ namespace KL\EditorManager\XF\Pub\Controller;
 use XF\Entity\User;
 use XF\Mvc\FormAction;
 use \XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\AbstractReply;
 
 /**
  * Class Account
@@ -21,9 +22,9 @@ class Account extends XFCP_Account
     /**
      * Proxy wrong link to correct controller.
      * @param ParameterBag $params
-     * @return mixed
+     * @return AbstractReply
      */
-    public function actionTemplates(ParameterBag $params)
+    public function actionTemplates(ParameterBag $params): AbstractReply
     {
         return $this->redirectPermanently($this->buildLink('account/templates', $params));
     }
@@ -32,7 +33,7 @@ class Account extends XFCP_Account
      * @param User $visitor
      * @return FormAction
      */
-    protected function preferencesSaveProcess(User $visitor)
+    protected function preferencesSaveProcess(User $visitor): FormAction
     {
         $form = parent::preferencesSaveProcess($visitor);
 

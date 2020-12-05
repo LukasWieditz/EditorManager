@@ -38,7 +38,7 @@ class Video extends View
         if ($video->isPlaceholder()) {
             return $this->response->responseFile($video->getPlaceholderPath());
         } else {
-            $resource = XF::fs()->readStream($video->getAbstractedVideoPath());
+            $resource = XF::fs()->readStream($video->getAbstractedFilePath());
             return $this->response->responseStream($resource, $video->file_size);
         }
     }

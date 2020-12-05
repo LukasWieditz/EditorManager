@@ -1,9 +1,9 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/XF/Admin/Controller/Log.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\XF\Admin\Controller;
@@ -12,6 +12,7 @@ use KL\EditorManager\Entity\AudioProxy;
 use KL\EditorManager\Entity\VideoProxy;
 use XF\Mvc\Entity\Finder;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\Exception;
 use XF\Mvc\Reply\Reroute;
 use XF\Mvc\Reply\View;
@@ -27,7 +28,7 @@ class Log extends XFCP_Log
      * @param ParameterBag $params
      * @return Reroute|View
      */
-    public function actionAudioProxy(ParameterBag $params)
+    public function actionAudioProxy(ParameterBag $params): AbstractReply
     {
         if ($params['audio_id']) {
             return $this->rerouteController(__CLASS__, 'audioProxyView', $params);
@@ -60,7 +61,7 @@ class Log extends XFCP_Log
      * @param Finder $finder
      * @param $filters
      */
-    protected function applyAudioProxyFilters(Finder $finder, &$filters)
+    protected function applyAudioProxyFilters(Finder $finder, &$filters): void
     {
         $filters = [];
 
@@ -87,7 +88,7 @@ class Log extends XFCP_Log
      * @throws Exception
      * @throws PrintableException
      */
-    public function actionAudioProxyAudio(ParameterBag $params)
+    public function actionAudioProxyAudio(ParameterBag $params): AbstractReply
     {
         $audio = $this->assertAudioProxyExists($params['audio_id']);
 
@@ -116,7 +117,7 @@ class Log extends XFCP_Log
      * @return View
      * @throws Exception
      */
-    public function actionAudioProxyView(ParameterBag $params)
+    public function actionAudioProxyView(ParameterBag $params): AbstractReply
     {
         $audio = $this->assertAudioProxyExists($params['audio_id']);
 
@@ -133,7 +134,7 @@ class Log extends XFCP_Log
      * @return AudioProxy
      * @throws Exception
      */
-    protected function assertAudioProxyExists($id, $with = null, $phraseKey = null)
+    protected function assertAudioProxyExists($id, $with = null, $phraseKey = null): AudioProxy
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->assertRecordExists('KL\EditorManager:AudioProxy', $id, $with, $phraseKey);
@@ -143,7 +144,7 @@ class Log extends XFCP_Log
      * @param ParameterBag $params
      * @return Reroute|View
      */
-    public function actionVideoProxy(ParameterBag $params)
+    public function actionVideoProxy(ParameterBag $params): AbstractReply
     {
         if ($params['video_id']) {
             return $this->rerouteController(__CLASS__, 'videoProxyView', $params);
@@ -176,7 +177,7 @@ class Log extends XFCP_Log
      * @param Finder $finder
      * @param $filters
      */
-    protected function applyVideoProxyFilters(Finder $finder, &$filters)
+    protected function applyVideoProxyFilters(Finder $finder, &$filters): void
     {
         $filters = [];
 
@@ -203,7 +204,7 @@ class Log extends XFCP_Log
      * @throws Exception
      * @throws PrintableException
      */
-    public function actionVideoProxyVideo(ParameterBag $params)
+    public function actionVideoProxyVideo(ParameterBag $params): AbstractReply
     {
         $video = $this->assertVideoProxyExists($params['video_id']);
 
@@ -232,7 +233,7 @@ class Log extends XFCP_Log
      * @return View
      * @throws Exception
      */
-    public function actionVideoProxyView(ParameterBag $params)
+    public function actionVideoProxyView(ParameterBag $params): AbstractReply
     {
         $video = $this->assertVideoProxyExists($params['video_id']);
 
@@ -249,7 +250,7 @@ class Log extends XFCP_Log
      * @return VideoProxy
      * @throws Exception
      */
-    protected function assertVideoProxyExists($id, $with = null, $phraseKey = null)
+    protected function assertVideoProxyExists($id, $with = null, $phraseKey = null): VideoProxy
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->assertRecordExists('KL\EditorManager:VideoProxy', $id, $with, $phraseKey);

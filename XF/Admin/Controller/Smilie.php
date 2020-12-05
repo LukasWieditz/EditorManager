@@ -1,18 +1,30 @@
 <?php
 
+/*!
+ * KL/EditorManager/XF/Admin/Controller/Smilie.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2020 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\XF\Admin\Controller;
 
 use XF\ControllerPlugin\Toggle;
+use XF\Entity\Smilie as SmilieEntity;
 use XF\Mvc\FormAction;
+use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\View;
 
+/**
+ * Class Smilie
+ * @package KL\EditorManager\XF\Admin\Controller
+ */
 class Smilie extends XFCP_Smilie
 {
     /**
-     * @param \XF\Entity\Smilie $smilie
+     * @param SmilieEntity $smilie
      * @return View
      */
-    public function smilieAddEdit(\XF\Entity\Smilie $smilie)
+    public function smilieAddEdit(SmilieEntity $smilie): AbstractReply
     {
         $response = parent::smilieAddEdit($smilie);
 
@@ -26,10 +38,10 @@ class Smilie extends XFCP_Smilie
     }
 
     /**
-     * @param \XF\Entity\Smilie $smilie
+     * @param SmilieEntity $smilie
      * @return FormAction
      */
-    protected function smilieSaveProcess(\XF\Entity\Smilie $smilie)
+    protected function smilieSaveProcess(SmilieEntity $smilie): FormAction
     {
         $form = parent::smilieSaveProcess($smilie);
 
@@ -41,7 +53,10 @@ class Smilie extends XFCP_Smilie
         return $form;
     }
 
-    public function actionToggle()
+    /**
+     * @return AbstractReply
+     */
+    public function actionToggle(): AbstractReply
     {
         /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');

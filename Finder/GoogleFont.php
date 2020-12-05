@@ -17,6 +17,15 @@ use XF\Mvc\Entity\Finder;
 class GoogleFont extends Finder
 {
     /**
+     * @param string $searchTerm
+     * @return GoogleFont
+     */
+    public function whereIdLike(string $searchTerm): GoogleFont
+    {
+        return $this->where('font_id', 'like', $searchTerm);
+    }
+
+    /**
      * @return GoogleFont
      */
     public function active(): GoogleFont

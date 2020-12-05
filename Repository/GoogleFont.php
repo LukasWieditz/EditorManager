@@ -26,7 +26,7 @@ class GoogleFont extends Repository
     /**
      * @return XF\Mvc\Entity\Finder|GoogleFontFinder
      */
-    protected function findGoogleFonts(): GoogleFontFinder
+    public function findGoogleFonts(): GoogleFontFinder
     {
         return $this->finder('KL:EditorManager\GoogleFont')
             ->setDefaultOrder('font_id', 'ASC');

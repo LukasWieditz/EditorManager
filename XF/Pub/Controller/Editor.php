@@ -1,16 +1,18 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Pub/Controller/Editor.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\XF\Pub\Controller;
 
-use KL\EditorManager\Finder\GoogleFont;
+use KL\EditorManager\Repository\GoogleFont;
 use KL\EditorManager\Repository\SpecialChars;
 use KL\EditorManager\XF\Repository\Smilie;
+use XF\Mvc\Entity\Repository;
+use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\View;
 
 /**
@@ -20,18 +22,25 @@ use XF\Mvc\Reply\View;
 class Editor extends XFCP_Editor
 {
     /**
+     * @return GoogleFont|Repository
+     */
+    protected function getKLGoogleFontRepo()
+    {
+        return $this->repository('KL\EditorManager:GoogleFont');
+    }
+
+    /**
      * @return View
      */
-    public function actionFindGFont()
+    public function actionFindGFont(): AbstractReply
     {
         $q = ltrim($this->filter('q', 'str', ['no-trim']));
 
         if ($q !== '' && utf8_strlen($q) >= 2) {
-            /** @var GoogleFont $finder */
-            $finder = $this->finder('KL\EditorManager:GoogleFont');
+            $finder = $this->getKLGoogleFontRepo()->findGoogleFonts();
 
             $fonts = $finder
-                ->where('font_id', 'like', $finder->escapeLike($q, '%?%'))
+                ->whereIdLike($finder->escapeLike($q, '%?%'))
                 ->active()
                 ->fetch(10);
         } else {
@@ -50,7 +59,7 @@ class Editor extends XFCP_Editor
      * @param $dialog
      * @return array
      */
-    protected function loadDialog($dialog)
+    protected function loadDialog($dialog): array
     {
         $view = 'XF:Editor\Dialog';
         $template = null;
@@ -62,9 +71,7 @@ class Editor extends XFCP_Editor
                 break;
 
             case 'gfont':
-                /** @var GoogleFont $finder */
-                $finder = $this->em()->getFinder('KL\EditorManager:GoogleFont');
-
+                $finder = $this->getKLGoogleFontRepo()->findGoogleFonts();
                 $params['fonts'] = $finder->active()->fetch();
 
                 $template = "editor_dialog_kl_em_gfont";
@@ -95,7 +102,7 @@ class Editor extends XFCP_Editor
     /**
      * @return View
      */
-    public function actionKlEmSpecialChars()
+    public function actionKlEmSpecialChars(): AbstractReply
     {
         /** @var SpecialChars $repo */
         $repo = $this->repository('KL\EditorManager:SpecialChars');
@@ -128,7 +135,7 @@ class Editor extends XFCP_Editor
     /**
      * @return View
      */
-    public function actionKlEmSpecialCharsSearch()
+    public function actionKlEmSpecialCharsSearch(): AbstractReply
     {
         $q = ltrim($this->filter('q', 'str', ['no-trim']));
 
@@ -152,7 +159,10 @@ class Editor extends XFCP_Editor
             'kl_em_editor_special_characters_search_results', $viewParams);
     }
 
-    public function actionSmiliesEmoji()
+    /**
+     * @return AbstractReply
+     */
+    public function actionSmiliesEmoji(): AbstractReply
     {
         $response = parent::actionSmiliesEmoji();
 
