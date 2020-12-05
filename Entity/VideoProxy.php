@@ -1,20 +1,15 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Entity/VideoProxy.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Entity;
 
-use InvalidArgumentException;
-use LogicException;
 use XF;
-use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
-use XF\PrintableException;
-use XF\Util\File;
 
 /**
  * COLUMNS
@@ -36,53 +31,12 @@ use XF\Util\File;
  * RELATIONS
  * @property VideoProxyReferrer[] Referrers
  */
-class VideoProxy extends Entity
+class VideoProxy extends AbstractProxy
 {
-    protected $placeholderPath;
-
-    /**
-     * @param $filePath
-     * @param $mimeType
-     * @param null $fileName
-     */
-    public function setAsPlaceholder($filePath, $mimeType, $fileName = null)
-    {
-        if ($this->placeholderPath) {
-            throw new InvalidArgumentException("Once a video is marked as a placeholder, it cannot be changed");
-        }
-
-        if (!file_exists($filePath) || !is_readable($filePath)) {
-            throw new InvalidArgumentException("Placeholder path '$filePath' doesn't exist or isn't readable");
-        }
-
-        $this->placeholderPath = $filePath;
-        $this->file_name = $fileName ?: basename($filePath);
-        $this->mime_type = $mimeType;
-        $this->file_size = filesize($filePath);
-
-        $this->setReadOnly(true);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPlaceholder()
-    {
-        return $this->placeholderPath ? true : false;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPlaceholderPath()
-    {
-        return $this->placeholderPath;
-    }
-
     /**
      * @return string
      */
-    public function getAbstractedVideoPath()
+    public function getAbstractedFilePath(): string
     {
         return sprintf('internal-data://video_cache/%d/%d-%s.data',
             floor($this->video_id / 1000),
@@ -91,27 +45,21 @@ class VideoProxy extends Entity
         );
     }
 
-    /**
-     * @return bool
-     */
-    public function isValid()
+    public function getPlaceholderPath(): string
     {
-        if ($this->pruned) {
-            return false;
-        }
-        return $this->app()->fs()->has($this->getAbstractedVideoPath());
+        return XF::getRootDirectory() . '/styles/editor-manager/missing-video.mp4';
     }
 
     /**
      * @return bool
      */
-    public function isRefreshRequired()
+    public function isRefreshRequired(): bool
     {
         if ($this->placeholderPath) {
             return false;
         }
 
-        $filePath = $this->getAbstractedVideoPath();
+        $filePath = $this->getAbstractedFilePath();
         $fs = $this->app()->fs();
 
         if ($this->is_processing && XF::$time - $this->is_processing < 5) {
@@ -153,121 +101,10 @@ class VideoProxy extends Entity
     }
 
     /**
-     * @return bool
-     */
-    public function isFailureRefreshRequired()
-    {
-        if (!$this->failed_date || !$this->fail_count) {
-            return false;
-        }
-
-        switch ($this->fail_count) {
-            case 1:
-                $delay = 60;
-                break; // 1 minute
-            case 2:
-                $delay = 5 * 60;
-                break; // 5 minutes
-            case 3:
-                $delay = 30 * 60;
-                break; // 30 minutes
-            case 4:
-                $delay = 3600;
-                break; // 1 hour
-            case 5:
-                $delay = 6 * 3600;
-                break; // 6 hours
-
-            default:
-                $delay = ($this->fail_count - 5) * 86400; // 1, 2, 3... days
-        }
-
-        return XF::$time >= ($this->failed_date + $delay);
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getETagValue()
-    {
-        if ($this->isPlaceholder() || $this->fail_count || $this->pruned) {
-            return null;
-        }
-
-        return sha1($this->url . $this->fetch_date);
-    }
-
-    /**
-     * @return bool
-     * @throws PrintableException
-     */
-    public function prune()
-    {
-        if ($this->placeholderPath) {
-            return false;
-        }
-
-        $this->pruned = true;
-        $this->save();
-
-        File::deleteFromAbstractedPath($this->getAbstractedVideoPath());
-
-        return true;
-    }
-
-    /**
-     * @param $fileName
-     * @return bool
-     */
-    protected function verifyFileName(&$fileName)
-    {
-        if (!preg_match('/./u', $fileName)) {
-            $fileName = preg_replace('/[\x80-\xFF]/', '?', $fileName);
-        }
-
-        $fileName = XF::cleanString($fileName);
-
-        // ensure the filename fits -- if it's too long, take off from the beginning to keep extension
-        $length = utf8_strlen($fileName);
-        if ($length > 250) {
-            $fileName = utf8_substr($fileName, $length - 250);
-        }
-
-        return true;
-    }
-
-    /**
-     * @param $url
-     * @return bool
-     */
-    protected function verifyUrl(&$url)
-    {
-        $url = $this->getProxyRepo()->cleanUrlForFetch($url);
-
-        if (!preg_match('#^https?://#i', $url)) {
-            $this->error('Developer: invalid URL', 'url');
-            return false;
-        }
-
-        return true;
-    }
-
-    protected function _preSave()
-    {
-        if ($this->placeholderPath) {
-            throw new LogicException("Cannot save placeholder video");
-        }
-
-        if ($this->isChanged('url')) {
-            $this->url_hash = md5($this->url);
-        }
-    }
-
-    /**
      * @param Structure $structure
      * @return Structure
      */
-    public static function getStructure(Structure $structure)
+    public static function getStructure(Structure $structure): Structure
     {
         $structure->table = 'xf_kl_em_video_proxy';
         $structure->shortName = 'KL\EditorManager:VideoProxy';
@@ -299,14 +136,5 @@ class VideoProxy extends Entity
         ];
 
         return $structure;
-    }
-
-    /**
-     * @return \KL\EditorManager\Repository\VideoProxy
-     */
-    protected function getProxyRepo()
-    {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->repository('KL\EditorManager:VideoProxy');
     }
 }

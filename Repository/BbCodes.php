@@ -1,9 +1,9 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Repository/BbCodes.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Repository;
@@ -21,23 +21,24 @@ class BbCodes extends Repository
     /**
      * @return array
      */
-    public function getValidControllersForHide()
+    public function getValidControllersForHide() : array
     {
         $value = XF::app()->options()->klEMHideControllers;
         return explode("\n", $value);
     }
 
     /**
-     * @var bool
+     * @var AbstractCollection
      */
-    protected $bbCodeSettings = false;
+    protected $bbCodeSettings;
 
     /**
-     * @return bool|AbstractCollection
+     * @return AbstractCollection
      */
-    public function getBbCodeSettings()
+    public function getBbCodeSettings() : AbstractCollection
     {
         if (!$this->bbCodeSettings) {
+            // TODO: Add XF Cache
             $this->bbCodeSettings = XF::finder('KL\EditorManager:BbCode')->fetch();
         }
 
@@ -48,7 +49,7 @@ class BbCodes extends Repository
      * @param $bbCodeName
      * @return string
      */
-    public function shortToFullName($bbCodeName)
+    public function shortToFullName($bbCodeName) : string
     {
         switch ($bbCodeName) {
             case 'b':
@@ -184,7 +185,7 @@ class BbCodes extends Repository
     /**
      * @return array
      */
-    public function getRelatedBbCodeOptions()
+    public function getRelatedBbCodeOptions() : array
     {
         return [
             'font' => [

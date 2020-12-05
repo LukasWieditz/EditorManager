@@ -1,9 +1,9 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Repository/GoogleFont.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Repository;
@@ -11,7 +11,8 @@ namespace KL\EditorManager\Repository;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use KL\EditorManager\Entity\GoogleFont;
+use KL\EditorManager\Entity\GoogleFont as GoogleFontEntity;
+use KL\EditorManager\Finder\GoogleFont as GoogleFontFinder;
 use XF;
 use XF\Mvc\Entity\Repository;
 use XF\PrintableException;
@@ -20,36 +21,46 @@ use XF\PrintableException;
  * Class GoogleFonts
  * @package KL\EditorManager\Repository
  */
-class GoogleFonts extends Repository
+class GoogleFont extends Repository
 {
+    /**
+     * @return XF\Mvc\Entity\Finder|GoogleFontFinder
+     */
+    protected function findGoogleFonts(): GoogleFontFinder
+    {
+        return $this->finder('KL:EditorManager\GoogleFont')
+            ->setDefaultOrder('font_id', 'ASC');
+    }
+
     /**
      * @throws Exception
      * @throws PrintableException|GuzzleException
      * @throws GuzzleException
      */
-    public function updateFontList()
+    public function updateFontList(): void
     {
-        $options = XF::app()->options();
-        $apiKey = $options->klEMGoogleApiKey;
+        $apiKey = XF::options()->klEMGoogleApiKey;
 
         if ($apiKey) {
             try {
                 $client = XF::app()->http()->client();
                 $params = http_build_query(['key' => $apiKey]);
 
-                $response = $client->get('https://www.googleapis.com/webfonts/v1/webfonts?' . $params)->json();
-                $webfonts = $this->finder('KL\EditorManager:GoogleFont')->fetch();
+                $response = $client->get('https://www.googleapis.com/webfonts/v1/webfonts?' . $params);
+                $response = json_decode($response, true);
+
+                $webfonts = $this->findGoogleFonts()
+                    ->fetch();
 
                 foreach ($response['items'] as $font) {
                     if ($webfonts->offsetExists($font['family'])) {
                         /** @var GoogleFont $dbFont */
                         $dbFont = $webfonts[$font['family']];
                     } else {
-                        /** @var GoogleFont $dbFont */
+                        /** @var GoogleFontEntity $dbFont */
                         $dbFont = $this->em->create('KL\EditorManager:GoogleFont');
                         $dbFont->font_id = $font['family'];
                     }
-
 
                     $dbFont->category = $font['category'];
                     $dbFont->subsets = $font['subsets'];
@@ -57,12 +68,9 @@ class GoogleFonts extends Repository
 
                     $dbFont->save();
                 }
-
-                return;
             } catch (RequestException $e) {
                 // this is an exception with the underlying request, so let it go through
                 XF::logException($e, false, 'Google Fonts API connection error: ');
-                return;
             }
         }
     }

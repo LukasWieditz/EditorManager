@@ -75,7 +75,7 @@ class SpecialCharacterGroup extends Entity
             'group_id' => ['type' => self::UINT, 'unique' => 'true', 'autoIncrement' => true],
             'display_order' => ['type' => self::UINT, 'default' => 10],
             'active' => ['type' => self::BOOL, 'default' => 1],
-            'user_criteria' => ['type' => self::SERIALIZED_ARRAY, 'default' => []],
+            'user_criteria' => ['type' => self::JSON, 'default' => []],
         ];
 
         $structure->getters = [

@@ -43,7 +43,7 @@ class Template extends Entity
             'display_order' => ['type' => self::UINT, 'default' => 10],
             'active' => ['type' => self::BOOL, 'default' => 1],
             'extra_data' => ['type' => self::JSON, 'default' => '[]'],
-            'user_criteria' => ['type' => self::SERIALIZED_ARRAY, 'default' => []],
+            'user_criteria' => ['type' => self::JSON, 'default' => []],
         ];
 
         return $structure;

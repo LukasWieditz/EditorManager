@@ -152,15 +152,15 @@ class Controller extends XFCP_Controller
 
             /** @var VideoProxy $proxyRepo */
             $proxyRepo = $this->app->repository('KL\EditorManager:VideoProxy');
-            $video = $proxyRepo->getPlaceholderVideo();
+            $video = $proxyRepo->getPlaceholder();
         }
 
         if (!$error) {
             $proxyRepo = $this->app->repository('KL\EditorManager:VideoProxy');
 
-            $proxyRepo->logVideoView($video);
+            $proxyRepo->logView($video);
             if ($this->referrer && $this->app->options()->klEMVideoAudioProxyReferrer['enabled']) {
-                $proxyRepo->logVideoReferrer($video, $this->referrer);
+                $proxyRepo->logReferrer($video, $this->referrer);
             }
         }
 
@@ -208,15 +208,15 @@ class Controller extends XFCP_Controller
 
             /** @var \KL\EditorManager\Repository\AudioProxy $proxyRepo */
             $proxyRepo = $this->app->repository('KL\EditorManager:AudioProxy');
-            $audio = $proxyRepo->getPlaceholderAudio();
+            $audio = $proxyRepo->getPlaceholder();
         }
 
         if (!$error) {
             $proxyRepo = $this->app->repository('KL\EditorManager:AudioProxy');
 
-            $proxyRepo->logAudioView($audio);
+            $proxyRepo->logView($audio);
             if ($this->referrer && $this->app->options()->klEMVideoAudioProxyReferrer['enabled']) {
-                $proxyRepo->logAudioReferrer($audio, $this->referrer);
+                $proxyRepo->logReferrer($audio, $this->referrer);
             }
         }
 

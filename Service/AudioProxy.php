@@ -9,6 +9,8 @@
 namespace KL\EditorManager\Service;
 
 use InvalidArgumentException;
+use KL\EditorManager\Entity\AudioProxy as AudioProxyEntity;
+use KL\EditorManager\Repository\AudioProxy as AudioProxyRepo;
 use XF;
 use XF\Db\Exception;
 use XF\PrintableException;
@@ -31,7 +33,7 @@ class AudioProxy extends AbstractService
     protected $maxConcurrent = 10;
 
     /**
-     * @var \KL\EditorManager\Repository\AudioProxy
+     * @var AudioProxyRepo
      */
     protected $proxyRepo;
 
@@ -61,13 +63,13 @@ class AudioProxy extends AbstractService
 
     /**
      * @param $url
-     * @return \KL\EditorManager\Entity\AudioProxy|null
+     * @return AudioProxyEntity|null
      * @throws PrintableException
      * @throws PrintableException
      */
     public function getAudio($url)
     {
-        $audio = $this->proxyRepo->getAudioByUrl($url);
+        $audio = $this->proxyRepo->getByUrl($url);
         if ($audio) {
             if ($this->isRefreshRequired($audio)) {
                 $this->refetchAudio($audio);
@@ -82,10 +84,10 @@ class AudioProxy extends AbstractService
     }
 
     /**
-     * @param \KL\EditorManager\Entity\AudioProxy $audio
+     * @param AudioProxyEntity $audio
      * @return bool
      */
-    protected function isRefreshRequired(\KL\EditorManager\Entity\AudioProxy $audio)
+    protected function isRefreshRequired(AudioProxyEntity $audio)
     {
         if ($this->forceRefresh) {
             return true;
@@ -109,12 +111,12 @@ class AudioProxy extends AbstractService
 
     /**
      * @param $url
-     * @return \KL\EditorManager\Entity\AudioProxy|null
+     * @return AudioProxyEntity|null
      * @throws PrintableException
      */
     public function fetchNewAudio($url)
     {
-        /** @var \KL\EditorManager\Entity\AudioProxy $audio */
+        /** @var AudioProxyEntity $audio */
         $audio = $this->em()->create('KL\EditorManager:AudioProxy');
         $audio->url = $url;
         $audio->pruned = true;
@@ -134,11 +136,11 @@ class AudioProxy extends AbstractService
     }
 
     /**
-     * @param \KL\EditorManager\Entity\AudioProxy $audio
-     * @return \KL\EditorManager\Entity\AudioProxy
+     * @param AudioProxyEntity $audio
+     * @return AudioProxyEntity
      * @throws PrintableException
      */
-    public function refetchAudio(\KL\EditorManager\Entity\AudioProxy $audio)
+    public function refetchAudio(AudioProxyEntity $audio)
     {
         $audio->is_processing = time();
         $audio->save();
@@ -204,7 +206,7 @@ class AudioProxy extends AbstractService
             $response->getBody()->close();
 
             if ($response->getStatusCode() == 200) {
-                $disposition = $response->getHeader('Content-Disposition');
+                $disposition = (string) $response->getHeader('Content-Disposition');
                 if ($disposition && preg_match('/filename=(\'|"|)(.+)\\1/siU', $disposition, $match)) {
                     $fileName = $match[2];
                 }
@@ -214,7 +216,7 @@ class AudioProxy extends AbstractService
 
                 $audioInfo = filesize($streamFile) ? @pathinfo($streamFile) : false;
                 if ($audioInfo) {
-                    $audioType = $response->getHeader('content-type');
+                    $audioType = (string) $response->getHeader('content-type');
 
                     $extension = File::getFileExtension($fileName);
                     $extensionMap = [
@@ -264,11 +266,11 @@ class AudioProxy extends AbstractService
     }
 
     /**
-     * @param \KL\EditorManager\Entity\AudioProxy $audio
+     * @param AudioProxyEntity $audio
      * @param array $fetchResults
      * @throws PrintableException
      */
-    protected function finalizeFromFetchResults(\KL\EditorManager\Entity\AudioProxy $audio, array $fetchResults)
+    protected function finalizeFromFetchResults(AudioProxyEntity $audio, array $fetchResults)
     {
         $audio->is_processing = 0;
 

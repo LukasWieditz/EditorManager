@@ -2,7 +2,6 @@
 
 namespace KL\EditorManager\Entity;
 
-
 use KL\EditorManager\Service\CustomEmote\Image;
 use XF;
 use XF\Mvc\Entity\Entity;

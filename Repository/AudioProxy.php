@@ -1,123 +1,41 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Repository/AudioProxy.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Repository;
 
 use XF;
-use XF\Db\DeadlockException;
-use XF\Db\Exception;
-use XF\Mvc\Entity\Finder;
-use XF\Mvc\Entity\Repository;
-use XF\PrintableException;
 
 /**
  * Class AudioProxy
  * @package KL\EditorManager\Repository
  */
-class AudioProxy extends Repository
+class AudioProxy extends AbstractProxy
 {
     /**
-     * @return Finder
+     * @return string
      */
-    public function findAudioProxyLogsForList()
+    protected function getEntityClass(): string
     {
-        return $this->finder('KL\EditorManager:AudioProxy')->setDefaultOrder('last_request_date', 'DESC');
+        return 'KL\EditorManager:AudioProxy';
     }
 
     /**
-     * @param string $url
-     *
-     * @return null|\KL\EditorManager\Entity\AudioProxy
+     * @return string
      */
-    public function getAudioByUrl($url)
+    protected function getReferrerEntityClass(): string
     {
-        $url = $this->cleanUrlForFetch($url);
-        $hash = md5($url);
-
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->finder('KL\EditorManager:AudioProxy')->where('url_hash', $hash)->fetchOne();
-    }
-
-    /**
-     * @param int $activeLength
-     * @return bool|null
-     */
-    public function getTotalActiveFetches($activeLength = 60)
-    {
-        return $this->db()->fetchOne("
-			SELECT COUNT(*)
-			FROM xf_kl_em_audio_proxy
-			WHERE is_processing >= ?
-		", time() - $activeLength);
-    }
-
-    /**
-     * @param \KL\EditorManager\Entity\AudioProxy $audio
-     * @throws Exception
-     */
-    public function logAudioView(\KL\EditorManager\Entity\AudioProxy $audio)
-    {
-        $this->db()->query("
-			UPDATE xf_kl_em_audio_proxy SET
-				views = views + 1,
-				last_request_date = ?
-			WHERE audio_id = ?
-		", [XF::$time, $audio->audio_id]);
-    }
-
-    /**
-     * @param \KL\EditorManager\Entity\AudioProxy $audio
-     * @param $referrer
-     * @return bool
-     */
-    public function logAudioReferrer(\KL\EditorManager\Entity\AudioProxy $audio, $referrer)
-    {
-        if (!preg_match('#^https?://#i', $referrer)) {
-            return false;
-        }
-
-        try {
-            $this->db()->insert('xf_kl_em_audio_proxy_referrer', [
-                'audio_id' => $audio->audio_id,
-                'referrer_hash' => md5($referrer),
-                'referrer_url' => $referrer,
-                'hits' => 1,
-                'first_date' => XF::$time,
-                'last_date' => XF::$time
-            ], false, 'hits = hits + 1, last_date = VALUES(last_date)');
-        } catch (DeadlockException $e) {
-            // ignore deadlocks here -- we're likely triggering a race condition within MySQL
-        }
-
-        return true;
-    }
-
-    /**
-     * @param $url
-     * @return mixed|null|string|string[]
-     */
-    public function cleanUrlForFetch($url)
-    {
-        $url = preg_replace('/#.*$/s', '', $url);
-        if (preg_match_all('/[^A-Za-z0-9._~:\/?#\[\]@!$&\'()*+,;=%-]/', $url, $matches)) {
-            foreach ($matches[0] AS $match) {
-                $url = str_replace($match[0], '%' . strtoupper(dechex(ord($match[0]))), $url);
-            }
-        }
-        $url = preg_replace('/%(?![a-fA-F0-9]{2})/', '%25', $url);
-
-        return $url;
+        return 'KL\EditorManager:AudioProxyReferrer';
     }
 
     /**
      * @return \KL\EditorManager\Entity\AudioProxy
      */
-    public function getPlaceholderAudio()
+    public function getPlaceholder() : \KL\EditorManager\Entity\AbstractProxy
     {
         // TODO: ability to customize path
         $path = XF::getRootDirectory() . '/styles/editor-manager/missing-audio.mp3';
@@ -130,81 +48,26 @@ class AudioProxy extends Repository
     }
 
     /**
-     * Prunes audios from the file system cache that have expired
-     *
-     * @param integer|null $pruneDate
-     * @throws PrintableException
+     * @return int
      */
-    public function pruneAudioCache($pruneDate = null)
+    protected function getCacheTTL(): int
     {
-        if ($pruneDate === null) {
-            if (!$this->options()->klEMAudioCacheTTL) {
-                return;
-            }
-
-            $pruneDate = XF::$time - (86400 * $this->options()->klEMAudioCacheTTL);
-        }
-
-        /** @var \KL\EditorManager\Entity\AudioProxy[] $audios */
-        $audios = $this->finder('KL\EditorManager:AudioProxy')
-            ->where('fetch_date', '<', $pruneDate)
-            ->where('pruned', 0)
-            ->where('is_processing', 0)
-            ->fetch(2000);
-        foreach ($audios AS $audio) {
-            $audio->prune();
-        }
+        return \XF::options()->klEMAudioCacheTTL;
     }
 
     /**
-     * Prunes unused audio proxy log entries.
-     *
-     * @param null|int $pruneDate
-     *
      * @return int
      */
-    public function pruneAudioProxyLogs($pruneDate = null)
+    protected function getProxyLogLength(): int
     {
-        if ($pruneDate === null) {
-            $options = $this->options();
-
-            if (!$options->klEMVideoAudioProxyLogLength) {
-                return 0;
-            }
-            if (!$options->klEMAudioCacheTTL) {
-                // we're keeping audios forever - can't prune
-                return 0;
-            }
-
-            $maxTtl = max($options->klEMVideoAudioProxyLogLength, $options->klEMAudioCacheTTL);
-            $pruneDate = XF::$time - (86400 * $maxTtl);
-        }
-
-        // we can only remove logs where we've pruned the audio
-        return $this->db()->delete('xf_kl_em_audio_proxy',
-            'pruned = 1 AND last_request_date < ?', $pruneDate
-        );
+        return \XF::options()->klEMVideoAudioProxyLogLength;
     }
 
     /**
-     * @param null $pruneDate
-     * @return int
+     * @return array
      */
-    public function pruneAudioReferrerLogs($pruneDate = null)
+    protected function getReferrerOptions(): array
     {
-        if ($pruneDate === null) {
-            $options = $this->options();
-
-            if (empty($options->klEMVideoAudioProxyReferrer['length'])) {
-                // we're keeping referrer data forever
-                return 0;
-            }
-
-            $pruneDate = XF::$time - (86400 * $options->klEMVideoAudioProxyReferrer['length']);
-        }
-
-        return $this->db()->delete('xf_kl_em_audio_proxy_referrer',
-            'last_date < ?', $pruneDate
-        );
+        return \XF::options()->klEMVideoAudioProxyReferrer;
     }
 }

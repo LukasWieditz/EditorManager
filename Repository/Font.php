@@ -3,13 +3,14 @@
 /*!
  * KL/EditorManager/Repository/Font.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Repository;
 
 use stdClass;
 use XF;
+use XF\Mvc\Entity\AbstractCollection;
 use XF\Mvc\Entity\Finder;
 use XF\Mvc\Entity\Repository;
 
@@ -23,7 +24,7 @@ class Font extends Repository
      * Returns a finder for all fonts, ordered by display_order.
      * @return Finder
      */
-    public function findFonts()
+    public function findFonts() : Finder
     {
         $finder = $this->finder('KL\EditorManager:Font');
         $finder
@@ -34,10 +35,11 @@ class Font extends Repository
 
     /**
      * Returns the font caches content.
-     * @return mixed|null
+     * @return array
      */
-    public function getFontsCached()
+    public function getFontsCached() : array
     {
+        // TODO: Switch to proper cache
         if ($cache = XF::app()->simpleCache()) {
             $data = $cache->getValue('KL/EditorManager', 'kl_em_fonts');
             if ($data) {
@@ -47,7 +49,6 @@ class Font extends Repository
 
         $data = $this->stripData($this->findFonts()->fetch());
 
-
         if ($cache) {
             $cache->setValue('KL/EditorManager', 'kl_em_fonts', $data);
         }
@@ -56,13 +57,13 @@ class Font extends Repository
 
     /**
      * Rebuilds the font cache.
-     * @return mixed
+     * @return array
      */
-    public function rebuildFontCache()
+    public function rebuildFontCache() : array
     {
         $data = $this->stripData($this->findFonts()->fetch());
 
-
+        // TODO: Switch to proper cache
         if ($cache = XF::app()->simpleCache()) {
             $cache->setValue('KL/EditorManager', 'kl_em_fonts', $data);
         }
@@ -71,10 +72,10 @@ class Font extends Repository
 
     /**
      * Removes all unnecessary data for the font cache and builds a new object for each font.
-     * @param $data
-     * @return mixed
+     * @param AbstractCollection $data
+     * @return array
      */
-    private function stripData($data)
+    private function stripData(AbstractCollection $data) : array
     {
         $fonts = [];
 

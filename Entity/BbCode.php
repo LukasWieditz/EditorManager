@@ -49,7 +49,7 @@ class BbCode extends Entity
                 'unique' => 'bb_code_tags_must_be_unique',
                 'match' => 'alphanumeric'
             ],
-            'user_criteria' => ['type' => self::SERIALIZED_ARRAY, 'default' => []],
+            'user_criteria' => ['type' => self::JSON, 'default' => []],
             'aliases' => ['type' => self::LIST_COMMA, 'default' => []]
         ];
 

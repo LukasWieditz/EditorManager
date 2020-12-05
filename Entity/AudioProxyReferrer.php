@@ -37,7 +37,7 @@ class AudioProxyReferrer extends Entity
         $structure->shortName = 'KL\EditorManager:AudioProxyReferrer';
         $structure->primaryKey = 'referrer_id';
         $structure->columns = [
-            'referrer_id' => ['type' => self::UINT, 'nullable' => true, 'autoIncrement' => true],
+            'referrer_id' => ['type' => self::UINT, 'autoIncrement' => true],
             'audio_id' => ['type' => self::UINT, 'required' => true],
             'referrer_hash' => ['type' => self::STR, 'maxLength' => 32, 'required' => true],
             'referrer_url' => ['type' => self::STR, 'required' => true],

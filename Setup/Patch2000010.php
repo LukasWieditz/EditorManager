@@ -31,4 +31,35 @@ trait Patch2000010
 
         $optionRepo->updateOption('klEMEnabledBBCodes', $optionValue);
     }
+
+    /**
+     * Add heading and hr BB codes to default enabled BB codes
+     * @param array $stepParams
+     */
+    public function upgrade2000010Step2(array $stepParams) : void
+    {
+        $position = empty($stepParams[0]) ? 0 : $stepParams[0];
+        $this->entityColumnsToJson('KL\EditorManager:BbCode', ['user_criteria'], $position, $stepParams);
+    }
+
+    /**
+     * Add heading and hr BB codes to default enabled BB codes
+     * @param array $stepParams
+     */
+    public function upgrade2000010Step3(array $stepParams) : void
+    {
+        $position = empty($stepParams[0]) ? 0 : $stepParams[0];
+        $this->entityColumnsToJson('KL\EditorManager:SpecialCharacterGroup', ['user_criteria'], $position, $stepParams);
+    }
+
+    /**
+     * Add heading and hr BB codes to default enabled BB codes
+     * @param array $stepParams
+     */
+    public function upgrade2000010Step4(array $stepParams) : void
+    {
+        $position = empty($stepParams[0]) ? 0 : $stepParams[0];
+        $this->entityColumnsToJson('KL\EditorManager:Template', ['user_criteria'], $position, $stepParams);
+    }
+
 }

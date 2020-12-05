@@ -3,12 +3,13 @@
 /*!
  * KL/EditorManager/Entity/SpecialCharacter.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Entity;
 
 use XF;
+use XF\Entity\Phrase as PhraseEntity;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 use XF\Phrase;
@@ -17,21 +18,25 @@ use XF\Phrase;
  * Class SpecialCharacter
  * @package KL\EditorManager\Entity
  *
- * @property Phrase title
- * @property Phrase MasterTitle
- *
+ * COLUMNS
  * @property integer character_id
  * @property integer group_id
  * @property integer display_order
  * @property boolean active
  * @property string code
+ *
+ * GETTERS
+ * @property Phrase title
+ *
+ * RELATIONS
+ * @property PhraseEntity MasterTitle
  */
 class SpecialCharacter extends Entity
 {
     /**
      * @return Phrase
      */
-    public function getTitle()
+    public function getTitle(): Phrase
     {
         return XF::phrase($this->getPhraseName());
     }
@@ -39,19 +44,19 @@ class SpecialCharacter extends Entity
     /**
      * @return string
      */
-    public function getPhraseName()
+    public function getPhraseName(): string
     {
         return 'kl_em_sc_char_id.' . $this->character_id;
     }
 
     /**
-     * @return mixed|null|Entity
+     * @return PhraseEntity
      */
-    public function getMasterPhrase()
+    public function getMasterPhrase(): PhraseEntity
     {
         $phrase = $this->MasterTitle;
         if (!$phrase) {
-            /** @var XF\Entity\Phrase $phrase */
+            /** @var PhraseEntity $phrase */
             $phrase = $this->_em->create('XF:Phrase');
             $phrase->title = $this->_getDeferredValue(function () {
                 return $this->getPhraseName();
@@ -67,7 +72,7 @@ class SpecialCharacter extends Entity
      * @param Structure $structure
      * @return Structure
      */
-    public static function getStructure(Structure $structure)
+    public static function getStructure(Structure $structure): Structure
     {
         $structure->table = 'xf_kl_em_special_chars';
         $structure->shortName = 'KL\EditorManager:SpecialCharacter';

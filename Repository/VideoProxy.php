@@ -1,123 +1,41 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Repository/VideoProxy.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Repository;
 
 use XF;
-use XF\Db\DeadlockException;
-use XF\Db\Exception;
-use XF\Mvc\Entity\Finder;
-use XF\Mvc\Entity\Repository;
-use XF\PrintableException;
 
 /**
  * Class VideoProxy
  * @package KL\EditorManager\Repository
  */
-class VideoProxy extends Repository
+class VideoProxy extends AbstractProxy
 {
     /**
-     * @return Finder
+     * @return string
      */
-    public function findVideoProxyLogsForList()
+    protected function getEntityClass(): string
     {
-        return $this->finder('KL\EditorManager:VideoProxy')->setDefaultOrder('last_request_date', 'DESC');
+        return 'KL\EditorManager:VideoProxy';
     }
 
     /**
-     * @param string $url
-     *
-     * @return null|\KL\EditorManager\Entity\VideoProxy
+     * @return string
      */
-    public function getVideoByUrl($url)
+    protected function getReferrerEntityClass(): string
     {
-        $url = $this->cleanUrlForFetch($url);
-        $hash = md5($url);
-
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->finder('KL\EditorManager:VideoProxy')->where('url_hash', $hash)->fetchOne();
-    }
-
-    /**
-     * @param int $activeLength
-     * @return bool|null
-     */
-    public function getTotalActiveFetches($activeLength = 60)
-    {
-        return $this->db()->fetchOne("
-			SELECT COUNT(*)
-			FROM xf_kl_em_video_proxy
-			WHERE is_processing >= ?
-		", time() - $activeLength);
-    }
-
-    /**
-     * @param \KL\EditorManager\Entity\VideoProxy $video
-     * @throws Exception
-     */
-    public function logVideoView(\KL\EditorManager\Entity\VideoProxy $video)
-    {
-        $this->db()->query("
-			UPDATE xf_kl_em_video_proxy SET
-				views = views + 1,
-				last_request_date = ?
-			WHERE video_id = ?
-		", [XF::$time, $video->video_id]);
-    }
-
-    /**
-     * @param \KL\EditorManager\Entity\VideoProxy $video
-     * @param $referrer
-     * @return bool
-     */
-    public function logVideoReferrer(\KL\EditorManager\Entity\VideoProxy $video, $referrer)
-    {
-        if (!preg_match('#^https?://#i', $referrer)) {
-            return false;
-        }
-
-        try {
-            $this->db()->insert('xf_kl_em_video_proxy_referrer', [
-                'video_id' => $video->video_id,
-                'referrer_hash' => md5($referrer),
-                'referrer_url' => $referrer,
-                'hits' => 1,
-                'first_date' => XF::$time,
-                'last_date' => XF::$time
-            ], false, 'hits = hits + 1, last_date = VALUES(last_date)');
-        } catch (DeadlockException $e) {
-            // ignore deadlocks here -- we're likely triggering a race condition within MySQL
-        }
-
-        return true;
-    }
-
-    /**
-     * @param $url
-     * @return mixed|null|string|string[]
-     */
-    public function cleanUrlForFetch($url)
-    {
-        $url = preg_replace('/#.*$/s', '', $url);
-        if (preg_match_all('/[^A-Za-z0-9._~:\/?#\[\]@!$&\'()*+,;=%-]/', $url, $matches)) {
-            foreach ($matches[0] AS $match) {
-                $url = str_replace($match[0], '%' . strtoupper(dechex(ord($match[0]))), $url);
-            }
-        }
-        $url = preg_replace('/%(?![a-fA-F0-9]{2})/', '%25', $url);
-
-        return $url;
+        return 'KL\EditorManager:VideoProxyReferrer';
     }
 
     /**
      * @return \KL\EditorManager\Entity\VideoProxy
      */
-    public function getPlaceholderVideo()
+    public function getPlaceholder() : \KL\EditorManager\Entity\AbstractProxy
     {
         // TODO: ability to customize path
         $path = XF::getRootDirectory() . '/styles/editor-manager/missing-video.mp4';
@@ -130,81 +48,26 @@ class VideoProxy extends Repository
     }
 
     /**
-     * Prunes videos from the file system cache that have expired
-     *
-     * @param integer|null $pruneDate
-     * @throws PrintableException
+     * @return int
      */
-    public function pruneVideoCache($pruneDate = null)
+    protected function getCacheTTL(): int
     {
-        if ($pruneDate === null) {
-            if (!$this->options()->klEMVideoCacheTTL) {
-                return;
-            }
-
-            $pruneDate = XF::$time - (86400 * $this->options()->klEMVideoCacheTTL);
-        }
-
-        /** @var \KL\EditorManager\Entity\VideoProxy[] $videos */
-        $videos = $this->finder('KL\EditorManager:VideoProxy')
-            ->where('fetch_date', '<', $pruneDate)
-            ->where('pruned', 0)
-            ->where('is_processing', 0)
-            ->fetch(2000);
-        foreach ($videos AS $video) {
-            $video->prune();
-        }
+        return \XF::options()->klEMVideoCacheTTL;
     }
 
     /**
-     * Prunes unused video proxy log entries.
-     *
-     * @param null|int $pruneDate
-     *
      * @return int
      */
-    public function pruneVideoProxyLogs($pruneDate = null)
+    protected function getProxyLogLength(): int
     {
-        if ($pruneDate === null) {
-            $options = $this->options();
-
-            if (!$options->klEMVideoAudioProxyLogLength) {
-                return 0;
-            }
-            if (!$options->klEMVideoCacheTTL) {
-                // we're keeping videos forever - can't prune
-                return 0;
-            }
-
-            $maxTtl = max($options->klEMVideoAudioProxyLogLength, $options->klEMVideoCacheTTL);
-            $pruneDate = XF::$time - (86400 * $maxTtl);
-        }
-
-        // we can only remove logs where we've pruned the video
-        return $this->db()->delete('xf_kl_em_video_proxy',
-            'pruned = 1 AND last_request_date < ?', $pruneDate
-        );
+        return \XF::options()->klEMVideoAudioProxyLogLength;
     }
 
     /**
-     * @param null $pruneDate
-     * @return int
+     * @return array
      */
-    public function pruneVideoReferrerLogs($pruneDate = null)
+    protected function getReferrerOptions(): array
     {
-        if ($pruneDate === null) {
-            $options = $this->options();
-
-            if (empty($options->klEMVideoAudioProxyReferrer['length'])) {
-                // we're keeping referrer data forever
-                return 0;
-            }
-
-            $pruneDate = XF::$time - (86400 * $options->klEMVideoAudioProxyReferrer['length']);
-        }
-
-        return $this->db()->delete('xf_kl_em_video_proxy_referrer',
-            'last_date < ?', $pruneDate
-        );
+        return \XF::options()->klEMVideoAudioProxyReferrer;
     }
 }

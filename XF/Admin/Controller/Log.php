@@ -39,7 +39,7 @@ class Log extends XFCP_Log
         /** @var \KL\EditorManager\Repository\AudioProxy $proxyRepo */
         $proxyRepo = $this->repository('KL\EditorManager:AudioProxy');
 
-        $logFinder = $proxyRepo->findAudioProxyLogsForList()
+        $logFinder = $proxyRepo->findProxyLogsForList()
             ->limitByPage($page, $perPage);
 
         $this->applyAudioProxyFilters($logFinder, $filters);
@@ -100,7 +100,7 @@ class Log extends XFCP_Log
         if (!$audio->isValid()) {
             /** @var \KL\EditorManager\Repository\AudioProxy $proxyRepo */
             $proxyRepo = $this->app->repository('KL\EditorManager:AudioProxy');
-            $audio = $proxyRepo->getPlaceholderAudio();
+            $audio = $proxyRepo->getPlaceholder();
         }
 
         $this->setResponseType('raw');
@@ -155,7 +155,7 @@ class Log extends XFCP_Log
         /** @var \KL\EditorManager\Repository\VideoProxy $proxyRepo */
         $proxyRepo = $this->repository('KL\EditorManager:VideoProxy');
 
-        $logFinder = $proxyRepo->findVideoProxyLogsForList()
+        $logFinder = $proxyRepo->findProxyLogsForList()
             ->limitByPage($page, $perPage);
 
         $this->applyVideoProxyFilters($logFinder, $filters);
@@ -216,7 +216,7 @@ class Log extends XFCP_Log
         if (!$video->isValid()) {
             /** @var \KL\EditorManager\Repository\VideoProxy $proxyRepo */
             $proxyRepo = $this->app->repository('KL\EditorManager:VideoProxy');
-            $video = $proxyRepo->getPlaceholderVideo();
+            $video = $proxyRepo->getPlaceholder();
         }
 
         $this->setResponseType('raw');

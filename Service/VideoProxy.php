@@ -9,6 +9,8 @@
 namespace KL\EditorManager\Service;
 
 use InvalidArgumentException;
+use KL\EditorManager\Entity\VideoProxy as VideoProxyEntity;
+use KL\EditorManager\Repository\VideoProxy as VideoProxyRepo;
 use XF;
 use XF\Db\Exception;
 use XF\PrintableException;
@@ -31,7 +33,7 @@ class VideoProxy extends AbstractService
     protected $maxConcurrent = 10;
 
     /**
-     * @var \KL\EditorManager\Repository\VideoProxy
+     * @var VideoProxyRepo
      */
     protected $proxyRepo;
 
@@ -61,13 +63,13 @@ class VideoProxy extends AbstractService
 
     /**
      * @param $url
-     * @return \KL\EditorManager\Entity\VideoProxy|null
+     * @return VideoProxyEntity|null
      * @throws PrintableException
      * @throws PrintableException
      */
     public function getVideo($url)
     {
-        $video = $this->proxyRepo->getVideoByUrl($url);
+        $video = $this->proxyRepo->getByUrl($url);
         if ($video) {
             if ($this->isRefreshRequired($video)) {
                 $this->refetchVideo($video);
@@ -82,10 +84,10 @@ class VideoProxy extends AbstractService
     }
 
     /**
-     * @param \KL\EditorManager\Entity\VideoProxy $video
+     * @param VideoProxyEntity $video
      * @return bool
      */
-    protected function isRefreshRequired(\KL\EditorManager\Entity\VideoProxy $video)
+    protected function isRefreshRequired(VideoProxyEntity $video)
     {
         if ($this->forceRefresh) {
             return true;
@@ -109,12 +111,12 @@ class VideoProxy extends AbstractService
 
     /**
      * @param $url
-     * @return \KL\EditorManager\Entity\VideoProxy|null
+     * @return VideoProxyEntity|null
      * @throws PrintableException
      */
     public function fetchNewVideo($url)
     {
-        /** @var \KL\EditorManager\Entity\VideoProxy $video */
+        /** @var VideoProxyEntity $video */
         $video = $this->em()->create('KL\EditorManager:VideoProxy');
         $video->url = $url;
         $video->pruned = true;
@@ -134,11 +136,11 @@ class VideoProxy extends AbstractService
     }
 
     /**
-     * @param \KL\EditorManager\Entity\VideoProxy $video
-     * @return \KL\EditorManager\Entity\VideoProxy
+     * @param VideoProxyEntity $video
+     * @return VideoProxyEntity
      * @throws PrintableException
      */
-    public function refetchVideo(\KL\EditorManager\Entity\VideoProxy $video)
+    public function refetchVideo(VideoProxyEntity $video)
     {
         $video->is_processing = time();
         $video->save();
@@ -204,7 +206,7 @@ class VideoProxy extends AbstractService
             $response->getBody()->close();
 
             if ($response->getStatusCode() == 200) {
-                $disposition = $response->getHeader('Content-Disposition');
+                $disposition = (string) $response->getHeader('Content-Disposition');
                 if ($disposition && preg_match('/filename=(\'|"|)(.+)\\1/siU', $disposition, $match)) {
                     $fileName = $match[2];
                 }
@@ -214,7 +216,7 @@ class VideoProxy extends AbstractService
 
                 $videoInfo = filesize($streamFile) ? @pathinfo($streamFile) : false;
                 if ($videoInfo) {
-                    $videoType = $response->getHeader('content-type');
+                    $videoType = (string) $response->getHeader('content-type');
 
                     $extension = File::getFileExtension($fileName);
                     $extensionMap = [
@@ -262,11 +264,11 @@ class VideoProxy extends AbstractService
     }
 
     /**
-     * @param \KL\EditorManager\Entity\VideoProxy $video
+     * @param VideoProxyEntity $video
      * @param array $fetchResults
      * @throws PrintableException
      */
-    protected function finalizeFromFetchResults(\KL\EditorManager\Entity\VideoProxy $video, array $fetchResults)
+    protected function finalizeFromFetchResults(VideoProxyEntity $video, array $fetchResults)
     {
         $video->is_processing = 0;
 

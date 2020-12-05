@@ -9,6 +9,7 @@
 namespace KL\EditorManager\Cron;
 
 use GuzzleHttp\Exception\GuzzleException;
+use KL\EditorManager\Repository\GoogleFont;
 use XF;
 use XF\PrintableException;
 
@@ -24,8 +25,8 @@ class GoogleFonts
      */
     public static function run() : void
     {
-        /** @var \KL\EditorManager\Repository\GoogleFonts $repo */
-        $repo = XF::repository('KL\EditorManager:GoogleFonts');
+        /** @var GoogleFont $repo */
+        $repo = XF::repository('KL\EditorManager:GoogleFont');
         $repo->updateFontList();
     }
 }
