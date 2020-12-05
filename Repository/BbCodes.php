@@ -8,6 +8,8 @@
 
 namespace KL\EditorManager\Repository;
 
+use XF;
+use XF\Mvc\Entity\AbstractCollection;
 use XF\Mvc\Entity\Repository;
 
 /**
@@ -21,9 +23,8 @@ class BbCodes extends Repository
      */
     public function getValidControllersForHide()
     {
-        $value = \XF::app()->options()->klEMHideControllers;
-        $controllers = explode("\n", $value);
-        return $controllers;
+        $value = XF::app()->options()->klEMHideControllers;
+        return explode("\n", $value);
     }
 
     /**
@@ -32,12 +33,12 @@ class BbCodes extends Repository
     protected $bbCodeSettings = false;
 
     /**
-     * @return \XF\Mvc\Entity\ArrayCollection
+     * @return bool|AbstractCollection
      */
     public function getBbCodeSettings()
     {
         if (!$this->bbCodeSettings) {
-            $this->bbCodeSettings = \XF::finder('KL\EditorManager:BbCode')->fetch();
+            $this->bbCodeSettings = XF::finder('KL\EditorManager:BbCode')->fetch();
         }
 
         return $this->bbCodeSettings;

@@ -2,6 +2,7 @@
 
 namespace KL\EditorManager\Entity;
 
+use XF;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 
@@ -20,11 +21,11 @@ class CustomEmotePrefix extends Entity
      */
     public function canChange()
     {
-        if ($this->user_id != \XF::visitor()->user_id) {
+        if ($this->user_id != XF::visitor()->user_id) {
             return false;
         }
 
-        if (\XF::visitor()->hasPermission('klEM', 'changeEmotePrefix')) {
+        if (XF::visitor()->hasPermission('klEM', 'changeEmotePrefix')) {
             return true;
         }
 

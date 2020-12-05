@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\Entity;
 
+use XF;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 
@@ -22,7 +23,7 @@ use XF\Mvc\Entity\Structure;
  * @property int last_date
  *
  * RELATIONS
- * @property \KL\EditorManager\Entity\VideoProxy Video
+ * @property VideoProxy Video
  */
 class VideoProxyReferrer extends Entity
 {
@@ -41,8 +42,8 @@ class VideoProxyReferrer extends Entity
             'referrer_hash' => ['type' => self::STR, 'maxLength' => 32, 'required' => true],
             'referrer_url' => ['type' => self::STR, 'required' => true],
             'hits' => ['type' => self::UINT, 'default' => 0],
-            'first_date' => ['type' => self::UINT, 'default' => \XF::$time],
-            'last_date' => ['type' => self::UINT, 'default' => \XF::$time],
+            'first_date' => ['type' => self::UINT, 'default' => XF::$time],
+            'last_date' => ['type' => self::UINT, 'default' => XF::$time],
         ];
         $structure->getters = [];
         $structure->relations = [

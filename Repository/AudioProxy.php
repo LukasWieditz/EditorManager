@@ -8,9 +8,12 @@
 
 namespace KL\EditorManager\Repository;
 
+use XF;
 use XF\Db\DeadlockException;
+use XF\Db\Exception;
 use XF\Mvc\Entity\Finder;
 use XF\Mvc\Entity\Repository;
+use XF\PrintableException;
 
 /**
  * Class AudioProxy
@@ -55,7 +58,7 @@ class AudioProxy extends Repository
 
     /**
      * @param \KL\EditorManager\Entity\AudioProxy $audio
-     * @throws \XF\Db\Exception
+     * @throws Exception
      */
     public function logAudioView(\KL\EditorManager\Entity\AudioProxy $audio)
     {
@@ -64,7 +67,7 @@ class AudioProxy extends Repository
 				views = views + 1,
 				last_request_date = ?
 			WHERE audio_id = ?
-		", [\XF::$time, $audio->audio_id]);
+		", [XF::$time, $audio->audio_id]);
     }
 
     /**
@@ -84,8 +87,8 @@ class AudioProxy extends Repository
                 'referrer_hash' => md5($referrer),
                 'referrer_url' => $referrer,
                 'hits' => 1,
-                'first_date' => \XF::$time,
-                'last_date' => \XF::$time
+                'first_date' => XF::$time,
+                'last_date' => XF::$time
             ], false, 'hits = hits + 1, last_date = VALUES(last_date)');
         } catch (DeadlockException $e) {
             // ignore deadlocks here -- we're likely triggering a race condition within MySQL
@@ -117,7 +120,7 @@ class AudioProxy extends Repository
     public function getPlaceholderAudio()
     {
         // TODO: ability to customize path
-        $path = \XF::getRootDirectory() . '/styles/editor-manager/missing-audio.mp3';
+        $path = XF::getRootDirectory() . '/styles/editor-manager/missing-audio.mp3';
 
         /** @var \KL\EditorManager\Entity\AudioProxy $audio */
         $audio = $this->em->create('KL\EditorManager:AudioProxy');
@@ -130,7 +133,7 @@ class AudioProxy extends Repository
      * Prunes audios from the file system cache that have expired
      *
      * @param integer|null $pruneDate
-     * @throws \XF\PrintableException
+     * @throws PrintableException
      */
     public function pruneAudioCache($pruneDate = null)
     {
@@ -139,7 +142,7 @@ class AudioProxy extends Repository
                 return;
             }
 
-            $pruneDate = \XF::$time - (86400 * $this->options()->klEMAudioCacheTTL);
+            $pruneDate = XF::$time - (86400 * $this->options()->klEMAudioCacheTTL);
         }
 
         /** @var \KL\EditorManager\Entity\AudioProxy[] $audios */
@@ -174,7 +177,7 @@ class AudioProxy extends Repository
             }
 
             $maxTtl = max($options->klEMVideoAudioProxyLogLength, $options->klEMAudioCacheTTL);
-            $pruneDate = \XF::$time - (86400 * $maxTtl);
+            $pruneDate = XF::$time - (86400 * $maxTtl);
         }
 
         // we can only remove logs where we've pruned the audio
@@ -197,7 +200,7 @@ class AudioProxy extends Repository
                 return 0;
             }
 
-            $pruneDate = \XF::$time - (86400 * $options->klEMVideoAudioProxyReferrer['length']);
+            $pruneDate = XF::$time - (86400 * $options->klEMVideoAudioProxyReferrer['length']);
         }
 
         return $this->db()->delete('xf_kl_em_audio_proxy_referrer',

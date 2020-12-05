@@ -2,9 +2,15 @@
 
 namespace KL\EditorManager\Service\CustomEmote;
 
+use InvalidArgumentException;
 use KL\EditorManager\Entity\CustomEmote;
+use LogicException;
+use RuntimeException;
+use XF;
 use XF\App;
 use XF\Http\Upload;
+use XF\PrintableException;
+use XF\Repository\Ip;
 use XF\Service\AbstractService;
 use XF\Util\File;
 
@@ -138,24 +144,24 @@ class Image extends AbstractService
 
 		if (!file_exists($fileName))
 		{
-			throw new \InvalidArgumentException("Invalid file '$fileName' passed to image service");
+			throw new InvalidArgumentException("Invalid file '$fileName' passed to image service");
 		}
 		if (!is_readable($fileName))
 		{
-			throw new \InvalidArgumentException("'$fileName' passed to image service is not readable");
+			throw new InvalidArgumentException("'$fileName' passed to image service is not readable");
 		}
 
 		$imageInfo = filesize($fileName) ? getimagesize($fileName) : false;
 		if (!$imageInfo)
 		{
-			$error = \XF::phrase('provided_file_is_not_valid_image');
+			$error = XF::phrase('provided_file_is_not_valid_image');
 			return false;
 		}
 
 		$type = $imageInfo[2];
 		if (!in_array($type, $this->allowedTypes))
 		{
-			$error = \XF::phrase('provided_file_is_not_valid_image');
+			$error = XF::phrase('provided_file_is_not_valid_image');
 			return false;
 		}
 
@@ -164,7 +170,7 @@ class Image extends AbstractService
 
 		if (!$this->app->imageManager()->canResize($width, $height))
 		{
-			$error = \XF::phrase('uploaded_image_is_too_big');
+			$error = XF::phrase('uploaded_image_is_too_big');
 			return false;
 		}
 
@@ -178,13 +184,13 @@ class Image extends AbstractService
 
     /**
      * @return bool
-     * @throws \XF\PrintableException
+     * @throws PrintableException
      */
     public function updateImage()
 	{
 		if (!$this->fileName)
 		{
-			throw new \LogicException("No source file for image set");
+			throw new LogicException("No source file for image set");
 		}
 
 		$imageManager = $this->app->imageManager();
@@ -214,13 +220,13 @@ class Image extends AbstractService
 
 		if (!$outputFile)
 		{
-			throw new \RuntimeException("Failed to save image to temporary file; check internal_data/data permissions");
+			throw new RuntimeException("Failed to save image to temporary file; check internal_data/data permissions");
 		}
 
 		$dataFile = $this->emote->getAbstractedPath();
 		File::copyFileToAbstractedPath($outputFile, $dataFile);
 
-		$this->emote->image_date = \XF::$time;
+		$this->emote->image_date = XF::$time;
         $this->emote->save();
 
 		if ($this->logIp)
@@ -261,8 +267,8 @@ class Image extends AbstractService
 	{
 		$emote = $this->emote;
 
-		/** @var \XF\Repository\Ip $ipRepo */
+		/** @var Ip $ipRepo */
 		$ipRepo = $this->repository('XF:Ip');
-		$ipRepo->logIp(\XF::visitor()->user_id, $ip, 'kl_em_custom_emote', $emote->emote_id, 'image_' . $action);
+		$ipRepo->logIp(XF::visitor()->user_id, $ip, 'kl_em_custom_emote', $emote->emote_id, 'image_' . $action);
 	}
 }

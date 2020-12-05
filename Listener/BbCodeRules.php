@@ -1,7 +1,8 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace KL\EditorManager\Listener;
 
+use XF;
 use XF\BbCode\RuleSet;
 
 /**
@@ -47,8 +48,7 @@ class BbCodeRules {
         $tags = $ruleSet->getTags();
 
         /** Load aliases */
-        /** @noinspection PhpUndefinedMethodInspection */
-        foreach (\XF::repository('KL\EditorManager:BbCodes')->getBbCodeSettings() as $bbCode => $config) {
+        foreach (XF::repository('KL\EditorManager:BbCodes')->getBbCodeSettings() as $bbCode => $config) {
             switch ($bbCode) {
                 case 'bold':
                     $bbCode = 'b';

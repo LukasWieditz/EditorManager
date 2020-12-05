@@ -8,8 +8,14 @@
 
 namespace KL\EditorManager\XF\Admin\Controller;
 
+use KL\EditorManager\Entity\AudioProxy;
+use KL\EditorManager\Entity\VideoProxy;
 use XF\Mvc\Entity\Finder;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\Exception;
+use XF\Mvc\Reply\Reroute;
+use XF\Mvc\Reply\View;
+use XF\PrintableException;
 
 /**
  * Class Log
@@ -19,7 +25,7 @@ class Log extends XFCP_Log
 {
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Reroute|\XF\Mvc\Reply\View
+     * @return Reroute|View
      */
     public function actionAudioProxy(ParameterBag $params)
     {
@@ -77,9 +83,9 @@ class Log extends XFCP_Log
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\View
-     * @throws \XF\Mvc\Reply\Exception
-     * @throws \XF\PrintableException
+     * @return View
+     * @throws Exception
+     * @throws PrintableException
      */
     public function actionAudioProxyAudio(ParameterBag $params)
     {
@@ -107,8 +113,8 @@ class Log extends XFCP_Log
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return View
+     * @throws Exception
      */
     public function actionAudioProxyView(ParameterBag $params)
     {
@@ -124,8 +130,8 @@ class Log extends XFCP_Log
      * @param $id
      * @param null $with
      * @param null $phraseKey
-     * @return \KL\EditorManager\Entity\AudioProxy
-     * @throws \XF\Mvc\Reply\Exception
+     * @return AudioProxy
+     * @throws Exception
      */
     protected function assertAudioProxyExists($id, $with = null, $phraseKey = null)
     {
@@ -135,7 +141,7 @@ class Log extends XFCP_Log
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Reroute|\XF\Mvc\Reply\View
+     * @return Reroute|View
      */
     public function actionVideoProxy(ParameterBag $params)
     {
@@ -193,9 +199,9 @@ class Log extends XFCP_Log
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\View
-     * @throws \XF\Mvc\Reply\Exception
-     * @throws \XF\PrintableException
+     * @return View
+     * @throws Exception
+     * @throws PrintableException
      */
     public function actionVideoProxyVideo(ParameterBag $params)
     {
@@ -223,8 +229,8 @@ class Log extends XFCP_Log
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return View
+     * @throws Exception
      */
     public function actionVideoProxyView(ParameterBag $params)
     {
@@ -240,8 +246,8 @@ class Log extends XFCP_Log
      * @param $id
      * @param null $with
      * @param null $phraseKey
-     * @return \KL\EditorManager\Entity\VideoProxy
-     * @throws \XF\Mvc\Reply\Exception
+     * @return VideoProxy
+     * @throws Exception
      */
     protected function assertVideoProxyExists($id, $with = null, $phraseKey = null)
     {

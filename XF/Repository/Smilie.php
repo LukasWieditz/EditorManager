@@ -2,6 +2,8 @@
 
 namespace KL\EditorManager\XF\Repository;
 
+use XF;
+
 class Smilie extends XFCP_Smilie
 {
     public function getSmilieListData($displayInEditorOnly = false)
@@ -25,11 +27,11 @@ class Smilie extends XFCP_Smilie
             }
 
             if (!empty($smilie['kl_em_user_criteria'])) {
-                $criteriaCheck = \XF::app()->criteria('XF:User', $smilie['kl_em_user_criteria']);
+                $criteriaCheck = XF::app()->criteria('XF:User', $smilie['kl_em_user_criteria']);
 
                 $criteriaCheck->setMatchOnEmpty(true);
 
-                if (!$criteriaCheck->isMatched(\XF::visitor())) {
+                if (!$criteriaCheck->isMatched(XF::visitor())) {
                     unset($smilies[$id]);
                 }
             }

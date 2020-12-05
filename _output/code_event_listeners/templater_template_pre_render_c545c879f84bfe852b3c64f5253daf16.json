@@ -3,7 +3,7 @@
     "execute_order": 10,
     "callback_class": "KL\\EditorManager\\Listener\\TemplaterTemplatePreRender",
     "callback_method": "editor",
-    "active": true,
+    "active": false,
     "hint": "public:editor",
     "description": "public:editor"
 }

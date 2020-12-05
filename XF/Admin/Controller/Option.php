@@ -9,6 +9,8 @@
 namespace KL\EditorManager\XF\Admin\Controller;
 
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\Error;
+use XF\Mvc\Reply\View;
 
 /**
  * Class Option
@@ -18,7 +20,7 @@ class Option extends XFCP_Option
 {
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Error|\XF\Mvc\Reply\View
+     * @return Error|View
      */
     public function actionGroup(ParameterBag $params)
     {

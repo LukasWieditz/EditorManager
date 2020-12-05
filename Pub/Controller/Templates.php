@@ -8,6 +8,16 @@
 
 namespace KL\EditorManager\Pub\Controller;
 
+use XF;
+use XF\ControllerPlugin\Delete;
+use XF\ControllerPlugin\Editor;
+use XF\ControllerPlugin\Toggle;
+use XF\Entity\Smilie;
+use XF\Mvc\FormAction;
+use XF\Mvc\Reply\Exception;
+use XF\Mvc\Reply\Message;
+use XF\Mvc\Reply\Redirect;
+use XF\PrintableException;
 use \XF\Pub\Controller\AbstractController;
 use \XF\Mvc\Reply\View;
 use \XF\Mvc\ParameterBag;
@@ -22,7 +32,7 @@ class Templates extends AbstractController
     /**
      * @param $action
      * @param ParameterBag $params
-     * @throws \XF\Mvc\Reply\Exception
+     * @throws Exception
      */
     protected function preDispatchController($action, ParameterBag $params)
     {
@@ -32,22 +42,22 @@ class Templates extends AbstractController
 
     /**
      * Checks if a user is allowed to generally create private templates.
-     * @throws \XF\Mvc\Reply\Exception
+     * @throws Exception
      */
     protected function assertCanHaveTemplates()
     {
-        if (!\XF::visitor()->hasPermission('klEM', 'klEMPrivateTemplates')) {
+        if (!XF::visitor()->hasPermission('klEM', 'klEMPrivateTemplates')) {
             throw $this->exception($this->noPermission());
         }
     }
 
     /**
      * Checks if a user is allowed to create a new template or has hit his template limit.
-     * @throws \XF\Mvc\Reply\Exception
+     * @throws Exception
      */
     protected function assertCanCreateTemplate()
     {
-        $visitor = \XF::visitor();
+        $visitor = XF::visitor();
 
         if ($visitor->hasPermission('klEM', 'klEMPrivateTemplatesMax') != -1) {
             /** @var \KL\EditorManager\Repository\Template $repo */
@@ -63,11 +73,11 @@ class Templates extends AbstractController
     /**
      * Checks if the given template belongs to a user.
      * @param Template $template
-     * @throws \XF\Mvc\Reply\Exception
+     * @throws Exception
      */
     protected function assertUserTemplate(Template $template)
     {
-        if (\XF::visitor()->user_id !== $template->user_id) {
+        if (XF::visitor()->user_id !== $template->user_id) {
             throw $this->exception($this->noPermission());
         }
     }
@@ -91,8 +101,8 @@ class Templates extends AbstractController
     {
         /** @var \KL\EditorManager\Repository\Template $repo */
         $repo = $this->repository('KL\EditorManager:Template');
-        $templates = $repo->getTemplatesForUser(\XF::visitor()->user_id);
-        $visitor = \XF::visitor();
+        $templates = $repo->getTemplatesForUser(XF::visitor()->user_id);
+        $visitor = XF::visitor();
 
         $canCreateTemplates = true;
         if ($visitor->hasPermission('klEM', 'klEMPrivateTemplatesMax') != -1) {
@@ -130,7 +140,7 @@ class Templates extends AbstractController
     /**
      * @param ParameterBag $params
      * @return View
-     * @throws \XF\Mvc\Reply\Exception
+     * @throws Exception
      */
     public function actionEdit(ParameterBag $params)
     {
@@ -143,13 +153,13 @@ class Templates extends AbstractController
 
     /**
      * @return View
-     * @throws \XF\Mvc\Reply\Exception
+     * @throws Exception
      */
     public function actionAdd()
     {
         $this->assertCanCreateTemplate();
 
-        /** @var \KL\EditorManager\Entity\Template $template */
+        /** @var Template $template */
         $template = $this->em()->create('KL\EditorManager:Template');
         return $this->templateAddEdit($template);
     }
@@ -157,13 +167,13 @@ class Templates extends AbstractController
     /**
      * Deletes a template or shows confirmation screen.
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Redirect|View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return Redirect|View
+     * @throws Exception
      */
     public function actionDelete(ParameterBag $params)
     {
         $template = $this->assertTemplateExists($params['template_id']);
-        /** @var \XF\ControllerPlugin\Delete $plugin */
+        /** @var Delete $plugin */
         $plugin = $this->plugin('XF:Delete');
         return $plugin->actionDelete(
             $template,
@@ -177,9 +187,9 @@ class Templates extends AbstractController
     /**
      * Saves template changes.
      * @param ParameterBag $params
-     * @return \XF\Mvc\FormAction|\XF\Mvc\Reply\Redirect
-     * @throws \XF\Mvc\Reply\Exception
-     * @throws \XF\PrintableException
+     * @return FormAction|Redirect
+     * @throws Exception
+     * @throws PrintableException
      */
     public function actionSave(ParameterBag $params)
     {
@@ -205,7 +215,7 @@ class Templates extends AbstractController
 
     /**
      * @param Template $template
-     * @return \XF\Mvc\FormAction
+     * @return FormAction
      */
     protected function templateSaveProcess(Template $template)
     {
@@ -214,8 +224,8 @@ class Templates extends AbstractController
             'active' => 'uint'
         ]);
 
-        $entityInput['user_id'] = \XF::visitor()->user_id;
-        /** @var \XF\ControllerPlugin\Editor $editor */
+        $entityInput['user_id'] = XF::visitor()->user_id;
+        /** @var Editor $editor */
         $editor = $this->plugin('XF:Editor');
         $entityInput['content'] = $editor->fromInput('content');
 
@@ -227,21 +237,21 @@ class Templates extends AbstractController
 
     /**
      * Sorts templates as requested.
-     * @return \XF\Mvc\Reply\Redirect|View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return Redirect|View
+     * @throws Exception
      */
     public function actionSort()
     {
         /** @var \KL\EditorManager\Repository\Template $repo */
         $repo = $this->repository('KL\EditorManager:Template');
-        $templates = $repo->getTemplatesForUser(\XF::visitor()->user_id);
+        $templates = $repo->getTemplatesForUser(XF::visitor()->user_id);
 
         if ($this->isPost()) {
             $lastOrder = 0;
             foreach (json_decode($this->filter('templates', 'string')) as $templateValue) {
                 $lastOrder += 10;
 
-                /** @var \XF\Entity\Smilie $smilie */
+                /** @var Smilie $smilie */
                 $template = $templates[$templateValue->id];
                 $this->assertUserTemplate($template);
                 $template->display_order = $lastOrder;
@@ -259,14 +269,13 @@ class Templates extends AbstractController
 
     /**
      * Toggles templates on or off.
-     * @return \XF\Mvc\Reply\Message
+     * @return Message
      */
     public function actionToggle()
     {
-        /** @var \XF\ControllerPlugin\Toggle $plugin */
+        /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');
-        $return = $plugin->actionToggle('KL\EditorManager:Template');
-        return $return;
+        return $plugin->actionToggle('KL\EditorManager:Template');
     }
 
     /**
@@ -274,12 +283,12 @@ class Templates extends AbstractController
      * @param array|string|null $with
      * @param null|string $phraseKey
      *
-     * @return \KL\EditorManager\Entity\Template
-     * @throws \XF\Mvc\Reply\Exception
+     * @return Template
+     * @throws Exception
      */
     protected function assertTemplateExists($id, $with = null, $phraseKey = null)
     {
-        /** @var \KL\EditorManager\Entity\Template $template */
+        /** @var Template $template */
         $template = $this->assertRecordExists('KL\EditorManager:Template', $id, $with, $phraseKey);
         return $template;
     }

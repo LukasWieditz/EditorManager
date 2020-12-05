@@ -8,7 +8,10 @@
 
 namespace KL\EditorManager\XF\Pub\Controller;
 
+use XF;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\Exception;
+use XF\Mvc\Reply\Redirect;
 use XF\Mvc\Reply\View;
 
 /**
@@ -19,8 +22,8 @@ class Post extends XFCP_Post
 {
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Redirect|View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return Redirect|View
+     * @throws Exception
      */
     public function actionReact(ParameterBag $params)
     {
@@ -30,7 +33,7 @@ class Post extends XFCP_Post
             $post = $this->assertViewablePost($params['post_id']);
 
             if (stripos($post->message, '[hide') !== false) {
-                $message = \XF::app()->bbCode()->render($post->message, 'html', 'post', $post);
+                $message = XF::app()->bbCode()->render($post->message, 'html', 'post', $post);
                 $return->setJsonParam('klEMPosts', [$post->post_id => $message]);
             }
         }

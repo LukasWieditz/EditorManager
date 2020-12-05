@@ -8,9 +8,21 @@
 
 namespace KL\EditorManager\Admin\Controller;
 
+use XF;
 use XF\Admin\Controller\AbstractController;
 use KL\EditorManager\Entity\Font;
+use XF\ControllerPlugin\Delete;
+use XF\ControllerPlugin\Toggle;
+use XF\Entity\Smilie;
+use XF\Mvc\FormAction;
 use \XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\AbstractReply;
+use XF\Mvc\Reply\Error;
+use XF\Mvc\Reply\Exception;
+use XF\Mvc\Reply\Message;
+use XF\Mvc\Reply\Redirect;
+use XF\Mvc\Reply\View;
+use XF\PrintableException;
 
 /**
  * Class Fonts
@@ -20,9 +32,9 @@ class Fonts extends AbstractController
 {
     /**
      * Return font list.
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
-    public function actionIndex()
+    public function actionIndex() : AbstractReply
     {
 
         /** @var \KL\EditorManager\Repository\Font $repo */
@@ -48,9 +60,9 @@ class Fonts extends AbstractController
     /**
      * Return font edit screen.
      * @param Font $font
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
-    public function fontAddEdit(Font $font)
+    public function fontAddEdit(Font $font) : AbstractReply
     {
         if ($font->get('type') === 'web') {
             $extra_data = $font->get('extra_data');
@@ -109,34 +121,34 @@ class Fonts extends AbstractController
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return View
+     * @throws Exception
      */
-    public function actionEdit(ParameterBag $params)
+    public function actionEdit(ParameterBag $params) : AbstractReply
     {
         $font = $this->assertFontExists($params['font_id']);
         return $this->fontAddEdit($font);
     }
 
     /**
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
-    public function actionAdd()
+    public function actionAdd() : AbstractReply
     {
-        /** @var \KL\EditorManager\Entity\Font $font */
+        /** @var Font $font */
         $font = $this->em()->create('KL\EditorManager:Font');
         return $this->fontAddEdit($font);
     }
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return Redirect|View
+     * @throws Exception
      */
-    public function actionDelete(ParameterBag $params)
+    public function actionDelete(ParameterBag $params) : AbstractReply
     {
         $font = $this->assertFontExists($params['font_id']);
-        /** @var \XF\ControllerPlugin\Delete $plugin */
+        /** @var Delete $plugin */
         $plugin = $this->plugin('XF:Delete');
         return $plugin->actionDelete(
             $font,
@@ -150,11 +162,11 @@ class Fonts extends AbstractController
     /**
      * Saves font.
      * @param ParameterBag $params
-     * @return \XF\Mvc\FormAction|\XF\Mvc\Reply\Redirect
-     * @throws \XF\Mvc\Reply\Exception
-     * @throws \XF\PrintableException
+     * @return FormAction|Redirect
+     * @throws Exception
+     * @throws PrintableException
      */
-    public function actionSave(ParameterBag $params)
+    public function actionSave(ParameterBag $params) : AbstractReply
     {
         $this->assertPostOnly();
 
@@ -181,9 +193,9 @@ class Fonts extends AbstractController
 
     /**
      * @param Font $font
-     * @return \XF\Mvc\FormAction|\XF\Mvc\Reply\Error
+     * @return FormAction|Error
      */
-    protected function fontSaveProcess(Font $font)
+    protected function fontSaveProcess(Font $font) : FormAction
     {
         $entityInput = $this->filter([
             'font_id' => 'str',
@@ -227,7 +239,7 @@ class Fonts extends AbstractController
             $name = $this->filter('file', 'str');
 
             if (!$name) {
-                return $this->error(\XF::phrase('kl_em_invalid_file'));
+                return $this->error(XF::phrase('kl_em_invalid_file'));
             }
 
             $entityInput['extra_data'] = [
@@ -299,18 +311,18 @@ class Fonts extends AbstractController
     }
 
     /**
-     * @return \XF\Mvc\Reply\Error
+     * @return Error
      */
-    private function throwInvalidServiceError()
+    private function throwInvalidServiceError() : Error
     {
-        return $this->error(\XF::phrase('kl_em_invalid_service_url'));
+        return $this->error(XF::phrase('kl_em_invalid_service_url'));
     }
 
     /**
      * Sorts font list.
-     * @return \XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
+     * @return Redirect|View
      */
-    public function actionSort()
+    public function actionSort() : AbstractReply
     {
         /** @var \KL\EditorManager\Repository\Font $repo */
         $repo = $this->repository('KL\EditorManager:Font');
@@ -323,7 +335,7 @@ class Fonts extends AbstractController
             foreach (json_decode($this->filter('fonts', 'string')) as $fontValue) {
                 $lastOrder += 10;
 
-                /** @var \XF\Entity\Smilie $smilie */
+                /** @var Smilie $smilie */
                 $font = $fonts[$fontValue->id];
                 $font->display_order = $lastOrder;
                 $font->saveIfChanged();
@@ -342,11 +354,11 @@ class Fonts extends AbstractController
 
     /**
      * Toggles fonts.
-     * @return \XF\Mvc\Reply\Message
+     * @return Message
      */
-    public function actionToggle()
+    public function actionToggle() : AbstractReply
     {
-        /** @var \XF\ControllerPlugin\Toggle $plugin */
+        /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');
         $return = $plugin->actionToggle('KL\EditorManager:Font');
 
@@ -361,12 +373,12 @@ class Fonts extends AbstractController
      * @param array|string|null $with
      * @param null|string $phraseKey
      *
-     * @return \KL\EditorManager\Entity\Font
-     * @throws \XF\Mvc\Reply\Exception
+     * @return Font
+     * @throws Exception
      */
-    protected function assertFontExists($id, $with = null, $phraseKey = null)
+    protected function assertFontExists($id, $with = null, $phraseKey = null) : Font
     {
-        /** @var \KL\EditorManager\Entity\Font $font */
+        /** @var Font $font */
         $font = $this->assertRecordExists('KL\EditorManager:Font', $id, $with, $phraseKey);
         return $font;
     }

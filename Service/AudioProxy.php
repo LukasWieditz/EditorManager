@@ -8,7 +8,10 @@
 
 namespace KL\EditorManager\Service;
 
+use InvalidArgumentException;
+use XF;
 use XF\Db\Exception;
+use XF\PrintableException;
 use XF\Service\AbstractService;
 use XF\Util\File;
 
@@ -59,8 +62,8 @@ class AudioProxy extends AbstractService
     /**
      * @param $url
      * @return \KL\EditorManager\Entity\AudioProxy|null
-     * @throws \XF\PrintableException
-     * @throws \XF\PrintableException
+     * @throws PrintableException
+     * @throws PrintableException
      */
     public function getAudio($url)
     {
@@ -107,7 +110,7 @@ class AudioProxy extends AbstractService
     /**
      * @param $url
      * @return \KL\EditorManager\Entity\AudioProxy|null
-     * @throws \XF\PrintableException
+     * @throws PrintableException
      */
     public function fetchNewAudio($url)
     {
@@ -133,7 +136,7 @@ class AudioProxy extends AbstractService
     /**
      * @param \KL\EditorManager\Entity\AudioProxy $audio
      * @return \KL\EditorManager\Entity\AudioProxy
-     * @throws \XF\PrintableException
+     * @throws PrintableException
      */
     public function refetchAudio(\KL\EditorManager\Entity\AudioProxy $audio)
     {
@@ -169,7 +172,7 @@ class AudioProxy extends AbstractService
     {
         $url = $this->proxyRepo->cleanUrlForFetch($url);
         if (!preg_match('#^https?://#i', $url)) {
-            throw new \InvalidArgumentException("URL must be http or https");
+            throw new InvalidArgumentException("URL must be http or https");
         }
 
         $urlParts = @parse_url($url);
@@ -234,13 +237,13 @@ class AudioProxy extends AbstractService
 
                         $validAudio = true;
                     } else {
-                        $error = \XF::phraseDeferred('kl_em_audio_is_invalid_type');
+                        $error = XF::phraseDeferred('kl_em_audio_is_invalid_type');
                     }
                 } else {
-                    $error = \XF::phraseDeferred('kl_em_file_not_a_audio');
+                    $error = XF::phraseDeferred('kl_em_file_not_a_audio');
                 }
             } else {
-                $error = \XF::phraseDeferred('received_unexpected_response_code_x_message_y', [
+                $error = XF::phraseDeferred('received_unexpected_response_code_x_message_y', [
                     'code' => $response->getStatusCode(),
                     'message' => $response->getReasonPhrase()
                 ]);
@@ -263,7 +266,7 @@ class AudioProxy extends AbstractService
     /**
      * @param \KL\EditorManager\Entity\AudioProxy $audio
      * @param array $fetchResults
-     * @throws \XF\PrintableException
+     * @throws PrintableException
      */
     protected function finalizeFromFetchResults(\KL\EditorManager\Entity\AudioProxy $audio, array $fetchResults)
     {

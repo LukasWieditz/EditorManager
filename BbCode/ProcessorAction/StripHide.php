@@ -3,11 +3,12 @@
 /*!
  * KL/EditorManager/BbCode/ProcessorAction/StripHide.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\BbCode\ProcessorAction;
 
+use XF;
 use XF\App;
 use XF\BbCode\ProcessorAction\FiltererInterface;
 use XF\BbCode\ProcessorAction\FiltererHooks;
@@ -38,13 +39,14 @@ class StripHide implements FiltererInterface
      * Add hooks to filter hide tags.
      * @param FiltererHooks $hooks
      */
-    public function addFiltererHooks(FiltererHooks $hooks)
+    public function addFiltererHooks(FiltererHooks $hooks) : void
     {
         $hooks->addTagHook('hide', 'filterHide');
         $hooks->addTagHook('hidereply', 'filterHide');
         $hooks->addTagHook('hideposts', 'filterHide');
         $hooks->addTagHook('hidereplythanks', 'filterHide');
         $hooks->addTagHook('hidethanks', 'filterHide');
+        $hooks->addTagHook('hidegroups', 'filterHide');
     }
 
     /**
@@ -53,16 +55,16 @@ class StripHide implements FiltererInterface
      * @param $function
      * @return string
      */
-    public function filterHide($tag, $function)
+    public function filterHide($tag, $function) : string
     {
-        return '[B][' . \XF::phrase('kl_em_hidden_content') . '][/B]';
+        return '[B][' . XF::phrase('kl_em_hidden_content') . '][/B]';
     }
 
     /**
      * @param App $app
      * @return static
      */
-    public static function factory(App $app)
+    public static function factory(App $app) : StripHide
     {
         return new static($app->stringFormatter());
     }

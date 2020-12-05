@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection */
 
 /*!
  * KL/EditorManager/Admin/Controller/Fonts.php

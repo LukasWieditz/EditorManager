@@ -8,7 +8,11 @@
 
 namespace KL\EditorManager\XF\BbCode\Renderer;
 
+use KL\EditorManager\BbCode\EditorManagerInterface;
+use KL\EditorManager\BbCode\Renderer\EditorManagerTrait;
+use XF;
 use XF\Entity\User;
+use XF\Http\Response;
 use XF\Mvc\Entity\ArrayCollection;
 use XF\PreEscaped;
 
@@ -16,9 +20,9 @@ use XF\PreEscaped;
  * Class Html
  * @package KL\EditorManager\BbCode\Renderer
  */
-class Html extends XFCP_Html
+class Html extends XFCP_Html implements EditorManagerInterface
 {
-    use EditorManager;
+    use EditorManagerTrait;
 
     /**
      * @param array $children
@@ -27,7 +31,7 @@ class Html extends XFCP_Html
      * @param array $options
      * @return string
      */
-    public function renderTagVideo(array $children, $option, array $tag, array $options)
+    public function renderTagKLVideo(array $children, $option, array $tag, array $options)
     {
         $optionArray = explode(',', trim($option));
 
@@ -63,7 +67,7 @@ class Html extends XFCP_Html
      * @param array $options
      * @return string
      */
-    public function renderTagAudio(array $children, $option, array $tag, array $options)
+    public function renderTagKLAudio(array $children, $option, array $tag, array $options)
     {
         $sources = $this->renderSubTreePlain($children);
         return $this->renderVideoAudio("audio", explode(',', $sources), $options);
@@ -133,18 +137,17 @@ class Html extends XFCP_Html
 
         $tags = [
             'bgcolor' => ['callback' => 'renderTagKLBGColor'],
-            'justify' => ['callback' => 'renderTagKLJustify', 'trimAfter' => 1],
             'sup' => ['callback' => 'renderTagKLSup'],
             'sub' => ['callback' => 'renderTagKLSub'],
             'parsehtml' => ['callback' => 'renderTagParseHtml', 'stopBreakConversion' => true],
-            'hidereply' => ['callback' => 'renderTagHideReply', 'trimAfter' => 2],
-            'hideposts' => ['callback' => 'renderTagHidePosts', 'trimAfter' => 2],
-            'hidethanks' => ['callback' => 'renderTagHideThanks', 'trimAfter' => 2],
-            'hidereplythanks' => ['callback' => 'renderTagHideReplyThanks', 'trimAfter' => 2],
-            'hidegroup' => ['callback' => 'renderTagHideGroup', 'trimAfter' => 2],
-            'hide' => ['callback' => 'renderTagHide' . $config['hide_default'], 'trimAfter' => 2],
-            'video' => ['callback' => 'renderTagVideo'],
-            'audio' => ['callback' => 'renderTagAudio']
+            'hidereply' => ['callback' => 'RenderTagKLHideReply', 'trimAfter' => 2],
+            'hideposts' => ['callback' => 'RenderTagKLHidePosts', 'trimAfter' => 2],
+            'hidethanks' => ['callback' => 'RenderTagKLHideThanks', 'trimAfter' => 2],
+            'hidereplythanks' => ['callback' => 'RenderTagKLHideReplyThanks', 'trimAfter' => 2],
+            'hidegroup' => ['callback' => 'RenderTagKLHideGroup', 'trimAfter' => 2],
+            'hide' => ['callback' => 'RenderTagKLHide' . $config['hide_default'], 'trimAfter' => 2],
+            'video' => ['callback' => 'renderTagKLVideo'],
+            'audio' => ['callback' => 'renderTagKLAudio']
         ];
 
         /* Merge default BB code aliases into config */
@@ -185,13 +188,13 @@ class Html extends XFCP_Html
      * Retrieve user object from BB code options
      *
      * @param $options
-     * @return null|\XF\Entity\User
+     * @return null|User
      */
     private function getUserFromOptions($options)
     {
         $user = null;
         if (!empty($options['entity']['User'])) {
-            /** @var \XF\Entity\User $user */
+            /** @var User $user */
             $user = $options['entity']['User'];
         } else {
             if (!empty($options['user'])) {
@@ -228,27 +231,27 @@ class Html extends XFCP_Html
          * If font is not found above, check whether google fonts is enabled and
          * configured and the user has permission to use it.
          */
-        if (\XF::app()->options()->klEMExternalFontPolling) {
+        if (XF::app()->options()->klEMExternalFontPolling) {
             $user = $this->getUserFromOptions($options);
 
             if ($user && $user->hasPermission('klEM', 'klEMUseGoogleFonts')) {
-                /** @var \XF\Http\Response $response */
-                $response = \XF::app()->container('response');
+                /** @var Response $response */
+                $response = XF::app()->container('response');
 
-                $font = preg_replace('/[^A-Za-z0-9 \+]/', '', $option);
+                $font = preg_replace('/[^A-Za-z0-9 +/', '', $option);
                 $family = strtr($font, [' ' => '+']);
 
                 /**
                  * Directly inject the font family css into the HTML structure, if request is made via XHR/AJAX,
                  * otherwise push it to the page container.
                  */
-                if ($response->contentType() === 'application/json' || \XF::app()->request()->isXhr()) {
+                if ($response->contentType() === 'application/json' || XF::app()->request()->isXhr()) {
                     $extra = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $family . '" />';
                 } else {
-                    $pageParams = \XF::app()->templater()->pageParams;
+                    $pageParams = XF::app()->templater()->pageParams;
                     $params = isset($pageParams['kl_em_webfonts']) ? $pageParams['kl_em_webfonts'] : [];
                     $params[] = $option;
-                    \XF::app()->templater()->setPageParam('kl_em_webfonts', $params);
+                    XF::app()->templater()->setPageParam('kl_em_webfonts', $params);
                     $extra = '';
                 }
                 return $this->wrapHtml($extra . '<span style="font-family:' . $font . '">', $output, '</span>');
@@ -289,27 +292,7 @@ class Html extends XFCP_Html
      * @param array $options
      * @return string
      */
-    public function renderTagKLJustify(array $children, $option, array $tag, array $options)
-    {
-        $output = trim($this->renderSubTree($children, $options));
-
-        $invisibleSpace = $this->endsInBlockTag($output) ? '' : '&#8203;';
-
-        return $this->wrapHtml(
-            '<div style="text-align: justify">',
-            $output . $invisibleSpace,
-            '</div>'
-        );
-    }
-
-    /**
-     * @param array $children
-     * @param $option
-     * @param array $tag
-     * @param array $options
-     * @return string
-     */
-    public function renderTagHideReply(array $children, $option, array $tag, array $options)
+    public function RenderTagKLHideReply(array $children, $option, array $tag, array $options)
     {
         if (!$children) {
             return '';
@@ -324,7 +307,7 @@ class Html extends XFCP_Html
 
         $canView = $this->canReplyView($options) ||
             $this->isCreator($options) ||
-            \XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
+            XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_reply', [
             'content' => new PreEscaped($content),
@@ -339,7 +322,7 @@ class Html extends XFCP_Html
      * @param array $options
      * @return string
      */
-    public function renderTagHideThanks(array $children, $option, array $tag, array $options)
+    public function RenderTagKLHideThanks(array $children, $option, array $tag, array $options)
     {
         if (!$children) {
             return '';
@@ -354,7 +337,7 @@ class Html extends XFCP_Html
 
         $canView = $this->canLikeView($options) ||
             $this->isCreator($options) ||
-            \XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
+            XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_thanks', [
             'content' => new PreEscaped($content),
@@ -369,7 +352,7 @@ class Html extends XFCP_Html
      * @param array $options
      * @return string
      */
-    public function renderTagHidePosts(array $children, $option, array $tag, array $options)
+    public function RenderTagKLHidePosts(array $children, $option, array $tag, array $options)
     {
         if (!$children) {
             return '';
@@ -382,7 +365,7 @@ class Html extends XFCP_Html
             return '';
         }
 
-        $visitor = \XF::visitor();
+        $visitor = XF::visitor();
         if ($visitor->user_id) {
             $canView = $visitor->hasPermission('klEM', 'klEMBypassHide') ||
                 ($visitor->hasPermission('klEM', 'klEMHidePostCount') !== -1 &&
@@ -409,7 +392,7 @@ class Html extends XFCP_Html
      * @param array $options
      * @return string
      */
-    public function renderTagHideReplyThanks(array $children, $option, array $tag, array $options)
+    public function RenderTagKLHideReplyThanks(array $children, $option, array $tag, array $options)
     {
         if (!$children) {
             return '';
@@ -424,7 +407,7 @@ class Html extends XFCP_Html
 
         $canView = $this->canLikeView($options) || $this->canReplyView($options) ||
             $this->isCreator($options) ||
-            \XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
+            XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_reply_thanks', [
             'content' => new PreEscaped($content),
@@ -443,7 +426,7 @@ class Html extends XFCP_Html
     protected function getUserGroups()
     {
         if (!$this->userGroups) {
-            $this->userGroups = \XF::finder('XF:UserGroup')->fetch();
+            $this->userGroups = XF::finder('XF:UserGroup')->fetch();
         }
         return $this->userGroups;
     }
@@ -455,7 +438,7 @@ class Html extends XFCP_Html
      * @param array $options
      * @return string
      */
-    public function renderTagHideGroup(array $children, $option, array $tag, array $options)
+    public function renderTagKLHideGroup(array $children, $option, array $tag, array $options)
     {
         if (!$children) {
             return '';
@@ -479,7 +462,7 @@ class Html extends XFCP_Html
 
         $canView = $this->isInGroup($options, $userGroups) ||
             $this->isCreator($options) ||
-            \XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
+            XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_group', [
             'content' => new PreEscaped($content),
@@ -508,7 +491,7 @@ class Html extends XFCP_Html
         }
 
         if (isset($likeIds)) {
-            return in_array(\XF::visitor()->user_id, $likeIds);
+            return in_array(XF::visitor()->user_id, $likeIds);
         } else {
             return false;
         }
@@ -530,10 +513,10 @@ class Html extends XFCP_Html
         }
 
         if ($threadId) {
-            $finder = \XF::app()->em()->getFinder('XF:Post');
+            $finder = XF::app()->em()->getFinder('XF:Post');
             $posts = $finder->where([
                 ['thread_id', $threadId],
-                ['user_id', \XF::visitor()->user_id],
+                ['user_id', XF::visitor()->user_id],
                 ['message_state', 'visible']
             ])->limit(1)->fetch();
 
@@ -551,19 +534,19 @@ class Html extends XFCP_Html
     protected function isCreator($options)
     {
         if (isset($options['user'])) {
-            return $options['user']->user_id === \XF::visitor()->user_id;
+            return $options['user']->user_id === XF::visitor()->user_id;
         }
 
         if (isset($options['user_id'])) {
-            return $options['user_id'] === \XF::visitor()->user_id;
+            return $options['user_id'] === XF::visitor()->user_id;
         }
 
         if (!empty($options['entity']->User)) {
-            return $options['entity']->User->user_id === \XF::visitor()->user_id;
+            return $options['entity']->User->user_id === XF::visitor()->user_id;
         }
 
         if (!empty($options['entity']['user_id'])) {
-            return $options['entity']['user_id'] === \XF::visitor()->user_id;
+            return $options['entity']['user_id'] === XF::visitor()->user_id;
         }
 
         return false;
@@ -577,7 +560,7 @@ class Html extends XFCP_Html
     protected function isInGroup(array $options, ArrayCollection $groups)
     {
         $ids = $groups->keys();
-        $user = \XF::visitor();
+        $user = XF::visitor();
         /** @var User $user */
         $usergroups = $user->secondary_group_ids;
         $usergroups[] = $user->user_group_id;

@@ -1,9 +1,9 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Finder/GoogleFont.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Finder;
@@ -17,14 +17,18 @@ use XF\Mvc\Entity\Finder;
 class GoogleFont extends Finder
 {
     /**
-     * @return $this
+     * @return GoogleFont
      */
-    public function active()
+    public function active(): GoogleFont
     {
-        $this->where('active', '=', 1);
+        return $this->where('active', '=', 1);
+    }
 
-        $this->setDefaultOrder('font_id', 'ASC');
-
-        return $this;
+    /**
+     * @return GoogleFont
+     */
+    public function inactive(): GoogleFont
+    {
+        return $this->where('active', '<>', 1);
     }
 }

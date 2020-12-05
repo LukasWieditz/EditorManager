@@ -8,8 +8,12 @@
 
 namespace KL\EditorManager\Entity;
 
+use InvalidArgumentException;
+use LogicException;
+use XF;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
+use XF\PrintableException;
 use XF\Util\File;
 
 /**
@@ -30,7 +34,7 @@ use XF\Util\File;
  * @property int fail_count
  *
  * RELATIONS
- * @property \KL\EditorManager\Entity\AudioProxyReferrer[] Referrers
+ * @property AudioProxyReferrer[] Referrers
  */
 class AudioProxy extends Entity
 {
@@ -47,11 +51,11 @@ class AudioProxy extends Entity
     public function setAsPlaceholder($filePath, $mimeType, $fileName = null)
     {
         if ($this->placeholderPath) {
-            throw new \InvalidArgumentException("Once a audio is marked as a placeholder, it cannot be changed");
+            throw new InvalidArgumentException("Once a audio is marked as a placeholder, it cannot be changed");
         }
 
         if (!file_exists($filePath) || !is_readable($filePath)) {
-            throw new \InvalidArgumentException("Placeholder path '$filePath' doesn't exist or isn't readable");
+            throw new InvalidArgumentException("Placeholder path '$filePath' doesn't exist or isn't readable");
         }
 
         $this->placeholderPath = $filePath;
@@ -114,12 +118,12 @@ class AudioProxy extends Entity
         $filePath = $this->getAbstractedAudioPath();
         $fs = $this->app()->fs();
 
-        if ($this->is_processing && \XF::$time - $this->is_processing < 5) {
+        if ($this->is_processing && XF::$time - $this->is_processing < 5) {
             if ($fs->has($filePath)) {
                 return false;
             }
 
-            $maxSleep = 5 - (\XF::$time - $this->is_processing);
+            $maxSleep = 5 - (XF::$time - $this->is_processing);
             for ($i = 0; $i < $maxSleep; $i++) {
                 if ($fs->has($filePath)) {
                     return false;
@@ -136,7 +140,7 @@ class AudioProxy extends Entity
         }
 
         $ttl = $this->app()->options()->klEMAudioCacheTTL;
-        if ($ttl && $this->fetch_date < \XF::$time - $ttl * 86400) {
+        if ($ttl && $this->fetch_date < XF::$time - $ttl * 86400) {
             return true;
         }
 
@@ -145,7 +149,7 @@ class AudioProxy extends Entity
         }
 
         $refresh = $this->app()->options()->klEMAudioCacheRefresh;
-        if ($refresh && !$this->fail_count && $this->fetch_date < \XF::$time - $refresh * 86400) {
+        if ($refresh && !$this->fail_count && $this->fetch_date < XF::$time - $refresh * 86400) {
             return true;
         }
 
@@ -182,7 +186,7 @@ class AudioProxy extends Entity
                 $delay = ($this->fail_count - 5) * 86400; // 1, 2, 3... days
         }
 
-        return \XF::$time >= ($this->failed_date + $delay);
+        return XF::$time >= ($this->failed_date + $delay);
     }
 
     /**
@@ -199,7 +203,7 @@ class AudioProxy extends Entity
 
     /**
      * @return bool
-     * @throws \XF\PrintableException
+     * @throws PrintableException
      */
     public function prune()
     {
@@ -225,7 +229,7 @@ class AudioProxy extends Entity
             $fileName = preg_replace('/[\x80-\xFF]/', '?', $fileName);
         }
 
-        $fileName = \XF::cleanString($fileName);
+        $fileName = XF::cleanString($fileName);
 
         // ensure the filename fits -- if it's too long, take off from the beginning to keep extension
         $length = utf8_strlen($fileName);
@@ -258,7 +262,7 @@ class AudioProxy extends Entity
     protected function _preSave()
     {
         if ($this->placeholderPath) {
-            throw new \LogicException("Cannot save placeholder audio");
+            throw new LogicException("Cannot save placeholder audio");
         }
 
         if ($this->isChanged('url')) {
@@ -283,8 +287,8 @@ class AudioProxy extends Entity
             'file_name' => ['type' => self::STR, 'maxLength' => 250, 'default' => ''],
             'mime_type' => ['type' => self::STR, 'maxLength' => 100, 'default' => ''],
             'fetch_date' => ['type' => self::UINT, 'default' => 0],
-            'first_request_date' => ['type' => self::UINT, 'default' => \XF::$time],
-            'last_request_date' => ['type' => self::UINT, 'default' => \XF::$time],
+            'first_request_date' => ['type' => self::UINT, 'default' => XF::$time],
+            'last_request_date' => ['type' => self::UINT, 'default' => XF::$time],
             'views' => ['type' => self::UINT, 'default' => 0],
             'pruned' => ['type' => self::BOOL, 'default' => false],
             'is_processing' => ['type' => self::UINT, 'default' => 0],

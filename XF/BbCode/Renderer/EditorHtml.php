@@ -8,6 +8,10 @@
 
 namespace KL\EditorManager\XF\BbCode\Renderer;
 
+use KL\EditorManager\BbCode\EditorManagerInterface;
+use KL\EditorManager\BbCode\Renderer\EditorManagerTrait;
+use XF;
+
 /**
  * Class EditorHtml
  * @package KL\EditorManager\BbCode\Renderer
@@ -16,9 +20,9 @@ namespace KL\EditorManager\XF\BbCode\Renderer;
  * Class EditorHtml
  * @package KL\EditorManager\XF\BbCode\Renderer
  */
-class EditorHtml extends XFCP_EditorHtml
+class EditorHtml extends XFCP_EditorHtml implements EditorManagerInterface
 {
-    use EditorManager;
+    use EditorManagerTrait;
 
     /**
      *
@@ -29,7 +33,6 @@ class EditorHtml extends XFCP_EditorHtml
 
         $tags = [
             'bgcolor' => ['callback' => 'renderTagKLBGColor'],
-            'justify' => ['replace' => ['<div style="text-align: justify; max-width: %s">', '</div>']],
             'sup' => ['callback' => 'renderTagKLSup'],
             'sub' => ['callback' => 'renderTagKLSub']
         ];
@@ -77,12 +80,12 @@ class EditorHtml extends XFCP_EditorHtml
                 '</span>');
         }
 
-        $xfOptions = \XF::app()->options();
+        $xfOptions = XF::app()->options();
         if ($xfOptions['klEMExternalFontPolling']) {
-            $user = \XF::visitor();
+            $user = XF::visitor();
 
             if ($user->hasPermission('klEM', 'klEMUseGoogleFonts')) {
-                $font = preg_replace('/[^A-Za-z0-9 \+]/', '', $option);
+                $font = preg_replace('/[^A-Za-z0-9 +]/', '', $option);
                 $family = strtr($font, [' ' => '+']);
 
                 return $this->wrapHtml("<link rel='stylesheet' href='https://fonts.googleapis.com/css?family={$family}' />" .

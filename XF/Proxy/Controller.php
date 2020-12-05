@@ -10,9 +10,12 @@ namespace KL\EditorManager\XF\Proxy;
 
 use KL\EditorManager\Repository\VideoProxy;
 use KL\EditorManager\Service\AudioProxy;
+use League\Flysystem\FileNotFoundException;
 use XF\App;
+use XF\Db\Exception;
 use XF\Http\Request;
 use XF\Http\Response;
+use XF\PrintableException;
 use XF\Proxy\Linker;
 
 /**
@@ -124,10 +127,10 @@ class Controller extends XFCP_Controller
      * @param $url
      * @param $hash
      * @return Response
-     * @throws \League\Flysystem\FileNotFoundException
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
-     * @throws \XF\PrintableException
+     * @throws FileNotFoundException
+     * @throws Exception
+     * @throws PrintableException
+     * @throws PrintableException
      */
     public function outputKLEMVideo($url, $hash)
     {
@@ -180,10 +183,10 @@ class Controller extends XFCP_Controller
      * @param $url
      * @param $hash
      * @return Response
-     * @throws \League\Flysystem\FileNotFoundException
-     * @throws \XF\Db\Exception
-     * @throws \XF\PrintableException
-     * @throws \XF\PrintableException
+     * @throws FileNotFoundException
+     * @throws Exception
+     * @throws PrintableException
+     * @throws PrintableException
      */
     public function outputKLEMAudio($url, $hash)
     {

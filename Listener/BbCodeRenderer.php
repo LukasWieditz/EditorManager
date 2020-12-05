@@ -1,7 +1,9 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace KL\EditorManager\Listener;
 
+use KL\EditorManager\BbCode\EditorManagerInterface;
+use KL\EditorManager\XF\BbCode\Renderer\EditorManagerTrait;
 use XF\BbCode\Renderer\AbstractRenderer;
 
 /**
@@ -14,9 +16,9 @@ class BbCodeRenderer
      * @param AbstractRenderer $renderer
      * @param $type
      */
-    public static function extend(AbstractRenderer $renderer, $type)
+    public static function extend(AbstractRenderer $renderer, $type) : void
     {
-        if (method_exists($renderer, 'klFilterTags')) {
+        if($renderer instanceof EditorManagerInterface) {
             $renderer->klFilterTags();
         }
     }

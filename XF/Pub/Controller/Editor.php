@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\XF\Pub\Controller;
 
+use KL\EditorManager\Finder\GoogleFont;
 use KL\EditorManager\Repository\SpecialChars;
 use KL\EditorManager\XF\Repository\Smilie;
 use XF\Mvc\Reply\View;
@@ -19,14 +20,14 @@ use XF\Mvc\Reply\View;
 class Editor extends XFCP_Editor
 {
     /**
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
     public function actionFindGFont()
     {
         $q = ltrim($this->filter('q', 'str', ['no-trim']));
 
         if ($q !== '' && utf8_strlen($q) >= 2) {
-            /** @var \KL\EditorManager\Finder\GoogleFont $finder */
+            /** @var GoogleFont $finder */
             $finder = $this->finder('KL\EditorManager:GoogleFont');
 
             $fonts = $finder
@@ -61,7 +62,7 @@ class Editor extends XFCP_Editor
                 break;
 
             case 'gfont':
-                /** @var \KL\EditorManager\Finder\GoogleFont $finder */
+                /** @var GoogleFont $finder */
                 $finder = $this->em()->getFinder('KL\EditorManager:GoogleFont');
 
                 $params['fonts'] = $finder->active()->fetch();
@@ -92,7 +93,7 @@ class Editor extends XFCP_Editor
     }
 
     /**
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
     public function actionKlEmSpecialChars()
     {
@@ -125,7 +126,7 @@ class Editor extends XFCP_Editor
     }
 
     /**
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
     public function actionKlEmSpecialCharsSearch()
     {

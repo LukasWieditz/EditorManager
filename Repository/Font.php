@@ -8,6 +8,8 @@
 
 namespace KL\EditorManager\Repository;
 
+use stdClass;
+use XF;
 use XF\Mvc\Entity\Finder;
 use XF\Mvc\Entity\Repository;
 
@@ -36,7 +38,7 @@ class Font extends Repository
      */
     public function getFontsCached()
     {
-        if ($cache = \XF::app()->simpleCache()) {
+        if ($cache = XF::app()->simpleCache()) {
             $data = $cache->getValue('KL/EditorManager', 'kl_em_fonts');
             if ($data) {
                 return $data;
@@ -61,7 +63,7 @@ class Font extends Repository
         $data = $this->stripData($this->findFonts()->fetch());
 
 
-        if ($cache = \XF::app()->simpleCache()) {
+        if ($cache = XF::app()->simpleCache()) {
             $cache->setValue('KL/EditorManager', 'kl_em_fonts', $data);
         }
         return $data;
@@ -78,7 +80,7 @@ class Font extends Repository
 
         foreach ($data as $key => $value) {
             if ($value->active) {
-                $fonts[$key] = new \stdClass;
+                $fonts[$key] = new stdClass;
 
                 $fonts[$key]->font_id = $value->font_id;
                 $fonts[$key]->title = $value->title;

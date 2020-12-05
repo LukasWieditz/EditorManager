@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\Entity;
 
+use XF;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 use XF\Phrase;
@@ -27,11 +28,11 @@ use XF\Phrase;
 class SpecialCharacterGroup extends Entity
 {
     /**
-     * @return \XF\Phrase
+     * @return Phrase
      */
     public function getTitle()
     {
-        return \XF::phrase($this->getPhraseName());
+        return XF::phrase($this->getPhraseName());
     }
 
     /**
@@ -49,7 +50,7 @@ class SpecialCharacterGroup extends Entity
     {
         $phrase = $this->MasterTitle;
         if (!$phrase) {
-            /** @var \XF\Entity\Phrase $phrase */
+            /** @var XF\Entity\Phrase $phrase */
             $phrase = $this->_em->create('XF:Phrase');
             $phrase->title = $this->_getDeferredValue(function () {
                 return $this->getPhraseName();

@@ -8,9 +8,12 @@
 
 namespace KL\EditorManager\Repository;
 
+use XF;
 use XF\Db\DeadlockException;
+use XF\Db\Exception;
 use XF\Mvc\Entity\Finder;
 use XF\Mvc\Entity\Repository;
+use XF\PrintableException;
 
 /**
  * Class VideoProxy
@@ -55,7 +58,7 @@ class VideoProxy extends Repository
 
     /**
      * @param \KL\EditorManager\Entity\VideoProxy $video
-     * @throws \XF\Db\Exception
+     * @throws Exception
      */
     public function logVideoView(\KL\EditorManager\Entity\VideoProxy $video)
     {
@@ -64,7 +67,7 @@ class VideoProxy extends Repository
 				views = views + 1,
 				last_request_date = ?
 			WHERE video_id = ?
-		", [\XF::$time, $video->video_id]);
+		", [XF::$time, $video->video_id]);
     }
 
     /**
@@ -84,8 +87,8 @@ class VideoProxy extends Repository
                 'referrer_hash' => md5($referrer),
                 'referrer_url' => $referrer,
                 'hits' => 1,
-                'first_date' => \XF::$time,
-                'last_date' => \XF::$time
+                'first_date' => XF::$time,
+                'last_date' => XF::$time
             ], false, 'hits = hits + 1, last_date = VALUES(last_date)');
         } catch (DeadlockException $e) {
             // ignore deadlocks here -- we're likely triggering a race condition within MySQL
@@ -117,7 +120,7 @@ class VideoProxy extends Repository
     public function getPlaceholderVideo()
     {
         // TODO: ability to customize path
-        $path = \XF::getRootDirectory() . '/styles/editor-manager/missing-video.mp4';
+        $path = XF::getRootDirectory() . '/styles/editor-manager/missing-video.mp4';
 
         /** @var \KL\EditorManager\Entity\VideoProxy $video */
         $video = $this->em->create('KL\EditorManager:VideoProxy');
@@ -130,7 +133,7 @@ class VideoProxy extends Repository
      * Prunes videos from the file system cache that have expired
      *
      * @param integer|null $pruneDate
-     * @throws \XF\PrintableException
+     * @throws PrintableException
      */
     public function pruneVideoCache($pruneDate = null)
     {
@@ -139,7 +142,7 @@ class VideoProxy extends Repository
                 return;
             }
 
-            $pruneDate = \XF::$time - (86400 * $this->options()->klEMVideoCacheTTL);
+            $pruneDate = XF::$time - (86400 * $this->options()->klEMVideoCacheTTL);
         }
 
         /** @var \KL\EditorManager\Entity\VideoProxy[] $videos */
@@ -174,7 +177,7 @@ class VideoProxy extends Repository
             }
 
             $maxTtl = max($options->klEMVideoAudioProxyLogLength, $options->klEMVideoCacheTTL);
-            $pruneDate = \XF::$time - (86400 * $maxTtl);
+            $pruneDate = XF::$time - (86400 * $maxTtl);
         }
 
         // we can only remove logs where we've pruned the video
@@ -197,7 +200,7 @@ class VideoProxy extends Repository
                 return 0;
             }
 
-            $pruneDate = \XF::$time - (86400 * $options->klEMVideoAudioProxyReferrer['length']);
+            $pruneDate = XF::$time - (86400 * $options->klEMVideoAudioProxyReferrer['length']);
         }
 
         return $this->db()->delete('xf_kl_em_video_proxy_referrer',

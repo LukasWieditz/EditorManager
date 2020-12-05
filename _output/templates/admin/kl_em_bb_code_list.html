@@ -264,6 +264,32 @@
 							   class="dataList-cell--separated" submit="true"
 							   tooltip="{{ phrase('enable_disable_x', {'title': '[' . phrase('kl_em_table') . ']'}) }}" />
 				</xf:datarow>
+				<xf:datarow>
+					<xf:main href="{{ link('em/bb-codes', {'bb_code_id': 'heading'})}}" id="icode">
+						<xf:label>{{ phrase('kl_em_heading') }}</xf:label>
+						<xf:hint>[heading]<xf:foreach loop="$permissions.heading.aliases" value="$alias">, [{$alias}]</xf:foreach></xf:hint>
+					</xf:main>
+					<xf:action class="{{ !empty($permissions.heading.user_criteria) ? 'dataList-cell--highlighted' : '' }}"
+							   href="{{ link('em/bb-codes', {'bb_code_id': 'heading'}) }}">
+						{{ phrase('user_criteria') }}
+					</xf:action>
+					<xf:toggle name="kl_active[heading]" selected="$xf.options.klEMEnabledBBCodes.heading"
+							   class="dataList-cell--separated" submit="true"
+							   tooltip="{{ phrase('enable_disable_x', {'title': '[' . phrase('kl_em_heading') . ']'}) }}" />
+				</xf:datarow>
+				<xf:datarow>
+					<xf:main href="{{ link('em/bb-codes', {'bb_code_id': 'hr'})}}" id="icode">
+						<xf:label>{{ phrase('kl_em_horizontal_ruler') }}</xf:label>
+						<xf:hint>[hr]<xf:foreach loop="$permissions.hr.aliases" value="$alias">, [{$alias}]</xf:foreach></xf:hint>
+					</xf:main>
+					<xf:action class="{{ !empty($permissions.hr.user_criteria) ? 'dataList-cell--highlighted' : '' }}"
+							   href="{{ link('em/bb-codes', {'bb_code_id': 'hr'}) }}">
+						{{ phrase('user_criteria') }}
+					</xf:action>
+					<xf:toggle name="kl_active[hr]" selected="$xf.options.klEMEnabledBBCodes.hr"
+							   class="dataList-cell--separated" submit="true"
+							   tooltip="{{ phrase('enable_disable_x', {'title': '[' . phrase('kl_em_horizontal_ruler') . ']'}) }}" />
+				</xf:datarow>
 			</xf:datalist>
 		</div>
 	</div>

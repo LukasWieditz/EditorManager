@@ -1,16 +1,19 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Setup/Patch1020030.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Setup;
 
+use Exception;
+use XF;
 use XF\Db\SchemaManager;
 use XF\Entity\EditorDropdown;
 use XF\Entity\Phrase;
+use XF\Repository\Option;
 
 /**
  * Trait Patch1020030
@@ -21,26 +24,27 @@ trait Patch1020030
     /**
      *
      */
-    public function upgrade1020031Step1()
+    public function upgrade1020031Step1() : void
     {
-        $oldValue = \XF::options()->klEMLayout;
+        $oldValue = XF::options()->klEMLayout;
         $newValue = str_replace("dropdown-", "kl_", str_replace('"|"', '"-vs"', $oldValue));
 
-        /** @var \XF\Repository\Option $optionRepo */
-        $optionRepo = \XF::repository('XF:Option');
+        /** @var Option $optionRepo */
+        $optionRepo = XF::repository('XF:Option');
         $optionRepo->updateOption('editorToolbarConfig', json_decode($newValue, true));
     }
 
     /**
+     * @noinspection SqlResolve
      */
-    public function upgrade1020031Step2()
+    public function upgrade1020031Step2() : void
     {
         try {
-            $klDropdowns = \XF::db()->fetchAll('SELECT * FROM xf_kl_em_dropdowns');
+            $klDropdowns = XF::db()->fetchAll('SELECT * FROM xf_kl_em_dropdowns');
 
             foreach ($klDropdowns as $dropdown) {
                 /** @var EditorDropdown $xfDropdown */
-                $xfDropdown = \XF::em()->create('XF:EditorDropdown');
+                $xfDropdown = XF::em()->create('XF:EditorDropdown');
                 $xfDropdown->bulkSet([
                     'icon' => "fa-{$dropdown['icon']}",
                     'active' => true,
@@ -55,7 +59,7 @@ trait Patch1020030
                 $masterTitle->save();
             }
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
 
         }
     }
@@ -64,7 +68,7 @@ trait Patch1020030
     /**
      *
      */
-    public function upgrade1020031Step3()
+    public function upgrade1020031Step3() : void
     {
         /** @var SchemaManager $schemaManager */
         $schemaManager = $this->schemaManager();
@@ -74,9 +78,9 @@ trait Patch1020030
     /**
      *
      */
-    public function upgrade1020031Step4()
+    public function upgrade1020031Step4() : void
     {
-        \XF::db()->insertBulk('xf_option_group_relation', [
+        XF::db()->insertBulk('xf_option_group_relation', [
             [
                 'option_id' => 'emojiStyle',
                 'group_id' => 'klEM',

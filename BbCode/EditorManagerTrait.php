@@ -1,8 +1,17 @@
 <?php
 
-namespace KL\EditorManager\XF\BbCode\Renderer;
+/*!
+ * KL/EditorManager/BbCode/EditorManagerTrait.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2020 Lukas Wieditz
+ */
 
+namespace KL\EditorManager\BbCode\Renderer;
+
+use KL\EditorManager\Entity\BbCode;
+use KL\EditorManager\Repository\Font;
 use KL\EditorManager\XF\Str\Formatter;
+use XF;
 
 /**
  * Trait EditorManager
@@ -10,9 +19,8 @@ use KL\EditorManager\XF\Str\Formatter;
  *
  * @property Formatter formatter
  */
-trait EditorManager
+trait EditorManagerTrait
 {
-
     /**
      * Editor Font List
      * @var array
@@ -31,9 +39,8 @@ trait EditorManager
     protected $klBbCodes;
 
     /**
-     * @param array $tags
      */
-    public function klFilterTags(array $tags = [])
+    public function klFilterTags() : void
     {
         $config = $this->getKLConfig();
 
@@ -45,8 +52,7 @@ trait EditorManager
         }
 
         /** Load aliases */
-        /** @noinspection PhpUndefinedMethodInspection */
-        foreach (\XF::repository('KL\EditorManager:BbCodes')->getBbCodeSettings() as $bbCode => $config) {
+        foreach (XF::repository('KL\EditorManager:BbCodes')->getBbCodeSettings() as $bbCode => $config) {
             switch ($bbCode) {
                 case 'bold':
                     $bbCode = 'b';
@@ -92,10 +98,10 @@ trait EditorManager
         $bbCodes = $this->getKLBbCodes();
 
         if (isset($bbCodes[$tagName]) && !empty($bbCodes[$tagName]->user_criteria)) {
-            /** @var \KL\EditorManager\Entity\BbCode $bbCode */
+            /** @var BbCode $bbCode */
             $bbCode = $bbCodes[$tagName];
 
-            $userCriteria = \XF::app()->criteria('XF:User', $bbCode->user_criteria ?: []);
+            $userCriteria = XF::app()->criteria('XF:User', $bbCode->user_criteria ?: []);
             $userCriteria->setMatchOnEmpty(true);
             $user = false;
 
@@ -130,9 +136,9 @@ trait EditorManager
     {
         if (!$this->klFontList) {
             /* Create Repository */
-            $app = \XF::app();
+            $app = XF::app();
 
-            /** @var \KL\EditorManager\Repository\Font $repo */
+            /** @var Font $repo */
             $repo = $app->em()->getRepository('KL\EditorManager:Font');
 
             /* Load fonts */
@@ -159,7 +165,7 @@ trait EditorManager
      */
     private function getKLBbCodes() {
         if(!$this->klBbCodes) {
-            $bbCodes = \XF::repository('KL\EditorManager:BbCodes')->getBbCodeSettings();
+            $bbCodes = XF::repository('KL\EditorManager:BbCodes')->getBbCodeSettings();
 
             $codes = [];
             foreach($bbCodes as $tag => $bbCode) {
@@ -184,7 +190,7 @@ trait EditorManager
     private function getKLConfig()
     {
         if (!$this->klConfig) {
-            $app = \XF::app();
+            $app = XF::app();
 
             $options = $app->options();
 
@@ -214,9 +220,9 @@ trait EditorManager
     {
         if (!$this->fontSizeOptions) {
             $this->fontSizeOptions = [
-                'sizes' => array_map('trim', explode(',', \XF::options()->klEMFontSizes)),
-                'maxManual' => \XF::options()->klEMMaxFontSize ? \XF::options()->klEMMaxFontSize : PHP_INT_MAX,
-                'minManual' => \XF::options()->klEMMinFontSize
+                'sizes' => array_map('trim', explode(',', XF::options()->klEMFontSizes)),
+                'maxManual' => XF::options()->klEMMaxFontSize ? XF::options()->klEMMaxFontSize : PHP_INT_MAX,
+                'minManual' => XF::options()->klEMMinFontSize
             ];
         }
 

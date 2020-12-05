@@ -4,6 +4,7 @@ namespace KL\EditorManager\Entity;
 
 
 use KL\EditorManager\Service\CustomEmote\Image;
+use XF;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 
@@ -18,6 +19,8 @@ use XF\Mvc\Entity\Structure;
  * @property string replacement
  * @property integer image_date
  * @property string extension
+ *
+ * @property CustomEmotePrefix Prefix
  */
 class CustomEmote extends Entity
 {
@@ -41,7 +44,7 @@ class CustomEmote extends Entity
      */
     public function getEmoteUrl($canonical = false)
     {
-        $app = \XF::app();
+        $app = XF::app();
         $group = floor($this->emote_id / 1000);
         return $app->applyExternalDataUrl(
             "kl_em_custom_emotes/{$group}/{$this->emote_id}.{$this->extension}?{$this->image_date}",
@@ -63,7 +66,7 @@ class CustomEmote extends Entity
      */
     public function canEdit()
     {
-        if ($this->user_id == \XF::visitor()->user_id) {
+        if ($this->user_id == XF::visitor()->user_id) {
             return true;
         }
 
@@ -89,7 +92,7 @@ class CustomEmote extends Entity
                 ->fetchOne();
 
             if ($existingReplacement) {
-                $this->error(\XF::phrase('kl_em_replacement_already_in_use'));
+                $this->error(XF::phrase('kl_em_replacement_already_in_use'));
             }
         }
     }
@@ -105,7 +108,7 @@ class CustomEmote extends Entity
         $structure->primaryKey = 'emote_id';
         $structure->columns = [
             'emote_id' => ['type' => self::UINT, 'autoIncrement' => true],
-            'user_id' => ['type' => self::UINT, 'default' => \XF::visitor()->user_id],
+            'user_id' => ['type' => self::UINT, 'default' => XF::visitor()->user_id],
             'prefix_id' => ['type' => self::STR, 'required' => true],
 
             'title' => ['type' => self::STR, 'required' => true, 'maxLength' => 100],

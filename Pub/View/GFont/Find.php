@@ -1,7 +1,7 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Pub/View/GFont/Find.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
  * Copyright 2017 Lukas Wieditz
  */
@@ -19,7 +19,7 @@ class Find extends View
     /**
      * @return array
      */
-    public function renderJson()
+    public function renderJson() : array
     {
         $results = [];
         foreach ($this->params['fonts'] AS $font) {

@@ -9,6 +9,8 @@
 namespace KL\EditorManager\Repository;
 
 use KL\EditorManager\Entity\SpecialCharacter;
+use XF;
+use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Repository;
 
 /**
@@ -48,7 +50,7 @@ class SpecialChars extends Repository
     }
 
     /**
-     * @return \XF\Mvc\Entity\ArrayCollection
+     * @return ArrayCollection
      */
     public function getCategoriesForList()
     {
@@ -57,10 +59,10 @@ class SpecialChars extends Repository
             ->order('display_order')
             ->fetch();
 
-        $visitor = \XF::visitor();
+        $visitor = XF::visitor();
 
         foreach ($groups as $key => $group) {
-            $userCriteria = \XF::app()->criteria('XF:User', $group->user_criteria);
+            $userCriteria = XF::app()->criteria('XF:User', $group->user_criteria);
             $userCriteria->setMatchOnEmpty(true);
 
             if (!$userCriteria->isMatched($visitor)) {
@@ -73,7 +75,7 @@ class SpecialChars extends Repository
 
     /**
      * @param array $groupIds
-     * @return \XF\Mvc\Entity\ArrayCollection
+     * @return ArrayCollection
      */
     public function getCharactersForList($groupIds = [])
     {
@@ -83,10 +85,8 @@ class SpecialChars extends Repository
             $finder->where('group_id', '=', $groupIds);
         }
 
-        $characters = $finder->order('display_order')
+        return $finder->order('display_order')
             ->fetch();
-
-        return $characters;
     }
 
     /**
@@ -97,10 +97,10 @@ class SpecialChars extends Repository
         $groups = $this->finder('KL\EditorManager:SpecialCharacterGroup')->order('display_order')->fetch();
 
 
-        $visitor = \XF::visitor();
+        $visitor = XF::visitor();
 
         foreach ($groups as $key => $group) {
-            $userCriteria = \XF::app()->criteria('XF:User', $group->user_criteria);
+            $userCriteria = XF::app()->criteria('XF:User', $group->user_criteria);
             $userCriteria->setMatchOnEmpty(true);
 
             if (!$userCriteria->isMatched($visitor)) {

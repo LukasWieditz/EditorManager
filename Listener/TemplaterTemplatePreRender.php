@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection */
 
 /*!
  * KL/EditorManager/Admin/Controller/Fonts.php
@@ -8,8 +8,13 @@
 
 namespace KL\EditorManager\Listener;
 
+use Exception;
 use KL\EditorManager\Repository\BbCodes;
 use KL\EditorManager\Repository\Font;
+use KL\EditorManager\Repository\Template;
+use XF;
+use XF\Mvc\Entity\ArrayCollection;
+use XF\Mvc\Entity\Entity;
 use XF\Template\Templater;
 
 /**
@@ -28,11 +33,11 @@ class TemplaterTemplatePreRender
     public static function pageContainer(Templater $templater, &$type, &$template, array &$params)
     {
         /* Create Repository */
-        $app = \XF::app();
+        $app = XF::app();
 
         $options = $app->options();
         if (isset($options['klEMEnabledBBCodes']['font']) && $options['klEMEnabledBBCodes']['font']) {
-            /** @var \KL\EditorManager\Repository\Font $repo */
+            /** @var Font $repo */
             $repo = $app->em()->getRepository('KL\EditorManager:Font');
 
             $gfonts = [];
@@ -88,7 +93,7 @@ class TemplaterTemplatePreRender
             }
 
             /* Pre-load custom google webfonts */
-            $templater = \XF::app()->templater();
+            $templater = XF::app()->templater();
             $webfonts = isset($templater->pageParams['kl_em_webfonts']) ? $templater->pageParams['kl_em_webfonts'] : [];
 
             $gfonts = array_unique(array_merge($gfonts, $webfonts));
@@ -129,7 +134,7 @@ class TemplaterTemplatePreRender
     public static function helpPageBbCode(Templater $templater, &$type, &$template, array &$params)
     {
         /* Push bb code configuration to template */
-        $options = \XF::app()->options();
+        $options = XF::app()->options();
         $params['enabled_bb_codes'] = $options['klEMEnabledBBCodes'];
         $params['max_font_size'] = count(explode(', ', $options['klEMFontSizes'])) + 1;
         $params['hide'] = '[HIDE' . strtoupper($options['klEMDefaultHide']) . ']';
@@ -145,7 +150,7 @@ class TemplaterTemplatePreRender
     protected static function removeBbCode($code, &$toolbars, &$dropdowns)
     {
         /** @var BbCodes $repo */
-        $repo = \XF::repository('KL\EditorManager:BbCodes');
+        $repo = XF::repository('KL\EditorManager:BbCodes');
         $toolbarNames = $repo->shortToButtonDataName($code);
         if (!is_array($toolbarNames)) {
             $toolbarNames = [$toolbarNames];
@@ -175,7 +180,7 @@ class TemplaterTemplatePreRender
         $toolbars = $params['editorToolbars'];
         $dropdowns = $params['editorDropdowns'];
 
-        $bbCodes = \XF::options()->klEMEnabledBBCodes;
+        $bbCodes = XF::options()->klEMEnabledBBCodes;
 
         $enabledBbCodes = [];
         $disabledBbCodes = [];
@@ -190,12 +195,12 @@ class TemplaterTemplatePreRender
         }
 
         /** @var BbCodes $bbCodeRepo */
-        $bbCodeRepo = \XF::repository('KL\EditorManager:BbCodes');
+        $bbCodeRepo = XF::repository('KL\EditorManager:BbCodes');
         $bbCodes = $bbCodeRepo->getBbCodeSettings();
 
-        $visitor = \XF::visitor();
+        $visitor = XF::visitor();
         foreach ($bbCodes as $bbCodeId => $bbCode) {
-            $userCriteria = \XF::app()->criteria('XF:User', $bbCode->user_criteria);
+            $userCriteria = XF::app()->criteria('XF:User', $bbCode->user_criteria);
             $userCriteria->setMatchOnEmpty(true);
 
             if (!$userCriteria->isMatched($visitor)) {
@@ -208,16 +213,15 @@ class TemplaterTemplatePreRender
         if (isset($enabledBbCodes['hide'])) {
             try {
                 $threadPostRoute = false;
-                $route = \XF::app()->router('public')->routeToController(\XF::app()->request()->getRoutePath());
+                $route = XF::app()->router('public')->routeToController(XF::app()->request()->getRoutePath());
                 if ($route) {
                     $controller = $route->getController();
-                    /** @noinspection PhpUndefinedMethodInspection */
                     if (in_array($controller,
-                        \XF::repository('KL\EditorManager:BbCodes')->getValidControllersForHide())) {
+                        XF::repository('KL\EditorManager:BbCodes')->getValidControllersForHide())) {
                         $threadPostRoute = true;
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $threadPostRoute = false;
             }
             if (!$threadPostRoute) {
@@ -249,8 +253,8 @@ class TemplaterTemplatePreRender
      */
     protected static function getEnabledPlugins($bbCodeStates)
     {
-        $visitor = \XF::visitor();
-        $options = \XF::options();
+        $visitor = XF::visitor();
+        $options = XF::options();
 
         return array_keys(array_filter([
             'table' => isset($bbCodeStates['enabled']['table']),
@@ -284,14 +288,14 @@ class TemplaterTemplatePreRender
     protected static function getEditorConfig($plugins, $bbCodeStates)
     {
         /** @var Font $repo */
-        $repo = \XF::repository('KL\EditorManager:Font');
+        $repo = XF::repository('KL\EditorManager:Font');
         foreach ($repo->getFontsCached() as $font) {
             $fonts[str_replace('"', "'", $font->family)] = $font->title;
         }
 
-        $options = \XF::options();
+        $options = XF::options();
 
-        $visitor = \XF::visitor();
+        $visitor = XF::visitor();
 
         return [
             'pluginsEnabled' => $plugins,
@@ -316,12 +320,12 @@ class TemplaterTemplatePreRender
             'charCounterMode' => $options->klEMCharCounter === 'user' ? $visitor->kl_em_wordcount_mode : $options->klEMCharCounter,
 
             'tableStyles' => [
-                'noborder' => \XF::phrase('kl_em_no_border'),
-                'nobackground' => \XF::phrase('kl_em_no_background'),
-                'collapse' => \XF::phrase('kl_em_collapse'),
-                'alternate' => \XF::phrase('kl_em_alternate_rows'),
-                'centered' => \XF::phrase('kl_em_centered'),
-                'right' => \XF::phrase('kl_em_right_aligned')
+                'noborder' => XF::phrase('kl_em_no_border'),
+                'nobackground' => XF::phrase('kl_em_no_background'),
+                'collapse' => XF::phrase('kl_em_collapse'),
+                'alternate' => XF::phrase('kl_em_alternate_rows'),
+                'centered' => XF::phrase('kl_em_centered'),
+                'right' => XF::phrase('kl_em_right_aligned')
             ],
 
             'tableEditButtons' => ['tableHeader', 'tableRemove', '|', 'tableRows', 'tableColumns', 'tableStyle']
@@ -329,34 +333,34 @@ class TemplaterTemplatePreRender
     }
 
     /**
-     * @return array|bool|\XF\Mvc\Entity\ArrayCollection|\XF\Mvc\Entity\Entity[]
+     * @return array|bool|ArrayCollection|Entity[]
      */
     protected static function getTemplates()
     {
-        $visitor = \XF::visitor();
+        $visitor = XF::visitor();
 
         /* Load Templates */
-        /** @var \KL\EditorManager\Repository\Template $templateRepository */
+        /** @var Template $templateRepository */
         $templates = false;
         if ($visitor->hasPermission('klEM', 'klEMTemplates')) {
-            /** @var \KL\EditorManager\Repository\Template $templateRepository */
-            $templateRepository = \XF::repository('KL\EditorManager:Template');
-            $templates = $templateRepository->getTemplatesForUser(\XF::visitor()->user_id,
+            /** @var Template $templateRepository */
+            $templateRepository = XF::repository('KL\EditorManager:Template');
+            $templates = $templateRepository->getTemplatesForUser(XF::visitor()->user_id,
                 $visitor->hasPermission('klEM', 'klEMPublicTemplates'), true);
 
             $templates = $templates->toArray();
             $templateGroups = [
                 0 => [
-                    'title' => \XF::phrase('kl_em_public'),
+                    'title' => XF::phrase('kl_em_public'),
                     'templates' => []
                 ],
                 1 => [
-                    'title' => \XF::phrase('kl_em_private'),
+                    'title' => XF::phrase('kl_em_private'),
                     'templates' => []
                 ]
             ];
 
-            $bbCode = \XF::app()->bbCode();
+            $bbCode = XF::app()->bbCode();
 
             foreach ($templates as &$template) {
                 $templateGroups[!!$template->user_id]['templates'][] = [

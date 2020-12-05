@@ -9,6 +9,7 @@
 namespace KL\EditorManager\XF\Pub\Controller;
 
 use XF\Entity\User;
+use XF\Mvc\FormAction;
 use \XF\Mvc\ParameterBag;
 
 /**
@@ -29,7 +30,7 @@ class Account extends XFCP_Account
 
     /**
      * @param User $visitor
-     * @return \XF\Mvc\FormAction
+     * @return FormAction
      */
     protected function preferencesSaveProcess(User $visitor)
     {

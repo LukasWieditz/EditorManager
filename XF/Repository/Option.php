@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\XF\Repository;
 
+use XF\Mvc\Entity\ArrayCollection;
 use XF\Util\Color;
 
 /**
@@ -18,7 +19,7 @@ class Option extends XFCP_Option
 {
     /**
      * @param array $values
-     * @return \XF\Mvc\Entity\ArrayCollection
+     * @return ArrayCollection
      */
     public function updateOptions(array $values)
     {

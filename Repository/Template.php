@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection */
 
 /*!
  * KL/EditorManager/Repository/Font.php
@@ -8,6 +8,8 @@
 
 namespace KL\EditorManager\Repository;
 
+use XF;
+use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Finder;
 use XF\Mvc\Entity\Repository;
 
@@ -35,7 +37,7 @@ class Template extends Repository
      * @param int $userid
      * @param bool $getPublicTemplates
      * @param bool $filterInactive
-     * @return \XF\Mvc\Entity\ArrayCollection
+     * @return ArrayCollection
      */
     public function getTemplatesForUser($userid = 0, $getPublicTemplates = false, $filterInactive = false)
     {
@@ -54,9 +56,9 @@ class Template extends Repository
         $templates = $finder->order(['user_id', 'display_order'])->fetch();
 
         if ($userid) {
-            $visitor = \XF::visitor();
+            $visitor = XF::visitor();
             foreach ($templates as $key => $template) {
-                $userCriteria = \XF::app()->criteria('XF:User', $template->user_criteria);
+                $userCriteria = XF::app()->criteria('XF:User', $template->user_criteria);
                 $userCriteria->setMatchOnEmpty(true);
 
                 if (!$userCriteria->isMatched($visitor)) {

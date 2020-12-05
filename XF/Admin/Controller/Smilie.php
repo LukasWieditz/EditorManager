@@ -2,6 +2,8 @@
 
 namespace KL\EditorManager\XF\Admin\Controller;
 
+use XF\ControllerPlugin\Toggle;
+use XF\Mvc\FormAction;
 use XF\Mvc\Reply\View;
 
 class Smilie extends XFCP_Smilie
@@ -25,7 +27,7 @@ class Smilie extends XFCP_Smilie
 
     /**
      * @param \XF\Entity\Smilie $smilie
-     * @return \XF\Mvc\FormAction
+     * @return FormAction
      */
     protected function smilieSaveProcess(\XF\Entity\Smilie $smilie)
     {
@@ -41,7 +43,7 @@ class Smilie extends XFCP_Smilie
 
     public function actionToggle()
     {
-        /** @var \XF\ControllerPlugin\Toggle $plugin */
+        /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');
         $response = $plugin->actionToggle('XF:Smilie', 'kl_em_active');
         $this->getSmilieRepo()->rebuildSmilieCache();

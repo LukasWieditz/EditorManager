@@ -244,6 +244,14 @@
 			  arg-anchor="table" />
 </xf:if>
 
+<xf:if is="$enabled_bb_codes.heading">
+	<xf:macro name="row_output"
+				arg-title="{{ phrase('bb_code_help_heading_title')|preEscaped }}"
+				arg-desc="{{ phrase('bb_code_help_heading_desc')|preEscaped }}"
+				arg-example="{{ phrase('bb_code_help_heading_example')|preEscaped }}"
+				arg-anchor="heading" />
+</xf:if>
+
 <xf:if is="$enabled_bb_codes.list">
 	<xf:macro name="row_output"
 			  arg-title="{{ phrase('bb_code_help_indent_title')|preEscaped }}"

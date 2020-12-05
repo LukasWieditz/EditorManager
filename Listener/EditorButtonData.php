@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 /*!
  * KL/EditorManager/Admin/Controller/Fonts.php
@@ -9,6 +9,7 @@
 namespace KL\EditorManager\Listener;
 
 use KL\EditorManager\Repository\BbCodes;
+use XF;
 use XF\Data\Editor;
 
 /**
@@ -26,75 +27,75 @@ class EditorButtonData
         $buttons += [
             'fullscreen' => [
                 'fa' => 'fa-expand',
-                'title' => \XF::phrase('kl_em_fullscreen')
+                'title' => XF::phrase('kl_em_fullscreen')
             ],
             'specialCharacters' => [
                 'fa' => 'fa-omega',
-                'title' => \XF::phrase('kl_em_special_characters'),
+                'title' => XF::phrase('kl_em_special_characters'),
                 'type' => 'dropdown'
             ],
             'video' => [
                 'fa' => 'fa-video',
-                'title' => \XF::phrase('kl_em_video')
+                'title' => XF::phrase('kl_em_video')
             ],
             'audio' => [
                 'fa' => 'fa-music',
-                'title' => \XF::phrase('kl_em_audio')
+                'title' => XF::phrase('kl_em_audio')
             ],
             'klUnlinkAll' => [
                 'fa' => 'fa-unlink',
-                'title' => \XF::phrase('kl_em_unlink_all')
+                'title' => XF::phrase('kl_em_unlink_all')
             ],
             'klEMHide' => [
                 'fa' => 'fa-eye-slash',
-                'title' => \XF::phrase('kl_em_hide')
+                'title' => XF::phrase('kl_em_hide')
             ],
             'klEMHidePosts' => [
                 'fa' => 'fa-minus-circle',
-                'title' => \XF::phrase('kl_em_hide_posts')
+                'title' => XF::phrase('kl_em_hide_posts')
             ],
             'klEMHideThanks' => [
                 'fa' => 'fa-minus-hexagon',
-                'title' => \XF::phrase('kl_em_hide_thanks')
+                'title' => XF::phrase('kl_em_hide_thanks')
             ],
             'klEMHideReply' => [
                 'fa' => 'fa-minus-octagon',
-                'title' => \XF::phrase('kl_em_hide_reply')
+                'title' => XF::phrase('kl_em_hide_reply')
             ],
             'klEMHideReplyThanks' => [
                 'fa' => 'fa-minus-square',
-                'title' => \XF::phrase('kl_em_hide_reply_thanks')
+                'title' => XF::phrase('kl_em_hide_reply_thanks')
             ],
             'klEMHideGroup' => [
                 'fa' => 'fa-folder-minus',
-                'title' => \XF::phrase('kl_em_hide_group')
+                'title' => XF::phrase('kl_em_hide_group')
             ],
             'klEMParseHtml' => [
                 'fa' => 'fa-code',
-                'title' => \XF::phrase('kl_em_parse_html')
+                'title' => XF::phrase('kl_em_parse_html')
             ],
             'klTemplates' => [
                 'fa' => 'fa-paste',
-                'title' => \XF::phrase('kl_em_templates'),
+                'title' => XF::phrase('kl_em_templates'),
                 'type' => 'dropdown'
             ],
             'gFontFamily' => [
                 'fa' => 'fab fa-google',
-                'title' => \XF::phrase('kl_em_google_font')
+                'title' => XF::phrase('kl_em_google_font')
             ],
             'subscript' => [
                 'fa' => 'far fa-subscript',
-                'title' => \XF::phrase('kl_em_subscript')
+                'title' => XF::phrase('kl_em_subscript')
             ],
             'superscript' => [
                 'fa' => 'far fa-superscript',
-                'title' => \XF::phrase('kl_em_superscript')
+                'title' => XF::phrase('kl_em_superscript')
             ]
         ];
 
-        $disabledBbCodes = \XF::options()->klEMEnabledBBCodes;
+        $disabledBbCodes = XF::options()->klEMEnabledBBCodes;
         /** @var BbCodes $repo */
-        $repo = \XF::repository('KL\EditorManager:BbCodes');
+        $repo = XF::repository('KL\EditorManager:BbCodes');
 
         foreach ($disabledBbCodes as $name => $disabledBbCode) {
             if ($disabledBbCode) {

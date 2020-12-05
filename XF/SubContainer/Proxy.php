@@ -1,9 +1,9 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/XF/SubContainer/Proxy.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\XF\SubContainer;
@@ -40,8 +40,7 @@ class Proxy extends XFCP_Proxy
             return new $class($this->app, $c['linker'], $this->app->request());
         };
 
-        $parent = $container['linker'];
-        $container['linker'] = function ($c) use ($parent) {
+        $container['linker'] = function ($c) {
             $options = $this->app->options();
             $secret = $this->app->config('globalSalt') . $options->imageLinkProxyKey;
 

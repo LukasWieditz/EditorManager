@@ -2,7 +2,7 @@
     "template": "lightbox_macros",
     "description": "",
     "execution_order": 10,
-    "enabled": true,
+    "enabled": false,
     "action": "str_replace",
     "find": "name=\"single_image\"",
     "replace": "$0 arg-klEMStyle=\"\" "

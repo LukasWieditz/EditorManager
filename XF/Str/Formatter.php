@@ -10,6 +10,7 @@ namespace KL\EditorManager\XF\Str;
 
 use KL\EditorManager\Entity\CustomEmote;
 use KL\EditorManager\XF\Template\Templater;
+use XF;
 use XF\Entity\User;
 use XF\Pub\App;
 
@@ -44,15 +45,15 @@ class Formatter extends XFCP_Formatter
      */
     public function getKlEmContextUser()
     {
-        if(\XF::app() instanceof App) {
-            return $this->klEmContextUser ?: \XF::visitor();
+        if(XF::app() instanceof App) {
+            return $this->klEmContextUser ?: XF::visitor();
         }
 
         return null;
     }
 
     /**
-     * @param User $klEmContextUser
+     * @param User|null $klEmContextUser
      */
     public function setKlEmContextUser(User $klEmContextUser = null)
     {
@@ -83,12 +84,13 @@ class Formatter extends XFCP_Formatter
             $smilies = $this->klEmSmilieCache;
 
 
+            $customEmotes = [];
             // TODO: MOVE TO REPO
-            $customEmotes = \XF::finder('KL\EditorManager:CustomEmote')
-                ->where('user_id', '=',
-                    $contextUser->user_id)->fetch();
-
-            $this->klEmCustomEmotes += $customEmotes->toArray();
+//            $customEmotes = \XF::finder('KL\EditorManager:CustomEmote')
+//                ->where('user_id', '=',
+//                    $contextUser->user_id)->fetch();
+//
+//            $this->klEmCustomEmotes += $customEmotes->toArray();
 
             foreach ($customEmotes as $customEmote) {
                 /** @var CustomEmote $customEmote */
@@ -116,7 +118,7 @@ class Formatter extends XFCP_Formatter
                     continue;
                 }
 
-                $criteria = \XF::app()->criteria('XF:User', $smilie['kl_em_user_criteria'] ?: []);
+                $criteria = XF::app()->criteria('XF:User', $smilie['kl_em_user_criteria'] ?: []);
                 $criteria->setMatchOnEmpty(true);
 
                 if ($criteria->isMatched($contextUser)) {
@@ -147,7 +149,7 @@ class Formatter extends XFCP_Formatter
         $replace = function ($id, $smilie) use (&$cache) {
             if (strpos($id, 'klce') === 0) {
                 /** @var Templater $templater */
-                $templater = \XF::app()->templater();
+                $templater = XF::app()->templater();
 
                 // TODO: MOVE TO REPO
                 return $templater->fnKlEmCustomEmote($templater, $escape, $this->klEmCustomEmotes[substr($id, 4)]);
@@ -173,33 +175,33 @@ class Formatter extends XFCP_Formatter
      */
     public function replaceSmiliesInText($text, $replaceCallback, $escapeCallback = null)
     {
-        $contextUser = $this->getKlEmContextUser();
-
-        if (!$contextUser) {
+//        $contextUser = $this->getKlEmContextUser();
+//
+//        if (!$contextUser) {
             return parent::replaceSmiliesInText($text, $replaceCallback, $escapeCallback);
-        }
-
-        $smilieTranslate = $this->getKlEmUserSmilieTranslate();
-
-        if ($smilieTranslate) {
-            $text = strtr($text, $smilieTranslate);
-        }
-
-        if ($escapeCallback) {
-            /** @var callable $escapeCallback */
-            $text = $escapeCallback($text);
-        }
-
-        if ($smilieTranslate) {
-            $reverse = $this->getKlEmUserSmilieTranslate('reverse');
-
-            $text = preg_replace_callback('#\0((?:klce)?\d+)\0#', function ($match) use ($reverse, $replaceCallback) {
-                $id = $match[1];
-                return isset($reverse[$id]) ? $replaceCallback($id, $reverse[$id]) : '';
-            }, $text);
-        }
-
-        return $text;
+//        }
+//
+//        $smilieTranslate = $this->getKlEmUserSmilieTranslate();
+//
+//        if ($smilieTranslate) {
+//            $text = strtr($text, $smilieTranslate);
+//        }
+//
+//        if ($escapeCallback) {
+//            /** @var callable $escapeCallback */
+//            $text = $escapeCallback($text);
+//        }
+//
+//        if ($smilieTranslate) {
+//            $reverse = $this->getKlEmUserSmilieTranslate('reverse');
+//
+//            $text = preg_replace_callback('#\0((?:klce)?\d+)\0#', function ($match) use ($reverse, $replaceCallback) {
+//                $id = $match[1];
+//                return isset($reverse[$id]) ? $replaceCallback($id, $reverse[$id]) : '';
+//            }, $text);
+//        }
+//
+//        return $text;
     }
 
     /**
@@ -210,7 +212,7 @@ class Formatter extends XFCP_Formatter
      */
     public function getBbCodeForQuote($bbCode, $context)
     {
-        $bbCodeContainer = \XF::app()->bbCode();
+        $bbCodeContainer = XF::app()->bbCode();
 
         $processor = $bbCodeContainer->processor()
             ->addProcessorAction('quotes', $bbCodeContainer->processorAction('quotes'))
@@ -230,8 +232,8 @@ class Formatter extends XFCP_Formatter
      */
     public function snippetString($string, $maxLength = 0, array $options = [])
     {
-        $string = preg_replace("#\[(HIDE(?:REPLY|POSTS|THANKS|REPLYTHANKS){0,1})].*?\[\/\g1]#si",
-            \XF::phrase('kl_em_hidden_content'), $string);
+        $string = preg_replace("#\[(HIDE(?:REPLY|POSTS|THANKS|REPLYTHANKS)?)].*?\[/\g1]#si",
+            XF::phrase('kl_em_hidden_content'), $string);
         $string = parent::snippetString($string, $maxLength, $options);
         return $string;
     }

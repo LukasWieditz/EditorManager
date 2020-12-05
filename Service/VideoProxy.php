@@ -8,7 +8,10 @@
 
 namespace KL\EditorManager\Service;
 
+use InvalidArgumentException;
+use XF;
 use XF\Db\Exception;
+use XF\PrintableException;
 use XF\Service\AbstractService;
 use XF\Util\File;
 
@@ -59,8 +62,8 @@ class VideoProxy extends AbstractService
     /**
      * @param $url
      * @return \KL\EditorManager\Entity\VideoProxy|null
-     * @throws \XF\PrintableException
-     * @throws \XF\PrintableException
+     * @throws PrintableException
+     * @throws PrintableException
      */
     public function getVideo($url)
     {
@@ -107,7 +110,7 @@ class VideoProxy extends AbstractService
     /**
      * @param $url
      * @return \KL\EditorManager\Entity\VideoProxy|null
-     * @throws \XF\PrintableException
+     * @throws PrintableException
      */
     public function fetchNewVideo($url)
     {
@@ -133,7 +136,7 @@ class VideoProxy extends AbstractService
     /**
      * @param \KL\EditorManager\Entity\VideoProxy $video
      * @return \KL\EditorManager\Entity\VideoProxy
-     * @throws \XF\PrintableException
+     * @throws PrintableException
      */
     public function refetchVideo(\KL\EditorManager\Entity\VideoProxy $video)
     {
@@ -169,7 +172,7 @@ class VideoProxy extends AbstractService
     {
         $url = $this->proxyRepo->cleanUrlForFetch($url);
         if (!preg_match('#^https?://#i', $url)) {
-            throw new \InvalidArgumentException("URL must be http or https");
+            throw new InvalidArgumentException("URL must be http or https");
         }
 
         $urlParts = @parse_url($url);
@@ -232,13 +235,13 @@ class VideoProxy extends AbstractService
 
                         $validVideo = true;
                     } else {
-                        $error = \XF::phraseDeferred('kl_em_video_is_invalid_type');
+                        $error = XF::phraseDeferred('kl_em_video_is_invalid_type');
                     }
                 } else {
-                    $error = \XF::phraseDeferred('kl_em_file_not_a_video');
+                    $error = XF::phraseDeferred('kl_em_file_not_a_video');
                 }
             } else {
-                $error = \XF::phraseDeferred('received_unexpected_response_code_x_message_y', [
+                $error = XF::phraseDeferred('received_unexpected_response_code_x_message_y', [
                     'code' => $response->getStatusCode(),
                     'message' => $response->getReasonPhrase()
                 ]);
@@ -261,7 +264,7 @@ class VideoProxy extends AbstractService
     /**
      * @param \KL\EditorManager\Entity\VideoProxy $video
      * @param array $fetchResults
-     * @throws \XF\PrintableException
+     * @throws PrintableException
      */
     protected function finalizeFromFetchResults(\KL\EditorManager\Entity\VideoProxy $video, array $fetchResults)
     {

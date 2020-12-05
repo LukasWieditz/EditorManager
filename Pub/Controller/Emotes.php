@@ -5,8 +5,15 @@ namespace KL\EditorManager\Pub\Controller;
 use KL\EditorManager\Entity\CustomEmote;
 use KL\EditorManager\Entity\CustomEmotePrefix;
 use KL\EditorManager\Service\CustomEmote\Image;
+use XF;
+use XF\ControllerPlugin\Delete;
+use XF\Mvc\Entity\Entity;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\Error;
+use XF\Mvc\Reply\Exception;
 use XF\Mvc\Reply\Redirect;
+use XF\Mvc\Reply\View;
+use XF\PrintableException;
 use XF\Pub\Controller\AbstractController;
 
 /**
@@ -16,15 +23,15 @@ use XF\Pub\Controller\AbstractController;
 class Emotes extends AbstractController
 {
     /**
-     * @return \XF\Mvc\Reply\View
-     * @throws \XF\PrintableException
+     * @return View
+     * @throws PrintableException
      */
     public function actionIndex()
     {
         $prefix = $this->getVisitorEmotePrefix();
 
         $emotes = $this->finder('KL\EditorManager:CustomEmote')
-            ->where('user_id', '=', \XF::visitor()->user_id)
+            ->where('user_id', '=', XF::visitor()->user_id)
             ->fetch();
 
         $viewParams = [
@@ -37,8 +44,8 @@ class Emotes extends AbstractController
     }
 
     /**
-     * @return \XF\Mvc\Reply\Error|\XF\Mvc\Reply\Redirect
-     * @throws \XF\PrintableException
+     * @return Error|Redirect
+     * @throws PrintableException
      */
     public function actionChangePrefix()
     {
@@ -56,7 +63,7 @@ class Emotes extends AbstractController
     }
 
     /**
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
     public function actionAdd()
     {
@@ -67,8 +74,8 @@ class Emotes extends AbstractController
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return View
+     * @throws Exception
      */
     public function actionEdit(ParameterBag $params)
     {
@@ -78,7 +85,7 @@ class Emotes extends AbstractController
 
     /**
      * @param $emote
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
     protected function emoteAddEdit(CustomEmote $emote)
     {
@@ -91,9 +98,9 @@ class Emotes extends AbstractController
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Error|Redirect
-     * @throws \XF\Mvc\Reply\Exception
-     * @throws \XF\PrintableException
+     * @return Error|Redirect
+     * @throws Exception
+     * @throws PrintableException
      */
     public function actionSave(ParameterBag $params)
     {
@@ -102,7 +109,7 @@ class Emotes extends AbstractController
         } else {
             /** @var CustomEmote $emote */
             $emote = $this->em()->create('KL\EditorManager:CustomEmote');
-            $prefix = $this->em()->find('KL\EditorManager:CustomEmotePrefix', ['user_id' => \XF::visitor()->user_id]);
+            $prefix = $this->em()->find('KL\EditorManager:CustomEmotePrefix', ['user_id' => XF::visitor()->user_id]);
             $emote->prefix_id = $prefix['prefix_id'];
         }
 
@@ -137,7 +144,7 @@ class Emotes extends AbstractController
                         $emote->delete();
                     }
 
-                    return $this->error(\XF::phrase('kl_em_emote_upload_failed'));
+                    return $this->error(XF::phrase('kl_em_emote_upload_failed'));
                 }
             }
         }
@@ -162,14 +169,14 @@ class Emotes extends AbstractController
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Error|Redirect|\XF\Mvc\Reply\View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return Error|Redirect|View
+     * @throws Exception
      */
     public function actionDelete(ParameterBag $params)
     {
         $emote = $this->assertEditableEmote($params['emote_id']);
 
-        /** @var \XF\ControllerPlugin\Delete $plugin */
+        /** @var Delete $plugin */
         $plugin = $this->plugin('XF:Delete');
         return $plugin->actionDelete(
             $emote,
@@ -181,12 +188,12 @@ class Emotes extends AbstractController
     }
 
     /**
-     * @return CustomEmotePrefix|\XF\Mvc\Entity\Entity
-     * @throws \XF\PrintableException
+     * @return CustomEmotePrefix|Entity
+     * @throws PrintableException
      */
     protected function getVisitorEmotePrefix()
     {
-        $visitor = \XF::visitor();
+        $visitor = XF::visitor();
 
         /** @var CustomEmotePrefix $emotePrefix */
         $emotePrefix = $this->em()->find('KL\EditorManager:CustomEmotePrefix', ['user_id' => $visitor->user_id]);
@@ -203,7 +210,7 @@ class Emotes extends AbstractController
                     $emotePrefix->set('prefix', utf8_strtolower(utf8_substr($visitor->username, 0, ++$length)),
                         ['forceSet' => true]);
                 } else {
-                    $emotePrefix->set('prefix', $visitor->username . \XF::$time, ['forceSet' => true]);
+                    $emotePrefix->set('prefix', $visitor->username . XF::$time, ['forceSet' => true]);
                 }
             }
 
@@ -217,8 +224,8 @@ class Emotes extends AbstractController
      * @param $id
      * @param null $with
      * @param null $phraseKey
-     * @return \XF\Mvc\Entity\Entity|CustomEmote
-     * @throws \XF\Mvc\Reply\Exception
+     * @return Entity|CustomEmote
+     * @throws Exception
      */
     protected function assertEditableEmote($id, $with = null, $phraseKey = null)
     {
@@ -227,7 +234,7 @@ class Emotes extends AbstractController
 
         if (!$emote->canEdit()) {
             throw $this->exception(
-                $this->notFound(\XF::phrase($phraseKey))
+                $this->notFound(XF::phrase($phraseKey))
             );
         }
 

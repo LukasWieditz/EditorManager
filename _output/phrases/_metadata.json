@@ -653,6 +653,12 @@
         "version_string": "1.0.2 Patch Level 1",
         "hash": "874fe33acc9c32433fcc002ccb38686e"
     },
+    "kl_em_heading.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "0101316665d4f82adaa26d86fbbb2d6e"
+    },
     "kl_em_hidden_content.txt": {
         "global_cache": false,
         "version_id": 1000291,
@@ -712,6 +718,12 @@
         "version_id": 1000291,
         "version_string": "1.0.2 Patch Level 1",
         "hash": "d3d6fd72b2165e49de4fbfb3fd844aee"
+    },
+    "kl_em_horizontal_ruler.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "e03252bfb8159fca3a3f015fb9421116"
     },
     "kl_em_hoster.txt": {
         "global_cache": false,
@@ -1294,6 +1306,12 @@
         "version_id": 1010072,
         "version_string": "1.1.0.2",
         "hash": "61b6e58c0db2d6fec57284f63e99326f"
+    },
+    "option.klEMEnabledBBCodes.txt": {
+        "global_cache": false,
+        "version_id": 1030031,
+        "version_string": "1.3.0 Beta 1",
+        "hash": "196cde62040b3eb4f6a3b136eae10f48"
     },
     "option.klEMExternalFontPolling.txt": {
         "global_cache": false,

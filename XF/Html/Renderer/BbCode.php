@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\XF\Html\Renderer;
 
+use XF;
 use XF\Html\Tag;
 
 /**
@@ -30,7 +31,7 @@ class BbCode extends XFCP_BbCode
     {
         parent::__construct($options);
 
-        $app = \XF::app();
+        $app = XF::app();
         $options = $app->options()->klEMEnabledBBCodes;
 
         $this->klEMFontSizes = explode(',', $app->options()->klEMFontSizes);
@@ -124,27 +125,6 @@ class BbCode extends XFCP_BbCode
     }
 
     /**
-     * Handles CSS text-align rules.
-     *
-     * @param string $text Child text of the tag with the CSS
-     * @param string $alignment Value of the CSS rule
-     * @param Tag $tag
-     *
-     * @return string
-     */
-    public function handleCssTextAlign($text, $alignment, Tag $tag)
-    {
-        if (strtolower($alignment) === 'justify') {
-            $styles = isset($tag->attributes()['style']) ? $tag->attributes()['style'] : [];
-            $option = isset($styles['max-width']) ? "='" . $styles['max-width'] . "'" : '';
-
-            return "[JUSTIFY$option]{$text}[/JUSTIFY]";
-        } else {
-            return parent::handleCssTextAlign($text, $alignment, $tag);
-        }
-    }
-
-    /**
      * Handles CSS font-family rules. The first font is used.
      *
      * @param string $text Child text of the tag with the CSS
@@ -154,7 +134,7 @@ class BbCode extends XFCP_BbCode
     public function handleCssFontFamily($text, $cssValue)
     {
         list($fontFamily) = explode(',', $cssValue);
-        if (preg_match('/^(\'|")(.*)\\1$/', $fontFamily, $match)) {
+        if (preg_match('/^([\'"])(.*)\\1$/', $fontFamily, $match)) {
             $fontFamily = $match[2];
             $fontFamilies = explode(',', $fontFamily);
             if (count($fontFamilies)) {

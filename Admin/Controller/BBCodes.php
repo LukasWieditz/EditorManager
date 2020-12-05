@@ -9,8 +9,19 @@
 namespace KL\EditorManager\Admin\Controller;
 
 use KL\EditorManager\Entity\BbCode;
+use XF;
 use XF\Admin\Controller\AbstractController;
+use XF\Mvc\FormAction;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\AbstractReply;
+use XF\Mvc\Reply\Exception;
+use XF\Mvc\Reply\Message;
+use XF\Mvc\Reply\Redirect;
+use XF\Mvc\Reply\Reroute;
+use XF\Mvc\Reply\View;
+use XF\PrintableException;
+use XF\Repository\BbCode as BbCodeRepo;
+use XF\Repository\Option;
 
 /**
  * Class BBCodes
@@ -20,11 +31,10 @@ class BBCodes extends AbstractController
 {
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Reroute|\XF\Mvc\Reply\View
+     * @return Reroute|View
      */
-    public function actionIndex(ParameterBag $params)
+    public function actionIndex(ParameterBag $params) : AbstractReply
     {
-        /** @noinspection PhpUndefinedFieldInspection */
         if ($params['bb_code_id']) {
             return $this->rerouteController('KL\EditorManager:BBCodes', 'edit', $params);
         }
@@ -42,16 +52,15 @@ class BBCodes extends AbstractController
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\View
-     * @throws \XF\PrintableException
+     * @return View
+     * @throws PrintableException
      */
-    public function actionEdit(ParameterBag $params)
+    public function actionEdit(ParameterBag $params) : AbstractReply
     {
         /** @var BbCode $bbCode */
-        /** @noinspection PhpUndefinedFieldInspection */
-        $bbCode = \XF::em()->find('KL\EditorManager:BbCode', $params['bb_code_id']);
+        $bbCode = XF::em()->find('KL\EditorManager:BbCode', $params['bb_code_id']);
         if (!$bbCode) {
-            $bbCode = \XF::em()->create('KL\EditorManager:BbCode');
+            $bbCode = XF::em()->create('KL\EditorManager:BbCode');
             $bbCode->bb_code_id = $params['bb_code_id'];
             $bbCode->save();
         }
@@ -89,16 +98,15 @@ class BBCodes extends AbstractController
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Redirect
-     * @throws \XF\Mvc\Reply\Exception
-     * @throws \XF\PrintableException
+     * @return Redirect
+     * @throws Exception
+     * @throws PrintableException
      */
-    public function actionSave(ParameterBag $params)
+    public function actionSave(ParameterBag $params) : AbstractReply
     {
         $this->assertPostOnly();
         /** @var BbCode $bbCode */
-        /** @noinspection PhpUndefinedFieldInspection */
-        $bbCode = \XF::em()->find('KL\EditorManager:BbCode', $params['bb_code_id']);
+        $bbCode = XF::em()->find('KL\EditorManager:BbCode', $params['bb_code_id']);
 
         $this->bbCodeSaveProcess($bbCode)->run();
 
@@ -124,9 +132,9 @@ class BBCodes extends AbstractController
 
     /**
      * @param BbCode $bbCode
-     * @return \XF\Mvc\FormAction
+     * @return FormAction
      */
-    protected function bbCodeSaveProcess(BbCode $bbCode)
+    protected function bbCodeSaveProcess(BbCode $bbCode) : FormAction
     {
         $form = $this->formAction();
 
@@ -145,7 +153,7 @@ class BBCodes extends AbstractController
     /**
      * @return array
      */
-    protected function getBBCodeLists()
+    protected function getBBCodeLists() : array
     {
         return [
             'stock' => [
@@ -157,6 +165,7 @@ class BBCodes extends AbstractController
                 'font',
                 'size',
                 'url',
+                'email',
                 'img',
                 'media',
                 'quote',
@@ -168,6 +177,9 @@ class BBCodes extends AbstractController
                 'attach',
                 'ispoiler',
                 'table',
+                'heading',
+                'hr',
+                'table'
             ],
             'klem' => [
                 'bgcolor',
@@ -182,16 +194,16 @@ class BBCodes extends AbstractController
     }
 
     /**
-     * @return \XF\Mvc\Reply\Message
-     * @throws \XF\Mvc\Reply\Exception
-     * @throws \XF\PrintableException
+     * @return Message
+     * @throws Exception
+     * @throws PrintableException
      */
-    public function actionToggle()
+    public function actionToggle() : AbstractReply
     {
         $this->assertPostOnly();
 
-        /** @var \XF\Entity\Option $option */
-        $option = \XF::em()->find('XF:Option', 'klEMEnabledBBCodes');
+        /** @var XF\Entity\Option $option */
+        $option = XF::em()->find('XF:Option', 'klEMEnabledBBCodes');
 
         $activeState = $this->request->filter('kl_active', 'array-bool');
 
@@ -207,25 +219,25 @@ class BBCodes extends AbstractController
                 $activeState[$bbCode] = isset($option->option_value[$bbCode]) && $option->option_value[$bbCode];
             }
         }
-        $option->option_value = $activeState;
+        $option->option_value = $activeCodes;
         $option->save();
 
-        return $this->message(\XF::phrase('your_changes_have_been_saved'));
+        return $this->message(XF::phrase('your_changes_have_been_saved'));
     }
 
     /**
-     * @return \XF\Repository\BbCode
+     * @return BbCodeRepo
      */
-    protected function getBbCodeRepo()
+    protected function getBbCodeRepo() : BbCodeRepo
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->repository('XF:BbCode');
     }
 
     /**
-     * @return \XF\Repository\Option
+     * @return Option
      */
-    protected function getOptionRepo()
+    protected function getOptionRepo() : Option
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->repository('XF:Option');

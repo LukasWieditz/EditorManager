@@ -10,7 +10,18 @@ namespace KL\EditorManager\Admin\Controller;
 
 use XF\Admin\Controller\AbstractController;
 use KL\EditorManager\Entity\Template;
+use XF\ControllerPlugin\Delete;
+use XF\ControllerPlugin\Editor;
+use XF\ControllerPlugin\Toggle;
+use XF\Entity\Smilie;
+use XF\Mvc\FormAction;
 use XF\Mvc\ParameterBag;
+use XF\Mvc\Reply\AbstractReply;
+use XF\Mvc\Reply\Exception;
+use XF\Mvc\Reply\Message;
+use XF\Mvc\Reply\Redirect;
+use XF\Mvc\Reply\View;
+use XF\PrintableException;
 
 /**
  * Class Templates
@@ -19,9 +30,9 @@ use XF\Mvc\ParameterBag;
 class Templates extends AbstractController
 {
     /**
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
-    public function actionIndex()
+    public function actionIndex() : AbstractReply
     {
         /** @var \KL\EditorManager\Repository\Template $repo */
         $repo = $this->repository('KL\EditorManager:Template');
@@ -35,9 +46,9 @@ class Templates extends AbstractController
 
     /**
      * @param Template $template
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
-    public function templateAddEdit(Template $template)
+    public function templateAddEdit(Template $template) : AbstractReply
     {
         $userCriteria = $this->app->criteria('XF:User', $template->user_criteria);
 
@@ -50,34 +61,34 @@ class Templates extends AbstractController
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return View
+     * @throws Exception
      */
-    public function actionEdit(ParameterBag $params)
+    public function actionEdit(ParameterBag $params) : AbstractReply
     {
         $template = $this->assertTemplateExists($params['template_id']);
         return $this->templateAddEdit($template);
     }
 
     /**
-     * @return \XF\Mvc\Reply\View
+     * @return View
      */
-    public function actionAdd()
+    public function actionAdd() : AbstractReply
     {
-        /** @var \KL\EditorManager\Entity\Template $template */
+        /** @var Template $template */
         $template = $this->em()->create('KL\EditorManager:Template');
         return $this->templateAddEdit($template);
     }
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
-     * @throws \XF\Mvc\Reply\Exception
+     * @return Redirect|View
+     * @throws Exception
      */
-    public function actionDelete(ParameterBag $params)
+    public function actionDelete(ParameterBag $params) : AbstractReply
     {
         $template = $this->assertTemplateExists($params['template_id']);
-        /** @var \XF\ControllerPlugin\Delete $plugin */
+        /** @var Delete $plugin */
         $plugin = $this->plugin('XF:Delete');
         return $plugin->actionDelete(
             $template,
@@ -90,11 +101,10 @@ class Templates extends AbstractController
 
     /**
      * @param ParameterBag $params
-     * @return \XF\Mvc\FormAction|\XF\Mvc\Reply\Redirect
-     * @throws \XF\Mvc\Reply\Exception
-     * @throws \XF\PrintableException
+     * @return FormAction|Redirect
+     * @throws Exception
      */
-    public function actionSave(ParameterBag $params)
+    public function actionSave(ParameterBag $params) : AbstractReply
     {
         $this->assertPostOnly();
 
@@ -116,9 +126,9 @@ class Templates extends AbstractController
 
     /**
      * @param Template $template
-     * @return \XF\Mvc\FormAction
+     * @return AbstractReply
      */
-    protected function templateSaveProcess(Template $template)
+    protected function templateSaveProcess(Template $template) : AbstractReply
     {
         $entityInput = $this->filter([
             'title' => 'str',
@@ -127,7 +137,7 @@ class Templates extends AbstractController
             'user_criteria' => 'array',
         ]);
 
-        /** @var \XF\ControllerPlugin\Editor $editor */
+        /** @var Editor $editor */
         $editor = $this->plugin('XF:Editor');
         $entityInput['content'] = $editor->fromInput('content');
 
@@ -139,9 +149,9 @@ class Templates extends AbstractController
     }
 
     /**
-     * @return \XF\Mvc\Reply\Redirect|\XF\Mvc\Reply\View
+     * @return Redirect|View
      */
-    public function actionSort()
+    public function actionSort() : AbstractReply
     {
         /** @var \Kl\EditorManager\Repository\Template $repo */
         $repo = $this->repository('KL\EditorManager:Template');
@@ -152,7 +162,7 @@ class Templates extends AbstractController
             foreach (json_decode($this->filter('templates', 'string')) as $templateValue) {
                 $lastOrder += 10;
 
-                /** @var \XF\Entity\Smilie $smilie */
+                /** @var Smilie $smilie */
                 $template = $templates[$templateValue->id];
                 $template->display_order = $lastOrder;
                 $template->saveIfChanged();
@@ -168,14 +178,13 @@ class Templates extends AbstractController
     }
 
     /**
-     * @return \XF\Mvc\Reply\Message
+     * @return Message
      */
-    public function actionToggle()
+    public function actionToggle() : AbstractReply
     {
-        /** @var \XF\ControllerPlugin\Toggle $plugin */
+        /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');
-        $return = $plugin->actionToggle('KL\EditorManager:Template');
-        return $return;
+        return $plugin->actionToggle('KL\EditorManager:Template');
     }
 
     /**
@@ -183,12 +192,12 @@ class Templates extends AbstractController
      * @param array|string|null $with
      * @param null|string $phraseKey
      *
-     * @return \KL\EditorManager\Entity\Template
-     * @throws \XF\Mvc\Reply\Exception
+     * @return Template
+     * @throws Exception
      */
-    protected function assertTemplateExists($id, $with = null, $phraseKey = null)
+    protected function assertTemplateExists($id, $with = null, $phraseKey = null) : Template
     {
-        /** @var \KL\EditorManager\Entity\Template $template */
+        /** @var Template $template */
         $template = $this->assertRecordExists('KL\EditorManager:Template', $id, $with, $phraseKey);
         return $template;
     }

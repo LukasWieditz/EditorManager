@@ -1,13 +1,19 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Admin/View/Log/AudioProxy/Audio.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Admin\View\Log\AudioProxy;
 
+use KL\EditorManager\Entity\AudioProxy;
+use KL\EditorManager\XF\Proxy\Controller;
+use League\Flysystem\FileNotFoundException;
+use XF;
+use XF\Http\ResponseFile;
+use XF\Http\ResponseStream;
 use XF\Mvc\View;
 
 /**
@@ -17,22 +23,22 @@ use XF\Mvc\View;
 class Audio extends View
 {
     /**
-     * @return \XF\Http\ResponseFile|\XF\Http\ResponseStream
-     * @throws \League\Flysystem\FileNotFoundException
+     * @return ResponseFile|ResponseStream
+     * @throws FileNotFoundException
      */
     public function renderRaw()
     {
-        /** @var \KL\EditorManager\Entity\AudioProxy $audio */
+        /** @var AudioProxy $audio */
         $audio = $this->params['audio'];
 
-        /** @var \KL\EditorManager\XF\Proxy\Controller $proxyController */
-        $proxyController = \XF::app()->proxy()->controller();
+        /** @var Controller $proxyController */
+        $proxyController = XF::app()->proxy()->controller();
         $proxyController->applyKLEMAudioResponseHeaders($this->response, $audio, null);
 
         if ($audio->isPlaceholder()) {
             return $this->response->responseFile($audio->getPlaceholderPath());
         } else {
-            $resource = \XF::fs()->readStream($audio->getAbstractedAudioPath());
+            $resource = XF::fs()->readStream($audio->getAbstractedAudioPath());
             return $this->response->responseStream($resource, $audio->file_size);
         }
     }

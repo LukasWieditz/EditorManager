@@ -8,8 +8,13 @@
 
 namespace KL\EditorManager\Repository;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use KL\EditorManager\Entity\GoogleFont;
+use XF;
 use XF\Mvc\Entity\Repository;
+use XF\PrintableException;
 
 /**
  * Class GoogleFonts
@@ -18,29 +23,29 @@ use XF\Mvc\Entity\Repository;
 class GoogleFonts extends Repository
 {
     /**
-     * @throws \Exception
-     * @throws \XF\PrintableException
+     * @throws Exception
+     * @throws PrintableException|GuzzleException
+     * @throws GuzzleException
      */
     public function updateFontList()
     {
-        $options = \XF::app()->options();
+        $options = XF::app()->options();
         $apiKey = $options->klEMGoogleApiKey;
 
         if ($apiKey) {
             try {
-                $client = \XF::app()->http()->client();
+                $client = XF::app()->http()->client();
                 $params = http_build_query(['key' => $apiKey]);
 
-                /** @noinspection PhpParamsInspection */
                 $response = $client->get('https://www.googleapis.com/webfonts/v1/webfonts?' . $params)->json();
                 $webfonts = $this->finder('KL\EditorManager:GoogleFont')->fetch();
 
                 foreach ($response['items'] as $font) {
                     if ($webfonts->offsetExists($font['family'])) {
-                        /** @var \KL\EditorManager\Entity\GoogleFont $dbFont */
+                        /** @var GoogleFont $dbFont */
                         $dbFont = $webfonts[$font['family']];
                     } else {
-                        /** @var \KL\EditorManager\Entity\GoogleFont $dbFont */
+                        /** @var GoogleFont $dbFont */
                         $dbFont = $this->em->create('KL\EditorManager:GoogleFont');
                         $dbFont->font_id = $font['family'];
                     }
@@ -56,7 +61,7 @@ class GoogleFonts extends Repository
                 return;
             } catch (RequestException $e) {
                 // this is an exception with the underlying request, so let it go through
-                \XF::logException($e, false, 'Google Fonts API connection error: ');
+                XF::logException($e, false, 'Google Fonts API connection error: ');
                 return;
             }
         }
