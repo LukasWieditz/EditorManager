@@ -50,7 +50,7 @@ class SpecialChars extends Repository
     }
 
     /**
-     * @return ArrayCollection
+     * @return XF\Mvc\Entity\AbstractCollection
      */
     public function getCategoriesForList()
     {
@@ -75,7 +75,7 @@ class SpecialChars extends Repository
 
     /**
      * @param array $groupIds
-     * @return ArrayCollection
+     * @return XF\Mvc\Entity\AbstractCollection
      */
     public function getCharactersForList($groupIds = [])
     {

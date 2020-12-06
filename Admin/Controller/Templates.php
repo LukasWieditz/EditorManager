@@ -8,12 +8,15 @@
 
 namespace KL\EditorManager\Admin\Controller;
 
-use XF\Admin\Controller\AbstractController;
 use KL\EditorManager\Entity\Template;
+use KL\EditorManager\Repository\Template as TemplateRepo;
+use XF\Admin\Controller\AbstractController;
 use XF\ControllerPlugin\Delete;
 use XF\ControllerPlugin\Editor;
 use XF\ControllerPlugin\Toggle;
 use XF\Entity\Smilie;
+use XF\Mvc\Entity\Entity;
+use XF\Mvc\Entity\Repository;
 use XF\Mvc\FormAction;
 use XF\Mvc\ParameterBag;
 use XF\Mvc\Reply\AbstractReply;
@@ -21,7 +24,6 @@ use XF\Mvc\Reply\Exception;
 use XF\Mvc\Reply\Message;
 use XF\Mvc\Reply\Redirect;
 use XF\Mvc\Reply\View;
-use XF\PrintableException;
 
 /**
  * Class Templates
@@ -30,15 +32,20 @@ use XF\PrintableException;
 class Templates extends AbstractController
 {
     /**
+     * @return Repository|TemplateRepo
+     */
+    protected function getTemplateRepo(): TemplateRepo
+    {
+        return $this->repository('KL\EditorManager:Template');
+    }
+
+    /**
      * @return View
      */
-    public function actionIndex() : AbstractReply
+    public function actionIndex(): AbstractReply
     {
-        /** @var \KL\EditorManager\Repository\Template $repo */
-        $repo = $this->repository('KL\EditorManager:Template');
-
         $viewParams = [
-            'templates' => $repo->getTemplatesForUser(0)
+            'templates' => $this->getTemplateRepo()->getTemplatesForUser()
         ];
 
         return $this->view('KL\EditorManager:ListTemplates', 'kl_em_template_list', $viewParams);
@@ -48,7 +55,7 @@ class Templates extends AbstractController
      * @param Template $template
      * @return View
      */
-    public function templateAddEdit(Template $template) : AbstractReply
+    public function templateAddEdit(Template $template): AbstractReply
     {
         $userCriteria = $this->app->criteria('XF:User', $template->user_criteria);
 
@@ -56,6 +63,7 @@ class Templates extends AbstractController
             'template' => $template,
             'userCriteria' => $userCriteria
         ];
+
         return $this->view('KL\EditorManager:EditTemplate', 'kl_em_template_edit', $viewParams);
     }
 
@@ -64,7 +72,7 @@ class Templates extends AbstractController
      * @return View
      * @throws Exception
      */
-    public function actionEdit(ParameterBag $params) : AbstractReply
+    public function actionEdit(ParameterBag $params): AbstractReply
     {
         $template = $this->assertTemplateExists($params['template_id']);
         return $this->templateAddEdit($template);
@@ -73,7 +81,7 @@ class Templates extends AbstractController
     /**
      * @return View
      */
-    public function actionAdd() : AbstractReply
+    public function actionAdd(): AbstractReply
     {
         /** @var Template $template */
         $template = $this->em()->create('KL\EditorManager:Template');
@@ -85,7 +93,7 @@ class Templates extends AbstractController
      * @return Redirect|View
      * @throws Exception
      */
-    public function actionDelete(ParameterBag $params) : AbstractReply
+    public function actionDelete(ParameterBag $params): AbstractReply
     {
         $template = $this->assertTemplateExists($params['template_id']);
         /** @var Delete $plugin */
@@ -104,7 +112,7 @@ class Templates extends AbstractController
      * @return FormAction|Redirect
      * @throws Exception
      */
-    public function actionSave(ParameterBag $params) : AbstractReply
+    public function actionSave(ParameterBag $params): AbstractReply
     {
         $this->assertPostOnly();
 
@@ -114,12 +122,7 @@ class Templates extends AbstractController
             $template = $this->em()->create('KL\EditorManager:Template');
         }
 
-        $form = $this->templateSaveProcess($template);
-        if (get_class($form) === 'XF\Mvc\Reply\Error') {
-            return $form;
-        } else {
-            $form->run();
-        }
+        $this->templateSaveProcess($template)->run();
 
         return $this->redirect($this->buildLink('em/templates'));
     }
@@ -128,7 +131,7 @@ class Templates extends AbstractController
      * @param Template $template
      * @return AbstractReply
      */
-    protected function templateSaveProcess(Template $template) : AbstractReply
+    protected function templateSaveProcess(Template $template): FormAction
     {
         $entityInput = $this->filter([
             'title' => 'str',
@@ -141,7 +144,6 @@ class Templates extends AbstractController
         $editor = $this->plugin('XF:Editor');
         $entityInput['content'] = $editor->fromInput('content');
 
-
         $form = $this->formAction();
         $form->basicEntitySave($template, $entityInput);
 
@@ -151,11 +153,9 @@ class Templates extends AbstractController
     /**
      * @return Redirect|View
      */
-    public function actionSort() : AbstractReply
+    public function actionSort(): AbstractReply
     {
-        /** @var \Kl\EditorManager\Repository\Template $repo */
-        $repo = $this->repository('KL\EditorManager:Template');
-        $templates = $repo->getTemplatesForUser(0);
+        $templates = $this->getTemplateRepo()->getTemplatesForUser();
 
         if ($this->isPost()) {
             $lastOrder = 0;
@@ -180,7 +180,7 @@ class Templates extends AbstractController
     /**
      * @return Message
      */
-    public function actionToggle() : AbstractReply
+    public function actionToggle(): AbstractReply
     {
         /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');
@@ -192,14 +192,12 @@ class Templates extends AbstractController
      * @param array|string|null $with
      * @param null|string $phraseKey
      *
-     * @return Template
+     * @return Template|Entity
      * @throws Exception
      */
-    protected function assertTemplateExists($id, $with = null, $phraseKey = null) : Template
+    protected function assertTemplateExists($id, $with = null, $phraseKey = null): Template
     {
-        /** @var Template $template */
-        $template = $this->assertRecordExists('KL\EditorManager:Template', $id, $with, $phraseKey);
-        return $template;
+        return $this->assertRecordExists('KL\EditorManager:Template', $id, $with, $phraseKey);
     }
 
 }

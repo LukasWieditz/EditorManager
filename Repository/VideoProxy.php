@@ -52,7 +52,7 @@ class VideoProxy extends AbstractProxy
      */
     protected function getCacheTTL(): int
     {
-        return \XF::options()->klEMVideoCacheTTL;
+        return XF::options()->klEMVideoCacheTTL;
     }
 
     /**
@@ -60,7 +60,7 @@ class VideoProxy extends AbstractProxy
      */
     protected function getProxyLogLength(): int
     {
-        return \XF::options()->klEMVideoAudioProxyLogLength;
+        return XF::options()->klEMVideoAudioProxyLogLength;
     }
 
     /**
@@ -68,6 +68,6 @@ class VideoProxy extends AbstractProxy
      */
     protected function getReferrerOptions(): array
     {
-        return \XF::options()->klEMVideoAudioProxyReferrer;
+        return XF::options()->klEMVideoAudioProxyReferrer;
     }
 }

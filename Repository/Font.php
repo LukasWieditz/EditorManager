@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\Repository;
 
+use KL\EditorManager\Finder\Font as FontFinder;
 use stdClass;
 use XF;
 use XF\Mvc\Entity\AbstractCollection;
@@ -22,22 +23,19 @@ class Font extends Repository
 {
     /**
      * Returns a finder for all fonts, ordered by display_order.
-     * @return Finder
+     * @return FontFinder|Finder
      */
-    public function findFonts() : Finder
+    public function findFonts(): FontFinder
     {
-        $finder = $this->finder('KL\EditorManager:Font');
-        $finder
+        return $this->finder('KL\EditorManager:Font')
             ->setDefaultOrder('display_order', 'ASC');
-
-        return $finder;
     }
 
     /**
      * Returns the font caches content.
      * @return array
      */
-    public function getFontsCached() : array
+    public function getFontsCached(): array
     {
         // TODO: Switch to proper cache
         if ($cache = XF::app()->simpleCache()) {
@@ -59,7 +57,7 @@ class Font extends Repository
      * Rebuilds the font cache.
      * @return array
      */
-    public function rebuildFontCache() : array
+    public function rebuildFontCache(): array
     {
         $data = $this->stripData($this->findFonts()->fetch());
 
@@ -75,7 +73,7 @@ class Font extends Repository
      * @param AbstractCollection $data
      * @return array
      */
-    private function stripData(AbstractCollection $data) : array
+    private function stripData(AbstractCollection $data): array
     {
         $fonts = [];
 

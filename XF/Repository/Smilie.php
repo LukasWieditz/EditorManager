@@ -1,12 +1,26 @@
 <?php
 
+/*!
+ * KL/EditorManager/XF/Repository/Smilie.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2020 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\XF\Repository;
 
 use XF;
 
+/**
+ * Class Smilie
+ * @package KL\EditorManager\XF\Repository
+ */
 class Smilie extends XFCP_Smilie
 {
-    public function getSmilieListData($displayInEditorOnly = false)
+    /**
+     * @param false $displayInEditorOnly
+     * @return array
+     */
+    public function getSmilieListData($displayInEditorOnly = false): array
     {
         $smilieData = parent::getSmilieListData($displayInEditorOnly);
 
@@ -19,7 +33,10 @@ class Smilie extends XFCP_Smilie
         return $smilieData;
     }
 
-    public function filterSmilies(&$smilies)
+    /**
+     * @param $smilies
+     */
+    public function filterSmilies(&$smilies): void
     {
         foreach ($smilies as $id => $smilie) {
             if (isset($smilie['kl_em_active']) && !$smilie['kl_em_active']) {

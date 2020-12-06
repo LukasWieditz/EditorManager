@@ -166,6 +166,7 @@ abstract class AbstractProxy extends Repository
      * @param AbstractProxyEntity $proxyEntity
      * @param $referrer
      * @return bool
+     * @noinspection PhpRedundantCatchClauseInspection
      */
     public function logReferrer(AbstractProxyEntity $proxyEntity, $referrer): bool
     {
@@ -201,6 +202,7 @@ abstract class AbstractProxy extends Repository
      * Prunes resources from the file system cache that have expired
      *
      * @param integer|null $pruneDate
+     * @throws XF\PrintableException
      */
     public function pruneCache($pruneDate = null): void
     {

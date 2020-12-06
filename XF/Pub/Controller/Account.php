@@ -38,7 +38,7 @@ class Account extends XFCP_Account
         $form = parent::preferencesSaveProcess($visitor);
 
         $input = [
-            'kl_em_wordcount_mode' => $this->filter('kl_em_wordcount_mode', 'str')
+            'kl_em_wordcount_mode' => $this->filter('kl_em_wordcount_mode', 'str', 'letter')
         ];
 
         $form->basicEntitySave($visitor, $input);

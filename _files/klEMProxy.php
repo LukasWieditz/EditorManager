@@ -1,12 +1,14 @@
 <?php
 
+use KL\EditorManager\XF\Proxy\Controller;
+
 $dir = __DIR__;
 require ($dir . '/src/XF.php');
 
 XF::start($dir);
 $app = XF::setupApp('XF\Pub\App');
 
-/** @var \KL\EditorManager\XF\Proxy\Controller $proxy */
+/** @var Controller $proxy */
 $proxy = $app->proxy()->controller();
 
 $request = $app->request();

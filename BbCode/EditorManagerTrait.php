@@ -6,7 +6,7 @@
  * Copyright 2020 Lukas Wieditz
  */
 
-namespace KL\EditorManager\BbCode\Renderer;
+namespace KL\EditorManager\BbCode;
 
 use KL\EditorManager\Entity\BbCode;
 use KL\EditorManager\Repository\Font;

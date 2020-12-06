@@ -11,6 +11,7 @@ namespace KL\EditorManager\Admin\Controller;
 use Exception;
 use KL\EditorManager\Entity\SpecialCharacter;
 use KL\EditorManager\Entity\SpecialCharacterGroup;
+use KL\EditorManager\Repository\SpecialChars as SpecialCharacterRepo;
 use SimpleXMLElement;
 use XF;
 use XF\Admin\Controller\AbstractController;
@@ -34,13 +35,21 @@ use XF\Util\Xml;
 class SpecialChars extends AbstractController
 {
     /**
+     * @return SpecialCharacterRepo|XF\Mvc\Entity\Repository
+     */
+    protected function getSpecialCharactersRepo()
+    {
+        return $this->repository('KL\EditorManager:SpecialChars');
+    }
+
+    /**
      * @param ParameterBag $params
      * @return View
      */
-    public function actionIndex(ParameterBag $params) : AbstractReply
+    public function actionIndex(ParameterBag $params): AbstractReply
     {
         $viewParams = [
-            'specialChars' => XF::finder('KL\EditorManager:SpecialCharacterGroup')->order('display_order')->fetch()
+            'specialChars' => $this->getSpecialCharactersRepo()->getCategoriesForList()
         ];
 
         return $this->view('KL\EditorManager:SpecialChars\List', 'kl_em_special_chars_list', $viewParams);
@@ -49,10 +58,11 @@ class SpecialChars extends AbstractController
     /**
      * @return View
      */
-    public function actionAdd() : AbstractReply
+    public function actionAdd(): AbstractReply
     {
-        /** @noinspection PhpParamsInspection */
-        return $this->actionAddEdit($this->em()->create('KL\EditorManager:SpecialCharacterGroup'));
+        /** @var SpecialCharacterGroup $specialCharacterGroup */
+        $specialCharacterGroup = $this->em()->create('KL\EditorManager:SpecialCharacterGroup');
+        return $this->actionAddEdit($specialCharacterGroup);
     }
 
     /**
@@ -60,18 +70,17 @@ class SpecialChars extends AbstractController
      * @return View
      * @throws XF\Mvc\Reply\Exception
      */
-    public function actionEdit(ParameterBag $params) : AbstractReply
+    public function actionEdit(ParameterBag $params): AbstractReply
     {
-        $group = $this->assertGroupExists($params['group_id']);
-
-        return $this->actionAddEdit($group);
+        $specialCharacterGroup = $this->assertGroupExists($params['group_id']);
+        return $this->actionAddEdit($specialCharacterGroup);
     }
 
     /**
      * @param SpecialCharacterGroup $group
      * @return View
      */
-    protected function actionAddEdit(SpecialCharacterGroup $group) : AbstractReply
+    protected function actionAddEdit(SpecialCharacterGroup $group): AbstractReply
     {
         $userCriteria = $this->app->criteria('XF:User', $group->user_criteria);
 
@@ -88,7 +97,7 @@ class SpecialChars extends AbstractController
      * @return Redirect
      * @throws PrintableException
      */
-    public function actionSave(ParameterBag $params) : AbstractReply
+    public function actionSave(ParameterBag $params): AbstractReply
     {
         if ($params['group_id']) {
             /** @var SpecialCharacterGroup $group */
@@ -107,7 +116,7 @@ class SpecialChars extends AbstractController
      * @param SpecialCharacterGroup $group
      * @return FormAction
      */
-    protected function groupSaveProcess(SpecialCharacterGroup $group) : FormAction
+    protected function groupSaveProcess(SpecialCharacterGroup $group): FormAction
     {
         $entityInput = $this->filter([
             'display_order' => 'uint',
@@ -140,7 +149,7 @@ class SpecialChars extends AbstractController
     /**
      * @return Message
      */
-    public function actionToggle() : AbstractReply
+    public function actionToggle(): AbstractReply
     {
         /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');
@@ -150,9 +159,9 @@ class SpecialChars extends AbstractController
     /**
      * @return Redirect|View
      */
-    public function actionSort() : AbstractReply
+    public function actionSort(): AbstractReply
     {
-        $groups = $this->finder('KL\EditorManager:SpecialCharacterGroup')->order('display_order')->fetch();
+        $groups = $this->getSpecialCharactersRepo()->getCategoriesForList();
 
         if ($this->isPost()) {
             $lastOrder = 0;
@@ -179,7 +188,7 @@ class SpecialChars extends AbstractController
      * @return Redirect|View
      * @throws XF\Mvc\Reply\Exception
      */
-    public function actionDelete(ParameterBag $params) : AbstractReply
+    public function actionDelete(ParameterBag $params): AbstractReply
     {
         $group = $this->assertGroupExists($params['group_id']);
 
@@ -200,14 +209,13 @@ class SpecialChars extends AbstractController
      * @return View
      * @throws XF\Mvc\Reply\Exception
      */
-    public function actionCharacter(ParameterBag $params) : AbstractReply
+    public function actionCharacter(ParameterBag $params): AbstractReply
     {
         $group = $this->assertGroupExists($params['group_id']);
 
         $viewParams = [
             'group' => $group,
-            'specialChars' => XF::finder('KL\EditorManager:SpecialCharacter')->where('group_id', '=',
-                $params['group_id'])->order('display_order')->fetch()
+            'specialChars' => $this->getSpecialCharactersRepo()->getCharactersForList($group->group_id)
         ];
 
         return $this->view('KL\EditorManager:SpecialChars\Character\List', 'kl_em_special_chars_character_list',
@@ -218,11 +226,13 @@ class SpecialChars extends AbstractController
      * @param ParameterBag $params
      * @return View
      */
-    public function actionCharacterAdd(ParameterBag $params) : AbstractReply
+    public function actionCharacterAdd(ParameterBag $params): AbstractReply
     {
+        $group = $this->assertGroupExists($params['group_id']);
+
         /** @var SpecialCharacter $character */
         $character = $this->em()->create('KL\EditorManager:SpecialCharacter');
-        $character->group_id = $params['group_id'];
+        $character->group_id = $group->group_id;
 
         return $this->characterAddEdit($character);
     }
@@ -232,10 +242,9 @@ class SpecialChars extends AbstractController
      * @return View
      * @throws XF\Mvc\Reply\Exception
      */
-    public function actionCharacterEdit(ParameterBag $params) : AbstractReply
+    public function actionCharacterEdit(ParameterBag $params): AbstractReply
     {
         $character = $this->assertCharacterExists($params['character_id']);
-
         return $this->characterAddEdit($character);
     }
 
@@ -243,10 +252,10 @@ class SpecialChars extends AbstractController
      * @param SpecialCharacter $character
      * @return View
      */
-    protected function characterAddEdit(SpecialCharacter $character) : AbstractReply
+    protected function characterAddEdit(SpecialCharacter $character): AbstractReply
     {
         $viewParams = [
-            'groups' => XF::finder('KL\EditorManager:SpecialCharacterGroup')->order('display_order')->fetch(),
+            'groups' => $this->getSpecialCharactersRepo()->getCategoriesForList(),
             'character' => $character
         ];
 
@@ -260,7 +269,7 @@ class SpecialChars extends AbstractController
      * @throws PrintableException
      * @throws XF\Mvc\Reply\Exception
      */
-    public function actionCharacterSave(ParameterBag $params) : AbstractReply
+    public function actionCharacterSave(ParameterBag $params): AbstractReply
     {
         if ($params['character_id']) {
             $character = $this->assertCharacterExists($params['character_id']);
@@ -278,7 +287,7 @@ class SpecialChars extends AbstractController
      * @param SpecialCharacter $character
      * @return FormAction
      */
-    protected function characterSaveProcess(SpecialCharacter $character) : FormAction
+    protected function characterSaveProcess(SpecialCharacter $character): FormAction
     {
         $entityInput = $this->filter([
             'display_order' => 'uint',
@@ -312,7 +321,7 @@ class SpecialChars extends AbstractController
     /**
      * @return Message
      */
-    public function actionCharacterToggle() : AbstractReply
+    public function actionCharacterToggle(): AbstractReply
     {
         /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');
@@ -324,10 +333,10 @@ class SpecialChars extends AbstractController
      * @return Redirect|View
      * @throws XF\Mvc\Reply\Exception
      */
-    public function actionCharacterSort(ParameterBag $params) : AbstractReply
+    public function actionCharacterSort(ParameterBag $params): AbstractReply
     {
-        $characters = $this->finder('KL\EditorManager:SpecialCharacter')->where('group_id', '=',
-            $params['group_id'])->order('display_order')->fetch();
+        $group = $this->assertGroupExists($params['group_id']);
+        $characters = $this->getSpecialCharactersRepo()->getCharactersForList($group->group_id);
 
         if ($this->isPost()) {
             $lastOrder = 0;
@@ -343,9 +352,10 @@ class SpecialChars extends AbstractController
             return $this->redirect($this->buildLink('em/special-chars/characters', $params));
         } else {
             $viewParams = [
-                'group' => $this->assertGroupExists($params['group_id']),
+                'group' => $group,
                 'characters' => $characters
             ];
+
             return $this->view('KL\EditorManager:SpecialChars\Character\Sort', 'kl_em_special_chars_character_sort',
                 $viewParams);
         }
@@ -356,7 +366,7 @@ class SpecialChars extends AbstractController
      * @return Redirect|View
      * @throws XF\Mvc\Reply\Exception
      */
-    public function actionCharacterDelete(ParameterBag $params) : AbstractReply
+    public function actionCharacterDelete(ParameterBag $params): AbstractReply
     {
         $character = $this->assertCharacterExists($params['character_id']);
         /** @var Delete $plugin */
@@ -372,34 +382,32 @@ class SpecialChars extends AbstractController
 
     /**
      * @param $groupId
-     * @return SpecialCharacterGroup
+     * @return SpecialCharacterGroup|XF\Mvc\Entity\Entity
      * @throws XF\Mvc\Reply\Exception
      */
-    protected function assertGroupExists($groupId) : SpecialCharacterGroup
+    protected function assertGroupExists($groupId): SpecialCharacterGroup
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         return $this->assertRecordExists('KL\EditorManager:SpecialCharacterGroup', $groupId);
     }
 
     /**
      * @param $charId
-     * @return SpecialCharacter
+     * @return SpecialCharacter|XF\Mvc\Entity\Entity
      * @throws XF\Mvc\Reply\Exception
      */
-    protected function assertCharacterExists($charId) : SpecialCharacter
+    protected function assertCharacterExists($charId): SpecialCharacter
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         return $this->assertRecordExists('KL\EditorManager:SpecialCharacter', $charId);
     }
 
     /**
      * @return View
      */
-    public function actionImport()  : AbstractReply
+    public function actionImport(): AbstractReply
     {
         $sourceDir = XF::getSourceDirectory();
         $dirSep = DIRECTORY_SEPARATOR;
-        $xmlDir = "{$sourceDir}{$dirSep}addons{$dirSep}KL{$dirSep}EditorManager{$dirSep}_specialChars";
+        $xmlDir = $sourceDir . str_replace('/', $dirSep, "/addons/KL/EditorManager/_specialChars");
         $libraries = [];
         array_map(function ($entry) use (&$libraries) {
             $libraries[substr($entry, 0, -4)] = [
@@ -418,7 +426,7 @@ class SpecialChars extends AbstractController
     /**
      * @return Error|View
      */
-    public function actionImportForm() : AbstractReply
+    public function actionImportForm(): AbstractReply
     {
         $mode = $this->filter('mode', 'str');
 
@@ -454,7 +462,7 @@ class SpecialChars extends AbstractController
     /**
      * @throws PrintableException
      */
-    public function actionImportSave() : AbstractReply
+    public function actionImportSave(): AbstractReply
     {
         $enabled = $this->filter('enabled', 'array-str');
         $codes = $this->filter('codes', 'array-str');
@@ -488,7 +496,7 @@ class SpecialChars extends AbstractController
     /**
      * @return View
      */
-    public function actionExport() : AbstractReply
+    public function actionExport(): AbstractReply
     {
         if ($this->isPost()) {
             $categoryId = $this->filter('category', 'uint');
@@ -538,7 +546,7 @@ class SpecialChars extends AbstractController
      * @return void
      * @return void
      */
-    protected function arrayToXML(array $data, SimpleXMLElement &$xml_data) : void
+    protected function arrayToXML(array $data, SimpleXMLElement &$xml_data): void
     {
         foreach ($data as $key => $value) {
             if (is_numeric($key)) {

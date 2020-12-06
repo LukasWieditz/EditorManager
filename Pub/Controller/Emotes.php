@@ -1,5 +1,11 @@
 <?php
 
+/*!
+ * KL/EditorManager/Pub/Controller/Emotes.php
+ * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+ * Copyright 2020 Lukas Wieditz
+ */
+
 namespace KL\EditorManager\Pub\Controller;
 
 use KL\EditorManager\Entity\CustomEmote;
@@ -154,6 +160,10 @@ class Emotes extends AbstractController
         return $this->redirect($this->buildLink('account/kl-custom-emotes'));
     }
 
+    /**
+     * @param CustomEmote $emote
+     * @return FormAction
+     */
     protected function emoteSaveProcess(CustomEmote $emote): FormAction
     {
         $form = $this->formAction();

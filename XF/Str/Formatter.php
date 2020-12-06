@@ -1,9 +1,9 @@
 <?php
 
 /*!
- * KL/EditorManager/Str/Formatter.php
+ * KL/EditorManager/XF/Str/Formatter.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\XF\Str;
@@ -41,7 +41,7 @@ class Formatter extends XFCP_Formatter
     protected $klEmCustomEmotes = [];
 
     /**
-     * @return User
+     * @return User|null
      */
     public function getKlEmContextUser()
     {
@@ -55,7 +55,7 @@ class Formatter extends XFCP_Formatter
     /**
      * @param User|null $klEmContextUser
      */
-    public function setKlEmContextUser(User $klEmContextUser = null)
+    public function setKlEmContextUser(User $klEmContextUser = null): void
     {
         $this->klEmContextUser = $klEmContextUser;
     }
@@ -63,7 +63,7 @@ class Formatter extends XFCP_Formatter
     /**
      * @param array $smilies
      */
-    public function addSmilies(array $smilies)
+    public function addSmilies(array $smilies): void
     {
         array_push($this->klEmSmilieCache, ...$smilies);
         parent::addSmilies($smilies);
@@ -71,9 +71,9 @@ class Formatter extends XFCP_Formatter
 
     /**
      * @param string $context
-     * @return mixed
+     * @return array
      */
-    protected function getKlEmUserSmilieTranslate($context = 'translate')
+    protected function getKlEmUserSmilieTranslate($context = 'translate'): array
     {
         $contextUser = $this->getKlEmContextUser();
 
@@ -136,9 +136,9 @@ class Formatter extends XFCP_Formatter
 
     /**
      * @param $text
-     * @return null|string|string[]
+     * @return string
      */
-    public function replaceSmiliesHtml($text)
+    public function replaceSmiliesHtml($text): string
     {
         if (!$this->getKlEmContextUser()) {
             return parent::replaceSmiliesHtml($text);
@@ -171,37 +171,11 @@ class Formatter extends XFCP_Formatter
      * @param $text
      * @param $replaceCallback
      * @param null $escapeCallback
-     * @return null|string|string[]
+     * @return string
      */
-    public function replaceSmiliesInText($text, $replaceCallback, $escapeCallback = null)
+    public function replaceSmiliesInText($text, $replaceCallback, $escapeCallback = null): string
     {
-//        $contextUser = $this->getKlEmContextUser();
-//
-//        if (!$contextUser) {
             return parent::replaceSmiliesInText($text, $replaceCallback, $escapeCallback);
-//        }
-//
-//        $smilieTranslate = $this->getKlEmUserSmilieTranslate();
-//
-//        if ($smilieTranslate) {
-//            $text = strtr($text, $smilieTranslate);
-//        }
-//
-//        if ($escapeCallback) {
-//            /** @var callable $escapeCallback */
-//            $text = $escapeCallback($text);
-//        }
-//
-//        if ($smilieTranslate) {
-//            $reverse = $this->getKlEmUserSmilieTranslate('reverse');
-//
-//            $text = preg_replace_callback('#\0((?:klce)?\d+)\0#', function ($match) use ($reverse, $replaceCallback) {
-//                $id = $match[1];
-//                return isset($reverse[$id]) ? $replaceCallback($id, $reverse[$id]) : '';
-//            }, $text);
-//        }
-//
-//        return $text;
     }
 
     /**
@@ -210,7 +184,7 @@ class Formatter extends XFCP_Formatter
      * @param $context
      * @return string
      */
-    public function getBbCodeForQuote($bbCode, $context)
+    public function getBbCodeForQuote($bbCode, $context): string
     {
         $bbCodeContainer = XF::app()->bbCode();
 
@@ -224,13 +198,13 @@ class Formatter extends XFCP_Formatter
 
 
     /**
-     * Strips hide BB codes from snipptes to prevent them from being rendered plain.
+     * Strips hide BB codes from snippets to prevent them from being rendered plain.
      * @param $string
      * @param int $maxLength
      * @param array $options
-     * @return mixed|string
+     * @return string
      */
-    public function snippetString($string, $maxLength = 0, array $options = [])
+    public function snippetString($string, $maxLength = 0, array $options = []): string
     {
         $string = preg_replace("#\[(HIDE(?:REPLY|POSTS|THANKS|REPLYTHANKS)?)].*?\[/\g1]#si",
             XF::phrase('kl_em_hidden_content'), $string);

@@ -3,7 +3,7 @@
 /*!
  * KL/EditorManager/Html/Renderer/BbCode.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\XF\Html\Renderer;
@@ -55,7 +55,7 @@ class BbCode extends XFCP_BbCode
      * @param $fontSize
      * @return string
      */
-    public function handleKLEMCssFontSize($text, $fontSize)
+    public function handleKLEMCssFontSize($text, $fontSize): string
     {
         switch (strtolower($fontSize)) {
             case 'xx-small':
@@ -115,7 +115,7 @@ class BbCode extends XFCP_BbCode
      * @internal param string $alignment Value of the CSS rule
      *
      */
-    public function handleKLEMBGCssColor($text, $color)
+    public function handleKLEMBGCssColor($text, $color): string
     {
         if ($color !== 'transparent') {
             return "[BGCOLOR=$color]{$text}[/BGCOLOR]";
@@ -131,7 +131,7 @@ class BbCode extends XFCP_BbCode
      * @param $cssValue
      * @return string
      */
-    public function handleCssFontFamily($text, $cssValue)
+    public function handleCssFontFamily($text, $cssValue): string
     {
         list($fontFamily) = explode(',', $cssValue);
         if (preg_match('/^([\'"])(.*)\\1$/', $fontFamily, $match)) {
@@ -154,7 +154,7 @@ class BbCode extends XFCP_BbCode
      * @param Tag $tag
      * @return string
      */
-    public function handleTagTable($text, Tag $tag)
+    public function handleTagTable($text, Tag $tag): string
     {
         $option = str_replace(' ', ',', $tag->attribute('class'));
         if ($option) {
@@ -165,11 +165,14 @@ class BbCode extends XFCP_BbCode
         return $this->renderCss($tag, $output);
     }
 
-    public function handleTagImg($text, Tag $tag)
+    /**
+     * @param string $text
+     * @param Tag $tag
+     * @return string
+     */
+    public function handleTagImg($text, Tag $tag): string
     {
-        if (($tag->hasClass('kl-em-emote') || $tag->attribute('data-emote')) && $tag->attribute('alt'))
-        {
-
+        if (($tag->hasClass('kl-em-emote') || $tag->attribute('data-emote')) && $tag->attribute('alt')) {
             return $this->renderCss($tag, trim($tag->attribute('alt')));
         }
 

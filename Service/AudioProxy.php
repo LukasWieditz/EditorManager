@@ -1,300 +1,54 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Service/AudioProxy.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Service;
 
-use InvalidArgumentException;
-use KL\EditorManager\Entity\AudioProxy as AudioProxyEntity;
-use KL\EditorManager\Repository\AudioProxy as AudioProxyRepo;
 use XF;
-use XF\Db\Exception;
-use XF\PrintableException;
-use XF\Service\AbstractService;
-use XF\Util\File;
 
 /**
  * Class AudioProxy
  * @package KL\EditorManager\Service
  */
-class AudioProxy extends AbstractService
+class AudioProxy extends AbstractProxy
 {
     /**
-     * @var bool
+     * @return string
      */
-    protected $forceRefresh = false;
-    /**
-     * @var int
-     */
-    protected $maxConcurrent = 10;
-
-    /**
-     * @var AudioProxyRepo
-     */
-    protected $proxyRepo;
-
-    /**
-     *
-     */
-    protected function setup()
+    protected function getProxyClass(): string
     {
-        $this->proxyRepo = $this->repository('KL\EditorManager:AudioProxy');
+        return 'KL\EditorManager:AudioProxy';
     }
 
     /**
-     * @param bool $value
+     * @return int
      */
-    public function forceRefresh($value = true)
+    protected function getProxyMaxSize(): int
     {
-        $this->forceRefresh = (bool)$value;
+        return XF::options()->klEMAudioProxyMaxSize;
     }
 
     /**
-     * @return bool
+     * @return string[]
      */
-    public function isRefreshForced()
+    protected function getValidExtensionMap(): array
     {
-        return $this->forceRefresh;
-    }
-
-    /**
-     * @param $url
-     * @return AudioProxyEntity|null
-     * @throws PrintableException
-     * @throws PrintableException
-     */
-    public function getAudio($url)
-    {
-        $audio = $this->proxyRepo->getByUrl($url);
-        if ($audio) {
-            if ($this->isRefreshRequired($audio)) {
-                $this->refetchAudio($audio);
-            }
-        } else {
-            if ($this->canFetchAudio()) {
-                $audio = $this->fetchNewAudio($url);
-            }
-        }
-
-        return $audio;
-    }
-
-    /**
-     * @param AudioProxyEntity $audio
-     * @return bool
-     */
-    protected function isRefreshRequired(AudioProxyEntity $audio)
-    {
-        if ($this->forceRefresh) {
-            return true;
-        }
-
-        return $audio->isRefreshRequired() && $this->canFetchAudio();
-    }
-
-    /**
-     * @return bool
-     */
-    public function canFetchAudio()
-    {
-        if ($this->forceRefresh) {
-            return true;
-        }
-
-        $active = $this->proxyRepo->getTotalActiveFetches();
-        return ($active < $this->maxConcurrent);
-    }
-
-    /**
-     * @param $url
-     * @return AudioProxyEntity|null
-     * @throws PrintableException
-     */
-    public function fetchNewAudio($url)
-    {
-        /** @var AudioProxyEntity $audio */
-        $audio = $this->em()->create('KL\EditorManager:AudioProxy');
-        $audio->url = $url;
-        $audio->pruned = true;
-        $audio->is_processing = time(); // may have slept, need to set to now
-
-        try {
-            $audio->save();
-        } catch (Exception $e) {
-            // this is mostly a duplicate key issue
-            return null;
-        }
-
-        $fetchResults = $this->fetchAudioDataFromUrl($audio->url);
-        $this->finalizeFromFetchResults($audio, $fetchResults);
-
-        return $audio;
-    }
-
-    /**
-     * @param AudioProxyEntity $audio
-     * @return AudioProxyEntity
-     * @throws PrintableException
-     */
-    public function refetchAudio(AudioProxyEntity $audio)
-    {
-        $audio->is_processing = time();
-        $audio->save();
-
-        $fetchResults = $this->fetchAudioDataFromUrl($audio->url);
-        $this->finalizeFromFetchResults($audio, $fetchResults);
-
-        return $audio;
-    }
-
-    /**
-     * @param $url
-     * @return array
-     */
-    public function testAudioFetch($url)
-    {
-        $results = $this->fetchAudioDataFromUrl($url);
-        if ($results['dataFile']) {
-            @unlink($results['dataFile']);
-            $results['dataFile'] = null;
-        }
-
-        return $results;
-    }
-
-    /**
-     * @param $url
-     * @return array
-     */
-    protected function fetchAudioDataFromUrl($url)
-    {
-        $url = $this->proxyRepo->cleanUrlForFetch($url);
-        if (!preg_match('#^https?://#i', $url)) {
-            throw new InvalidArgumentException("URL must be http or https");
-        }
-
-        $urlParts = @parse_url($url);
-
-        $validAudio = false;
-        $fileName = !empty($urlParts['path']) ? basename($urlParts['path']) : null;
-        $mimeType = null;
-        $error = null;
-        $streamFile = File::getTempDir() . '/' . strtr(md5($url) . '-' . uniqid(), '/\\.', '---') . '.temp';
-        $audioProxyMaxSize = $this->app->options()->klEMAudioProxyMaxSize * 1024;
-
-        try {
-            $options = [
-                'headers' => [
-                    'Accept' => 'audio/*,*'
-                ]
-            ];
-            $limits = [
-                'time' => 8,
-                'bytes' => $audioProxyMaxSize ?: -1
-            ];
-            $response = $this->app->http()->reader()->getUntrusted($url, $limits, $streamFile, $options, $error);
-        } catch (\Exception $e) {
-            $response = null;
-            $error = $e->getMessage();
-        }
-
-        if ($response) {
-            $response->getBody()->close();
-
-            if ($response->getStatusCode() == 200) {
-                $disposition = (string) $response->getHeader('Content-Disposition');
-                if ($disposition && preg_match('/filename=(\'|"|)(.+)\\1/siU', $disposition, $match)) {
-                    $fileName = $match[2];
-                }
-                if (!$fileName) {
-                    $fileName = 'audio';
-                }
-
-                $audioInfo = filesize($streamFile) ? @pathinfo($streamFile) : false;
-                if ($audioInfo) {
-                    $audioType = (string) $response->getHeader('content-type');
-
-                    $extension = File::getFileExtension($fileName);
-                    $extensionMap = [
-                        'audio/webm' => ['webm'],
-                        'audio/mp4' => ['mp4'],
-                        'audio/mpeg' => ['mp3']
-                    ];
-                    if (isset($extensionMap[$audioType])) {
-                        $mimeType = $audioType;
-
-                        $validExtensions = $extensionMap[$audioType];
-                        if (!in_array($extension, $validExtensions)) {
-                            $extensionStart = strrpos($fileName, '.');
-                            $fileName = (
-                                $extensionStart
-                                    ? substr($fileName, 0, $extensionStart)
-                                    : $fileName
-                                ) . '.' . $validExtensions[0];
-                        }
-
-                        $validAudio = true;
-                    } else {
-                        $error = XF::phraseDeferred('kl_em_audio_is_invalid_type');
-                    }
-                } else {
-                    $error = XF::phraseDeferred('kl_em_file_not_a_audio');
-                }
-            } else {
-                $error = XF::phraseDeferred('received_unexpected_response_code_x_message_y', [
-                    'code' => $response->getStatusCode(),
-                    'message' => $response->getReasonPhrase()
-                ]);
-            }
-        }
-
-        if (!$validAudio) {
-            @unlink($streamFile);
-        }
-
         return [
-            'valid' => $validAudio,
-            'error' => $error,
-            'dataFile' => $validAudio ? $streamFile : null,
-            'fileName' => $fileName,
-            'mimeType' => $mimeType
+            'audio/webm' => ['webm'],
+            'audio/mp4' => ['mp4'],
+            'audio/mpeg' => ['mp3']
         ];
     }
 
     /**
-     * @param AudioProxyEntity $audio
-     * @param array $fetchResults
-     * @throws PrintableException
+     * @return string
      */
-    protected function finalizeFromFetchResults(AudioProxyEntity $audio, array $fetchResults)
+    protected function getType(): string
     {
-        $audio->is_processing = 0;
-
-        if ($fetchResults['valid']) {
-            $newAudioPath = $audio->getAbstractedAudioPath();
-
-            if (File::copyFileToAbstractedPath($fetchResults['dataFile'], $newAudioPath)) {
-                $audio->fetch_date = time();
-                $audio->file_name = $fetchResults['fileName'];
-                $audio->file_size = filesize($fetchResults['dataFile']);
-                $audio->mime_type = $fetchResults['mimeType'];
-                $audio->pruned = false;
-                $audio->failed_date = 0;
-                $audio->fail_count = 0;
-            } else {
-                $audio->pruned = true;
-            }
-
-            @unlink($fetchResults['dataFile']);
-        } else {
-            $audio->failed_date = time();
-            $audio->fail_count++;
-        }
-
-        $audio->save();
+        return 'audio';
     }
 }

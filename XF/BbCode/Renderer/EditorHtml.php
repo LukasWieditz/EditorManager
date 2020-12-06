@@ -9,7 +9,7 @@
 namespace KL\EditorManager\XF\BbCode\Renderer;
 
 use KL\EditorManager\BbCode\EditorManagerInterface;
-use KL\EditorManager\BbCode\Renderer\EditorManagerTrait;
+use KL\EditorManager\BbCode\EditorManagerTrait;
 use XF;
 
 /**

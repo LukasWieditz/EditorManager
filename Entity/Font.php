@@ -8,7 +8,9 @@
 
 namespace KL\EditorManager\Entity;
 
+use KL\EditorManager\Repository\Font as FontRepo;
 use XF\Mvc\Entity\Entity;
+use XF\Mvc\Entity\Repository;
 use XF\Mvc\Entity\Structure;
 
 /**
@@ -25,6 +27,18 @@ use XF\Mvc\Entity\Structure;
  */
 class Font extends Entity
 {
+    /**
+     * @return FontRepo|Repository
+     */
+    protected function getFontRepo(): FontRepo
+    {
+        return $this->repository('KL\EditorManager:Font');
+    }
+
+    protected function _postSave(): void
+    {
+        $this->getFontRepo()->rebuildFontCache();
+    }
 
     /**
      * @param Structure $structure

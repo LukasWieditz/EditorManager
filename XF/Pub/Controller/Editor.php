@@ -24,9 +24,17 @@ class Editor extends XFCP_Editor
     /**
      * @return GoogleFont|Repository
      */
-    protected function getKLGoogleFontRepo()
+    protected function getKLGoogleFontRepo(): GoogleFont
     {
         return $this->repository('KL\EditorManager:GoogleFont');
+    }
+
+    /**
+     * @return SpecialChars|Repository
+     */
+    protected function getKLSpecialCharacterRepo(): SpecialChars
+    {
+        return $this->repository('KL\EditorManager:SpecialChars');
     }
 
     /**
@@ -66,13 +74,11 @@ class Editor extends XFCP_Editor
         $params = [];
 
         switch ($dialog) {
-            case 'ispoiler':
-                $template = "editor_dialog_kl_em_ispoiler";
-                break;
-
             case 'gfont':
-                $finder = $this->getKLGoogleFontRepo()->findGoogleFonts();
-                $params['fonts'] = $finder->active()->fetch();
+                $params['fonts'] = $this->getKLGoogleFontRepo()
+                    ->findGoogleFonts()
+                    ->active()
+                    ->fetch();
 
                 $template = "editor_dialog_kl_em_gfont";
                 break;
@@ -104,9 +110,7 @@ class Editor extends XFCP_Editor
      */
     public function actionKlEmSpecialChars(): AbstractReply
     {
-        /** @var SpecialChars $repo */
-        $repo = $this->repository('KL\EditorManager:SpecialChars');
-
+        $repo = $this->getKLSpecialCharacterRepo();
         $categories = $repo->getCategoriesForList();
         $characters = $repo->getCharactersForList($categories->keys());
         $groupedCharacters = $characters->groupBy('group_id');
@@ -116,7 +120,7 @@ class Editor extends XFCP_Editor
         if ($recentlyUsed) {
             $recentlyUsed = array_reverse(explode(',', $recentlyUsed));
 
-            foreach ($recentlyUsed AS $id) {
+            foreach ($recentlyUsed as $id) {
                 if ($characters->offsetExists($id)) {
                     $recent[$id] = $characters->offsetGet($id);
                 }
@@ -140,12 +144,10 @@ class Editor extends XFCP_Editor
         $q = ltrim($this->filter('q', 'str', ['no-trim']));
 
         if ($q !== '' && utf8_strlen($q) >= 2) {
-            /** @var SpecialChars $repo */
-            $repo = $this->repository('KL\EditorManager:SpecialChars');
-
-            $results = $repo->getMatchingCharactersByString($q, [
-                'limit' => 20
-            ]);
+            $results = $this->getKLSpecialCharacterRepo()
+                ->getMatchingCharactersByString($q, [
+                    'limit' => 20
+                ]);
         } else {
             $results = [];
             $q = '';

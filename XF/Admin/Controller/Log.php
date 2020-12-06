@@ -95,7 +95,7 @@ class Log extends XFCP_Log
         if (!$audio->isValid() || $audio->isRefreshRequired()) {
             /** @var \KL\EditorManager\Service\AudioProxy $proxyService */
             $proxyService = $this->service('KL\EditorManager:AudioProxy');
-            $audio = $proxyService->refetchAudio($audio);
+            $audio = $proxyService->refetchResource($audio);
         }
 
         if (!$audio->isValid()) {
