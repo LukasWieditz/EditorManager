@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection */
+<?php /** @noinspection PhpUnusedParameterInspection */
+/** @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection */
 
 /*!
  * KL/EditorManager/Listener/EntityStructure.php

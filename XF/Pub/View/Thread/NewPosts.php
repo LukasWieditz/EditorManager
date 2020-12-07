@@ -23,7 +23,7 @@ class NewPosts extends XFCP_NewPosts
     /**
      *
      */
-    public function renderJson(): void
+    public function renderJson()
     {
         $renderer = $this->renderer;
 

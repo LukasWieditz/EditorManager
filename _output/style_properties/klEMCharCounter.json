@@ -23,7 +23,7 @@
         "border-top-color": "#ebebeb",
         "border-top-left-radius": "2px",
         "border-top-right-radius": "0",
-        "border-bottom-right-radius": "0",
+        "border-bottom-right-radius": "2px",
         "border-left-width": "1px",
         "border-left-color": "#ebebeb",
         "padding": "5px",

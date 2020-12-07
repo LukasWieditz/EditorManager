@@ -211,7 +211,7 @@ class Log extends XFCP_Log
         if (!$video->isValid() || $video->isRefreshRequired()) {
             /** @var \KL\EditorManager\Service\VideoProxy $proxyService */
             $proxyService = $this->service('KL\EditorManager:VideoProxy');
-            $video = $proxyService->refetchVideo($video);
+            $video = $proxyService->refetchResource($video);
         }
 
         if (!$video->isValid()) {

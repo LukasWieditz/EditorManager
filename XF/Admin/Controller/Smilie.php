@@ -24,7 +24,7 @@ class Smilie extends XFCP_Smilie
      * @param SmilieEntity $smilie
      * @return View
      */
-    public function smilieAddEdit(SmilieEntity $smilie): AbstractReply
+    public function smilieAddEdit(SmilieEntity $smilie)
     {
         $response = parent::smilieAddEdit($smilie);
 
@@ -41,7 +41,7 @@ class Smilie extends XFCP_Smilie
      * @param SmilieEntity $smilie
      * @return FormAction
      */
-    protected function smilieSaveProcess(SmilieEntity $smilie): FormAction
+    protected function smilieSaveProcess(SmilieEntity $smilie)
     {
         $form = parent::smilieSaveProcess($smilie);
 
@@ -56,7 +56,7 @@ class Smilie extends XFCP_Smilie
     /**
      * @return AbstractReply
      */
-    public function actionToggle(): AbstractReply
+    public function actionToggle()
     {
         /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');

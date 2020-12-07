@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 /*!
  * KL/EditorManager/BbCode/Renderer/Html.php
@@ -13,7 +13,7 @@ use KL\EditorManager\BbCode\EditorManagerTrait;
 use XF;
 use XF\Entity\User;
 use XF\Http\Response;
-use XF\Mvc\Entity\ArrayCollection;
+use XF\Mvc\Entity\AbstractCollection;
 use XF\PreEscaped;
 
 /**
@@ -23,6 +23,23 @@ use XF\PreEscaped;
 class Html extends XFCP_Html implements EditorManagerInterface
 {
     use EditorManagerTrait;
+
+    /**
+     * @param array $children
+     * @param $option
+     * @param array $tag
+     * @param array $options
+     * @return string
+     */
+    public function renderTagUrl(array $children, $option, array $tag, array $options)
+    {
+        if (!\XF::options()->klEMshowLinksToGuests && !\XF::visitor()->user_id) {
+            return '<a href="' . \XF::app()->router('public')->buildLink('login/login') . '" data-xf-click="overlay">'
+                . \XF::phrase('kl_em_you_must_be_logged_in_to_see_this_link') . '</a>';
+        }
+
+        return parent::renderTagUrl($children, $option, $tag, $options);
+    }
 
     /**
      * @param array $children
@@ -145,6 +162,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
             'hidethanks' => ['callback' => 'RenderTagKLHideThanks', 'trimAfter' => 2],
             'hidereplythanks' => ['callback' => 'RenderTagKLHideReplyThanks', 'trimAfter' => 2],
             'hidegroup' => ['callback' => 'RenderTagKLHideGroup', 'trimAfter' => 2],
+            'hidemembers' => ['callback' => 'renderTagKLHideMembers', 'trimAfter' => 2],
             'hide' => ['callback' => 'RenderTagKLHide' . $config['hide_default'], 'trimAfter' => 2],
             'video' => ['callback' => 'renderTagKLVideo'],
             'audio' => ['callback' => 'renderTagKLAudio']
@@ -170,6 +188,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
 
                 'email' => $config['enabled_bbcodes']['url'],
 
+                'hidemembers' => $config['enabled_bbcodes']['hide'],
                 'hidereply' => $config['enabled_bbcodes']['hide'],
                 'hidethanks' => $config['enabled_bbcodes']['hide'],
                 'hideposts' => $config['enabled_bbcodes']['hide'],
@@ -238,7 +257,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
                 /** @var Response $response */
                 $response = XF::app()->container('response');
 
-                $font = preg_replace('/[^A-Za-z0-9 +/', '', $option);
+                $font = preg_replace('/[^A-Za-z0-9 ]+/', '', $option);
                 $family = strtr($font, [' ' => '+']);
 
                 /**
@@ -246,7 +265,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
                  * otherwise push it to the page container.
                  */
                 if ($response->contentType() === 'application/json' || XF::app()->request()->isXhr()) {
-                    $extra = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $family . '" />';
+                    $extra = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' . $family . '" />';
                 } else {
                     $pageParams = XF::app()->templater()->pageParams;
                     $params = isset($pageParams['kl_em_webfonts']) ? $pageParams['kl_em_webfonts'] : [];
@@ -421,7 +440,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
     protected $userGroups;
 
     /**
-     * @return ArrayCollection
+     * @return AbstractCollection
      */
     protected function getUserGroups()
     {
@@ -429,6 +448,32 @@ class Html extends XFCP_Html implements EditorManagerInterface
             $this->userGroups = XF::finder('XF:UserGroup')->fetch();
         }
         return $this->userGroups;
+    }
+
+    /**
+     * @param array $children
+     * @param $option
+     * @param array $tag
+     * @param array $options
+     * @return string
+     */
+    public function renderTagKLHideMembers(array $children, $option, array $tag, array $options)
+    {
+        if (!$children) {
+            return '';
+        }
+
+        $this->trimChildrenList($children);
+
+        $content = $this->renderSubTree($children, $options);
+        if ($content === '') {
+            return '';
+        }
+
+        return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_members', [
+            'content' => new PreEscaped($content),
+            'visible' => (bool)\XF::visitor()->user_id
+        ]);
     }
 
     /**
@@ -477,7 +522,6 @@ class Html extends XFCP_Html implements EditorManagerInterface
      */
     protected function canLikeView($options)
     {
-
         if (isset($options['likes'])) {
             $likeIds = array_map(function ($v) {
                 return $v['user_id'];
@@ -554,10 +598,10 @@ class Html extends XFCP_Html implements EditorManagerInterface
 
     /**
      * @param array $options
-     * @param ArrayCollection $groups
+     * @param AbstractCollection $groups
      * @return bool
      */
-    protected function isInGroup(array $options, ArrayCollection $groups)
+    protected function isInGroup(array $options, AbstractCollection $groups)
     {
         $ids = $groups->keys();
         $user = XF::visitor();

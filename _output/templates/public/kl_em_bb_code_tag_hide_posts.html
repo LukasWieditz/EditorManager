@@ -1,24 +1,5 @@
-<xf:css src="bb_code.less" />
-
-<div class="bbCodeBlock bbCodeBlock--hide bbCodeBlock--{{ $visible ? 'visible' : 'hidden' }}">
-	<div class="bbCodeBlock-title">
-		<xf:if is="$visible">
-			{{ phrase('kl_em_revealed_content') }}
-			<xf:else />
-			{{ phrase('kl_em_hidden_content') }}
-		</xf:if>
-	</div>
-	<div class="bbCodeBlock-content">
-		<div class="bbCodeBlock-expandContent">
-			<xf:if is="$visible">
-				{$content}
-			<xf:else />
-				<xf:if is="$message_threshold === -1">
-					{{ phrase('kl_em_not_allowed_to_view_this_content') }}
-				<xf:else />
-					{{ phrase('kl_em_need_x_more_posts_to_view_content', {'needs': $message_threshold - $message_count}) }}
-				</xf:if>
-			</xf:if>
-		</div>
-	</div>
-</div>
+<xf:macro name="hide"
+		  template="kl_em_hide_macros"
+		  arg-visible="{$visible}"
+		  arg-message="{{ phrase('kl_em_need_x_more_posts_to_view_content', {'needs': $message_threshold - $message_count}) }}"
+		  arg-content="{$content}" />

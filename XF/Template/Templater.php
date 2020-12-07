@@ -48,7 +48,6 @@ class Templater extends XFCP_Templater
         $width = $options->kleditormanager_customEmoteWidth;
         $height = $options->kleditormanager_customEmoteHeight;
 
-
         return '<img src="' . $emote->getEmoteUrl() . '" class="kl-em-emote kl-em-emote--sprite kl-em-emote--sprite' . $emote->emote_id . '" alt="' . $replacement
             . '" title="' . $emote->title . '    ' . $replacement . '" style="width: ' . $width . 'px; height: ' . $height . 'px; background-size: contain;"'
             . 'data-shortname="' . $replacement . '" />';

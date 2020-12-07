@@ -10,7 +10,6 @@ namespace KL\EditorManager\Repository;
 
 use KL\EditorManager\Entity\SpecialCharacter;
 use XF;
-use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Repository;
 
 /**

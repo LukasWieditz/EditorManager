@@ -10,7 +10,6 @@ namespace KL\EditorManager\XF\Pub\Controller;
 
 use XF;
 use XF\Mvc\ParameterBag;
-use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\Exception;
 use XF\Mvc\Reply\Redirect;
 use XF\Mvc\Reply\View;
@@ -26,7 +25,7 @@ class Post extends XFCP_Post
      * @return Redirect|View
      * @throws Exception
      */
-    public function actionReact(ParameterBag $params): AbstractReply
+    public function actionReact(ParameterBag $params)
     {
         $return = parent::actionReact($params);
 

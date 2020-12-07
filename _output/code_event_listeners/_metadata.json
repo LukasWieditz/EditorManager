@@ -1,4 +1,7 @@
 {
+    "app_setup_9f96f073edf1e205b396c0144d70992b.json": {
+        "hash": "fef32d3f2bd149110be652e5614a4c19"
+    },
     "bb_code_renderer_16fcafc8afacc4c4e50f6a04d9388eec.json": {
         "hash": "eb0a8c3f7095c7d52e212a4ae3a33657"
     },
@@ -18,7 +21,7 @@
         "hash": "3eff7ffca7cacd08061fd2051487b8f7"
     },
     "templater_template_pre_render_7e170183af2af54bf60b5048b11e393f.json": {
-        "hash": "65560de60ae89fc1f656c0feb4db831d"
+        "hash": "4b67f97647f7e199dc8a7648bd2246e0"
     },
     "templater_template_pre_render_8942afb4de948a40074d51e090237cd5.json": {
         "hash": "20e7b50670d258b08782e654e641f084"

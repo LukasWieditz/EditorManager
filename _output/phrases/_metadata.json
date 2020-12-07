@@ -77,6 +77,12 @@
         "version_string": "1.1.0.2",
         "hash": "344a7f427fb765610ef96eb7bce95257"
     },
+    "cron_entry.kl_em_gfonts.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "e3df6423cf6e15865942495e13a23376"
+    },
     "kl_em_active.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -605,6 +611,12 @@
         "version_string": "1.0.2 Patch Level 1",
         "hash": "f786aa35308bb5ed2d9f57c75f920ba0"
     },
+    "kl_em_font_title.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "101cc1f30dce40ac78f30cedace94a77"
+    },
     "kl_em_font_type.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -660,7 +672,7 @@
         "hash": "0101316665d4f82adaa26d86fbbb2d6e"
     },
     "kl_em_hidden_content.txt": {
-        "global_cache": false,
+        "global_cache": true,
         "version_id": 1000291,
         "version_string": "1.0.2 Patch Level 1",
         "hash": "e43df5de2cb14fa198c6349652d9cf4c"
@@ -682,6 +694,12 @@
         "version_id": 1010072,
         "version_string": "1.1.0.2",
         "hash": "2d2523f987171442fefa6a3329fff005"
+    },
+    "kl_em_hide_members.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "ef1df698338236246c02878fa5ecabe8"
     },
     "kl_em_hide_number_of_posts.txt": {
         "global_cache": false,
@@ -802,6 +820,12 @@
         "version_id": 1010071,
         "version_string": "1.1.0.1",
         "hash": "cd8d64cdb20ce5679ebe747747c3cc4c"
+    },
+    "kl_em_load_lazy.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "38e5588953e5e25cfc5e821ff1128514"
     },
     "kl_em_need_x_more_posts_to_view_content.txt": {
         "global_cache": false,
@@ -1097,6 +1121,54 @@
         "version_string": "1.0.2 Patch Level 1",
         "hash": "af3ce3bc0dcd96a858b69bc01c0d4dbb"
     },
+    "kl_em_table_style.alternate_rows.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "0dddf5020783776332ca98d7f5e57547"
+    },
+    "kl_em_table_style.centered.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "dc5ffc2b720501ba00de3be1477b435d"
+    },
+    "kl_em_table_style.collapse.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "2b31634e3cfef1bfdd7d0d2cdfdc3f9d"
+    },
+    "kl_em_table_style.no_background.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "7291417479be88cf7dc61910d3bfae0e"
+    },
+    "kl_em_table_style.no_border.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "d32a2db04b2dfffac9ebb3287edfb195"
+    },
+    "kl_em_table_style.right_aligned.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "1097b44131137eddfb452093fc7c0425"
+    },
+    "kl_em_template_type.private.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "9264596a876ac6740dbad1eb05ab10ce"
+    },
+    "kl_em_template_type.public.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "b0b8c9ae637b4940929ffaeaa579e087"
+    },
     "kl_em_templates.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -1169,6 +1241,12 @@
         "version_string": "1.1.0.1",
         "hash": "2fc9e4bb339e56708bb18034fc900e84"
     },
+    "kl_em_user_template_cache.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "713cd14144ee0103fccdc601c694749f"
+    },
     "kl_em_vertical_align.txt": {
         "global_cache": false,
         "version_id": 1000291,
@@ -1228,6 +1306,18 @@
         "version_id": 1010071,
         "version_string": "1.1.0.1",
         "hash": "6f15b8d4b7287d60a8ea3d1c5cbadc84"
+    },
+    "kl_em_you_must_be_logged_in_to_see_this_link.txt": {
+        "global_cache": true,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "ad8e0d3bcd90df79b2e83fbf78ba1190"
+    },
+    "kl_em_you_must_log_in_to_view_this_content.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "fc323f0c309c77dca4b8fda1c2fa93bd"
     },
     "kl_em_you_need_to_be_in_one_of_the_following_groups.txt": {
         "global_cache": false,
@@ -1391,6 +1481,12 @@
         "version_string": "1.1.0 Beta 3",
         "hash": "15ccb0ad5c43c2fa7508a4f0f63fe4a4"
     },
+    "option.klEMshowLinksToGuests.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "17a74fb10cf3600a5dafca7c2cd32d9d"
+    },
     "option.kleditormanager_customEmoteHeight.txt": {
         "global_cache": false,
         "version_id": 1030031,
@@ -1540,6 +1636,12 @@
         "version_id": 1010033,
         "version_string": "1.1.0 Beta 3",
         "hash": "3783308dbdabb6096bd864b2158b1c9a"
+    },
+    "option_explain.klEMshowLinksToGuests.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "d41d8cd98f00b204e9800998ecf8427e"
     },
     "option_explain.kleditormanager_customEmoteHeight.txt": {
         "global_cache": false,

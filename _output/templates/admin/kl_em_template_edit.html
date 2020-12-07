@@ -19,6 +19,9 @@
 				<xf:macro template="helper_criteria"
 						  name="user_tabs"
 						  arg-userTabTitle="{{ phrase('user_criteria')|for_attr }}" />
+				<xf:macro template="helper_criteria"
+						  name="page_tabs"
+						  arg-pageTabTitle="{{ phrase('page_criteria')|for_attr }}" />
 			</span>
 		</h2>
 
@@ -47,6 +50,9 @@
 			<xf:macro template="helper_criteria" name="user_panes"
 					  arg-criteria="{{ $userCriteria.getCriteriaForTemplate() }}"
 					  arg-data="{{ $userCriteria.getExtraTemplateData() }}" />
+			<xf:macro template="helper_criteria" name="page_panes"
+					  arg-criteria="{{ $pageCriteria.getCriteriaForTemplate() }}"
+					  arg-data="{{ $pageCriteria.getExtraTemplateData() }}" />
 		</ul>
 
 		<xf:submitrow sticky="true" icon="save" />

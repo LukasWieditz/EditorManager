@@ -23,11 +23,11 @@
     "XF-BbCode-Renderer-Html_KL-EditorManager-XF-BbCode-Renderer-Html.json": {
         "hash": "7d84abe79746e7d571f1211360149906"
     },
-    "XF-BbCode-RuleSet_KL-EditorManager-XF-BbCode-RuleSet.json": {
-        "hash": "e507d4e444eeb16f67e69530999d623f"
-    },
     "XF-Entity-Smilie_KL-EditorManager-XF-Entity-Smilie.json": {
         "hash": "8bbf093fa7b0170ce438b3781ff7d8c1"
+    },
+    "XF-Entity-UserOption_KL-EditorManager-XF-Entity-UserOption.json": {
+        "hash": "c6ec61f56ef7465d203020d8048b6439"
     },
     "XF-Finder-Post_KL-EditorManager-XF-Finder-Post.json": {
         "hash": "0a8bc9c7c805f4264e28d04159cd31b5"

@@ -74,19 +74,7 @@ class Fonts extends AbstractController
 
             switch ($extra_data['web_service']) {
                 case 'gfonts':
-                    $extra_data['web_url'] = 'https://fonts.googleapis.com/css?family=' . $extra_data['web_url'];
-                    break;
-
-                case 'typekit':
-                    $extra_data['web_url'] = 'https://use.typekit.net/' . $extra_data['web_url'] . '.js';
-                    break;
-
-                case 'webtype':
-                    $extra_data['web_url'] = '//cloud.webtype.com/css/' . $extra_data['web_url'] . '.css';
-                    break;
-
-                case 'fonts':
-                    $extra_data['web_url'] = '//fast.fonts.net/jsapi/' . $extra_data['web_url'] . '.js';
+                    $extra_data['web_url'] = 'https://fonts.googleapis.com/css2?family=' . $extra_data['web_url'];
                     break;
 
                 default:
@@ -254,39 +242,12 @@ class Fonts extends AbstractController
                  */
                 switch ($entityInput['extra_data']['web_service']) {
                     case 'gfonts':
-                        if (strpos($entityInput['extra_data']['web_url'],
-                                'https://fonts.googleapis.com/css?family=') === 0) {
-                            $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 40);
-                        } else {
-                            return $this->throwInvalidServiceError();
-                        }
-                        break;
-                    case 'typekit':
-                        if (strpos($entityInput['extra_data']['web_url'],
-                                'https://use.typekit.net/') === 0 && substr($entityInput['extra_data']['web_url'],
-                                -3) === '.js') {
-                            $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 24,
-                                -3);
-                        } else {
-                            return $this->throwInvalidServiceError();
-                        }
-                        break;
-                    case 'webtype':
-                        if (strpos($entityInput['extra_data']['web_url'],
-                                '//cloud.webtype.com/css/') === 0 && substr($entityInput['extra_data']['web_url'],
-                                -4) === '.css') {
-                            $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 24,
-                                -4);
-                        } else {
-                            return $this->throwInvalidServiceError();
-                        }
-                        break;
-                    case 'fonts':
-                        if (strpos($entityInput['extra_data']['web_url'],
-                                '//fast.fonts.net/jsapi/') === 0 && substr($entityInput['extra_data']['web_url'],
-                                -3) === '.js') {
-                            $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 23,
-                                -3);
+                        $url = $entityInput['extra_data']['web_url'];
+                        $urlInfo = parse_url($url);
+                        parse_str($urlInfo['query'], $query);
+
+                        if($urlInfo['host'] = 'fonts.googleapis.com' && isset($query['family'])) {
+                            $entityInput['extra_data']['web_url'] = substr($entityInput['extra_data']['web_url'], 41);
                         } else {
                             return $this->throwInvalidServiceError();
                         }

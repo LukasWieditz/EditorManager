@@ -52,7 +52,7 @@ class Proxy extends XFCP_Proxy
             );
         };
 
-        $container['klEMLinker'] = function ($c) {
+        $container['klEMLinker'] = function () {
             $options = $this->app->options();
             $secret = $this->app->config('globalSalt') . $options->imageLinkProxyKey;
 

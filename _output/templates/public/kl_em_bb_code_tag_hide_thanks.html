@@ -1,20 +1,5 @@
-<xf:css src="bb_code.less" />
-
-<div class="bbCodeBlock bbCodeBlock--hide bbCodeBlock--{{ $visible ? 'visible' : 'hidden' }}">
-	<div class="bbCodeBlock-title">
-		<xf:if is="$visible">
-			{{ phrase('kl_em_revealed_content') }}
-			<xf:else />
-			{{ phrase('kl_em_hidden_content') }}
-		</xf:if>
-	</div>
-	<div class="bbCodeBlock-content">
-		<div class="bbCodeBlock-expandContent">
-			<xf:if is="$visible">
-				{$content}
-			<xf:else />
-				{{ phrase('kl_em_you_need_to_like_this') }}
-			</xf:if>
-		</div>
-	</div>
-</div>
+<xf:macro name="hide"
+		  template="kl_em_hide_macros"
+		  arg-visible="{$visible}"
+		  arg-message="{{ phrase('kl_em_you_need_to_like_this') }}"
+		  arg-content="{$content}" />

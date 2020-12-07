@@ -63,7 +63,7 @@ class Formatter extends XFCP_Formatter
     /**
      * @param array $smilies
      */
-    public function addSmilies(array $smilies): void
+    public function addSmilies(array $smilies)
     {
         array_push($this->klEmSmilieCache, ...$smilies);
         parent::addSmilies($smilies);
@@ -138,7 +138,7 @@ class Formatter extends XFCP_Formatter
      * @param $text
      * @return string
      */
-    public function replaceSmiliesHtml($text): string
+    public function replaceSmiliesHtml($text)
     {
         if (!$this->getKlEmContextUser()) {
             return parent::replaceSmiliesHtml($text);
@@ -173,7 +173,7 @@ class Formatter extends XFCP_Formatter
      * @param null $escapeCallback
      * @return string
      */
-    public function replaceSmiliesInText($text, $replaceCallback, $escapeCallback = null): string
+    public function replaceSmiliesInText($text, $replaceCallback, $escapeCallback = null)
     {
             return parent::replaceSmiliesInText($text, $replaceCallback, $escapeCallback);
     }
@@ -184,7 +184,7 @@ class Formatter extends XFCP_Formatter
      * @param $context
      * @return string
      */
-    public function getBbCodeForQuote($bbCode, $context): string
+    public function getBbCodeForQuote($bbCode, $context)
     {
         $bbCodeContainer = XF::app()->bbCode();
 
@@ -204,7 +204,7 @@ class Formatter extends XFCP_Formatter
      * @param array $options
      * @return string
      */
-    public function snippetString($string, $maxLength = 0, array $options = []): string
+    public function snippetString($string, $maxLength = 0, array $options = [])
     {
         $string = preg_replace("#\[(HIDE(?:REPLY|POSTS|THANKS|REPLYTHANKS)?)].*?\[/\g1]#si",
             XF::phrase('kl_em_hidden_content'), $string);

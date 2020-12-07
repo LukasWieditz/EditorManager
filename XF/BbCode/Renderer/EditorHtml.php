@@ -88,7 +88,7 @@ class EditorHtml extends XFCP_EditorHtml implements EditorManagerInterface
                 $font = preg_replace('/[^A-Za-z0-9 +]/', '', $option);
                 $family = strtr($font, [' ' => '+']);
 
-                return $this->wrapHtml("<link rel='stylesheet' href='https://fonts.googleapis.com/css?family={$family}' />" .
+                return $this->wrapHtml("<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family={$family}' />" .
                     "<span style=\"font-family: '{$font}'\">", $output, '</span>');
             }
         }

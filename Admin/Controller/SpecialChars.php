@@ -1,9 +1,9 @@
 <?php /** @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection */
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
+ * KL/EditorManager/Admin/Controller/SpecialChars.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager\Admin\Controller;
@@ -43,10 +43,9 @@ class SpecialChars extends AbstractController
     }
 
     /**
-     * @param ParameterBag $params
      * @return View
      */
-    public function actionIndex(ParameterBag $params): AbstractReply
+    public function actionIndex(): AbstractReply
     {
         $viewParams = [
             'specialChars' => $this->getSpecialCharactersRepo()->getCategoriesForList()
@@ -225,6 +224,7 @@ class SpecialChars extends AbstractController
     /**
      * @param ParameterBag $params
      * @return View
+     * @throws XF\Mvc\Reply\Exception
      */
     public function actionCharacterAdd(ParameterBag $params): AbstractReply
     {
@@ -451,6 +451,7 @@ class SpecialChars extends AbstractController
             $xml = null;
         }
 
+        /** @noinspection PhpUndefinedFieldInspection */
         $viewParams = [
             'categoryName' => $xml ? $xml->title : '',
             'characters' => $xml ? (array)$xml->characters : []

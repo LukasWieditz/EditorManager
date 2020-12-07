@@ -1,17 +1,18 @@
 /*!
  * kl/editor-manager/plugins/unlinkAll.plugin.js
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 /*global console, jQuery, XF, setTimeout */
 /*jshint loopfunc:true */
 
 (function ($) {
-    $.FroalaEditor.DefineIcon('klUnlinkAll', {NAME: 'unlink'});
-    $.FroalaEditor.RegisterCommand('klUnlinkAll', {
+    $.FE.DefineIcon('klUnlinkAll', {NAME: 'unlink'});
+    $.FE.RegisterCommand('klUnlinkAll', {
         title: 'unlink all links',
         focus: true,
+        icon: 'klUnlinkAll',
         undo: true,
         refreshAfterCallback: true,
         callback: function (e) {

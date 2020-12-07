@@ -9,7 +9,6 @@
 namespace KL\EditorManager\XF\Admin\Controller;
 
 use XF\Mvc\ParameterBag;
-use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\Error;
 use XF\Mvc\Reply\View;
 
@@ -23,7 +22,7 @@ class Option extends XFCP_Option
      * @param ParameterBag $params
      * @return Error|View
      */
-    public function actionGroup(ParameterBag $params): AbstractReply
+    public function actionGroup(ParameterBag $params)
     {
         if ($params['group_id'] === 'klEM') {
             $this->setSectionContext('emOptions');

@@ -63,7 +63,9 @@ class Templates extends AbstractController
         if ($visitor->hasPermission('klEM', 'klEMPrivateTemplatesMax') != -1) {
             /** @var \KL\EditorManager\Repository\Template $repo */
             $repo = $this->repository('KL\EditorManager:Template');
-            $templateCount = count($repo->getTemplatesForUser($visitor->user_id));
+            $finder = $repo->findTemplates()->forUser(XF::visitor());
+
+            $templateCount = $finder->total();
 
             if ($templateCount >= $visitor->hasPermission('klEM', 'klEMPrivateTemplatesMax')) {
                 throw $this->exception($this->noPermission());
@@ -102,14 +104,12 @@ class Templates extends AbstractController
     {
         /** @var \KL\EditorManager\Repository\Template $repo */
         $repo = $this->repository('KL\EditorManager:Template');
-        $templates = $repo->getTemplatesForUser(XF::visitor()->user_id);
+        $finder = $repo->findTemplates()->forUser(XF::visitor());
         $visitor = XF::visitor();
 
         $canCreateTemplates = true;
         if ($visitor->hasPermission('klEM', 'klEMPrivateTemplatesMax') != -1) {
-            /** @var \KL\EditorManager\Repository\Template $repo */
-            $repo = $this->repository('KL\EditorManager:Template');
-            $templateCount = count($repo->getTemplatesForUser($visitor->user_id));
+            $templateCount = $finder->total();
 
             if ($templateCount >= $visitor->hasPermission('klEM', 'klEMPrivateTemplatesMax')) {
                 $canCreateTemplates = false;
@@ -117,7 +117,7 @@ class Templates extends AbstractController
         }
 
         $viewParams = [
-            'templates' => $templates,
+            'templates' => $finder->fetch(),
             'canCreateTemplates' => $canCreateTemplates
         ];
 
@@ -245,7 +245,7 @@ class Templates extends AbstractController
     {
         /** @var \KL\EditorManager\Repository\Template $repo */
         $repo = $this->repository('KL\EditorManager:Template');
-        $templates = $repo->getTemplatesForUser(XF::visitor()->user_id);
+        $templates = $repo->findTemplates()->forUser(XF::visitor());
 
         if ($this->isPost()) {
             $lastOrder = 0;

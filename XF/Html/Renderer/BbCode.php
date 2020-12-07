@@ -131,7 +131,7 @@ class BbCode extends XFCP_BbCode
      * @param $cssValue
      * @return string
      */
-    public function handleCssFontFamily($text, $cssValue): string
+    public function handleCssFontFamily($text, $cssValue)
     {
         list($fontFamily) = explode(',', $cssValue);
         if (preg_match('/^([\'"])(.*)\\1$/', $fontFamily, $match)) {
@@ -154,7 +154,7 @@ class BbCode extends XFCP_BbCode
      * @param Tag $tag
      * @return string
      */
-    public function handleTagTable($text, Tag $tag): string
+    public function handleTagTable($text, Tag $tag)
     {
         $option = str_replace(' ', ',', $tag->attribute('class'));
         if ($option) {
@@ -170,7 +170,7 @@ class BbCode extends XFCP_BbCode
      * @param Tag $tag
      * @return string
      */
-    public function handleTagImg($text, Tag $tag): string
+    public function handleTagImg($text, Tag $tag)
     {
         if (($tag->hasClass('kl-em-emote') || $tag->attribute('data-emote')) && $tag->attribute('alt')) {
             return $this->renderCss($tag, trim($tag->attribute('alt')));

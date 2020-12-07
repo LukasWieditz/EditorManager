@@ -20,7 +20,7 @@ class ButtonManager extends XFCP_ButtonManager
      * @param $action
      * @param ParameterBag $params
      */
-    protected function preDispatchController($action, ParameterBag $params): void
+    protected function preDispatchController($action, ParameterBag $params)
     {
         parent::preDispatchController($action, $params);
         $this->setSectionContext('emLayout');

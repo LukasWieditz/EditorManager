@@ -1,10 +1,10 @@
 <?php
 
 /*!
- * KL/EditorManager/Admin/Controller/Fonts.php
- * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
- */
+* KL/EditorManager/Admin/Controller/Fonts.php
+* License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+* Copyright 2017 Lukas Wieditz
+*/
 
 namespace KL\EditorManager\Admin\Controller;
 
@@ -29,22 +29,77 @@ use XF\Repository\Option;
  */
 class BBCodes extends AbstractController
 {
+    protected $svAdvancedBbCodes = [
+        'abbr',
+        'accordion',
+        'anchor',
+        'article',
+        'bimg',
+        'encadre',
+        'fieldset',
+        'fleft',
+        'fright',
+        'gview',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'hr',
+        'justify',
+        'latex',
+        'alert',
+        'information',
+        'stop',
+        'warning',
+        'slider',
+        'spoilerbb',
+        'sub',
+        'sup',
+        'tabs',
+        'time',
+        'xtable'
+    ];
+
     /**
      * @param ParameterBag $params
      * @return Reroute|View
      */
-    public function actionIndex(ParameterBag $params) : AbstractReply
+    public function actionIndex(ParameterBag $params): AbstractReply
     {
         if ($params['bb_code_id']) {
             return $this->rerouteController('KL\EditorManager:BBCodes', 'edit', $params);
         }
 
+        $addons = $this->app->addOnManager()->getAllAddOns();
+        foreach ($addons as &$addon) {
+            $addon = $addon->getJson()['title'];
+        }
+
         $bbCodes = $this->getBbCodeRepo()
-            ->findBbCodesForList();
+            ->findBbCodesForList()
+            ->fetch()
+            ->groupBy('addon_id');
+
+        foreach ($bbCodes as $key => $group) {
+            if (!$key) {
+                if (isset($addons['SV/AdvancedBbCodesPack'])) {
+                    foreach ($group as $bbCodeKey => $bbCodeValue) {
+                        if(in_array($bbCodeKey, $this->svAdvancedBbCodes)) {
+                            $bbCodes['SV/AdvancedBbCodesPack'][] = $bbCodeValue;
+                            unset($group[$bbCodeKey]);
+                        }
+                    }
+                }
+
+                $bbCodes[0] = $group;
+                unset($bbCodes[$key]);
+            }
+        }
 
         $viewParams = [
             'permissions' => $this->finder('KL\EditorManager:BbCode')->fetch(),
-            'customBbCodes' => $bbCodes->fetch()
+            'customBbCodes' => $bbCodes,
+            'addons' => $addons
         ];
 
         return $this->view('KL\EditorManager:BbCode', 'kl_em_bb_code_list', $viewParams);
@@ -55,7 +110,7 @@ class BBCodes extends AbstractController
      * @return View
      * @throws PrintableException
      */
-    public function actionEdit(ParameterBag $params) : AbstractReply
+    public function actionEdit(ParameterBag $params): AbstractReply
     {
         /** @var BbCode $bbCode */
         $bbCode = XF::em()->find('KL\EditorManager:BbCode', $params['bb_code_id']);
@@ -102,7 +157,7 @@ class BBCodes extends AbstractController
      * @throws Exception
      * @throws PrintableException
      */
-    public function actionSave(ParameterBag $params) : AbstractReply
+    public function actionSave(ParameterBag $params): AbstractReply
     {
         $this->assertPostOnly();
         /** @var BbCode $bbCode */
@@ -117,7 +172,7 @@ class BBCodes extends AbstractController
         ]);
 
         $options = [];
-        foreach ($input['options_listed'] AS $optionId) {
+        foreach ($input['options_listed'] as $optionId) {
             if (!isset($input['options'][$optionId])) {
                 $options[$optionId] = false;
             } else {
@@ -134,7 +189,7 @@ class BBCodes extends AbstractController
      * @param BbCode $bbCode
      * @return FormAction
      */
-    protected function bbCodeSaveProcess(BbCode $bbCode) : FormAction
+    protected function bbCodeSaveProcess(BbCode $bbCode): FormAction
     {
         $form = $this->formAction();
 
@@ -151,54 +206,11 @@ class BBCodes extends AbstractController
     }
 
     /**
-     * @return array
-     */
-    protected function getBBCodeLists() : array
-    {
-        return [
-            'stock' => [
-                'bold',
-                'italic',
-                'underline',
-                'strike',
-                'color',
-                'font',
-                'size',
-                'url',
-                'email',
-                'img',
-                'media',
-                'quote',
-                'spoiler',
-                'code',
-                'icode',
-                'align',
-                'list',
-                'attach',
-                'ispoiler',
-                'table',
-                'heading',
-                'hr',
-                'table'
-            ],
-            'klem' => [
-                'bgcolor',
-                'hide',
-                'parsehtml',
-                'sub',
-                'sup',
-                'video',
-                'audio'
-            ]
-        ];
-    }
-
-    /**
      * @return Message
      * @throws Exception
      * @throws PrintableException
      */
-    public function actionToggle() : AbstractReply
+    public function actionToggle(): AbstractReply
     {
         $this->assertPostOnly();
 
@@ -208,16 +220,8 @@ class BBCodes extends AbstractController
         $activeState = $this->request->filter('kl_active', 'array-bool');
 
         $activeCodes = [];
-        $lists = $this->getBBCodeLists();
-        $list = $lists[$this->filter('list', 'str')];
-        foreach ($option->sub_options AS $bbCode) {
-            if (in_array($bbCode, $list)) {
-                if (isset($activeState[$bbCode]) && $activeState[$bbCode]) {
-                    $activeCodes[$bbCode] = true;
-                }
-            } else {
-                $activeState[$bbCode] = isset($option->option_value[$bbCode]) && $option->option_value[$bbCode];
-            }
+        foreach ($option->sub_options as $bbCode) {
+            $activeCodes[$bbCode] = isset($activeState[$bbCode]) && $activeState[$bbCode];
         }
         $option->option_value = $activeCodes;
         $option->save();
@@ -228,7 +232,7 @@ class BBCodes extends AbstractController
     /**
      * @return BbCodeRepo
      */
-    protected function getBbCodeRepo() : BbCodeRepo
+    protected function getBbCodeRepo(): BbCodeRepo
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->repository('XF:BbCode');
@@ -237,7 +241,7 @@ class BBCodes extends AbstractController
     /**
      * @return Option
      */
-    protected function getOptionRepo() : Option
+    protected function getOptionRepo(): Option
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->repository('XF:Option');

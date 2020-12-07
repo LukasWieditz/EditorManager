@@ -24,6 +24,7 @@ use XF\Mvc\Reply\Exception;
 use XF\Mvc\Reply\Message;
 use XF\Mvc\Reply\Redirect;
 use XF\Mvc\Reply\View;
+use XF\PrintableException;
 
 /**
  * Class Templates
@@ -45,7 +46,10 @@ class Templates extends AbstractController
     public function actionIndex(): AbstractReply
     {
         $viewParams = [
-            'templates' => $this->getTemplateRepo()->getTemplatesForUser()
+            'templates' => $this->getTemplateRepo()
+                ->findTemplates()
+                ->publicOnly()
+                ->fetch()
         ];
 
         return $this->view('KL\EditorManager:ListTemplates', 'kl_em_template_list', $viewParams);
@@ -58,10 +62,12 @@ class Templates extends AbstractController
     public function templateAddEdit(Template $template): AbstractReply
     {
         $userCriteria = $this->app->criteria('XF:User', $template->user_criteria);
+        $pageCriteria = $this->app->criteria('XF:Page', $template->page_criteria ?: []);
 
         $viewParams = [
             'template' => $template,
-            'userCriteria' => $userCriteria
+            'userCriteria' => $userCriteria,
+            'pageCriteria' => $pageCriteria
         ];
 
         return $this->view('KL\EditorManager:EditTemplate', 'kl_em_template_edit', $viewParams);
@@ -111,6 +117,7 @@ class Templates extends AbstractController
      * @param ParameterBag $params
      * @return FormAction|Redirect
      * @throws Exception
+     * @throws PrintableException
      */
     public function actionSave(ParameterBag $params): AbstractReply
     {
@@ -129,7 +136,7 @@ class Templates extends AbstractController
 
     /**
      * @param Template $template
-     * @return AbstractReply
+     * @return FormAction
      */
     protected function templateSaveProcess(Template $template): FormAction
     {
@@ -155,7 +162,10 @@ class Templates extends AbstractController
      */
     public function actionSort(): AbstractReply
     {
-        $templates = $this->getTemplateRepo()->getTemplatesForUser();
+        $templates = $this->getTemplateRepo()
+            ->findTemplates()
+            ->publicOnly()
+            ->fetch();
 
         if ($this->isPost()) {
             $lastOrder = 0;

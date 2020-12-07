@@ -10,10 +10,12 @@ namespace KL\EditorManager\Setup;
 
 use Exception;
 use XF;
+use XF\Db\Schema\Alter;
 use XF\Db\SchemaManager;
 use XF\Entity\EditorDropdown;
 use XF\Entity\Phrase;
 use XF\Repository\Option;
+use XF\Repository\Smilie;
 
 /**
  * Trait Patch1020030
@@ -102,5 +104,34 @@ trait Patch1020030
                 'display_order' => 130
             ],
         ]);
+    }
+
+    /**
+     *
+     */
+    public function upgrade1020093Step1()
+    {
+        $this->db()->insertBulk('xf_option_group_relation', [
+            [
+                'option_id' => 'convertMarkdownToBbCode',
+                'group_id' => 'klEM',
+                'display_order' => 210
+            ]
+        ]);
+    }
+
+    /**
+     *
+     */
+    public function upgrade1030031Step1()
+    {
+        $this->schemaManager()->alterTable('xf_smilie', function (Alter $table) {
+            $table->addColumn('kl_em_active', 'bool')->setDefault(1);
+            $table->addColumn('kl_em_user_criteria', 'blob')->nullable();
+        });
+
+        /** @var Smilie $smilieRepo */
+        $smilieRepo = XF::repository('XF:Smilie');
+        $smilieRepo->rebuildSmilieCache();
     }
 }

@@ -47,6 +47,7 @@ class StripHide implements FiltererInterface
         $hooks->addTagHook('hidereplythanks', 'filterHide');
         $hooks->addTagHook('hidethanks', 'filterHide');
         $hooks->addTagHook('hidegroups', 'filterHide');
+        $hooks->addTagHook('hidemembers', 'filterHide');
     }
 
     /**
@@ -54,6 +55,7 @@ class StripHide implements FiltererInterface
      * @param $tag
      * @param $function
      * @return string
+     * @noinspection PhpUnusedParameterInspection
      */
     public function filterHide($tag, $function) : string
     {

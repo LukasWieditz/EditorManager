@@ -1,31 +1,7 @@
 <xf:if is="{{ $em_gfonts }}">
- 	<link rel="preload" href="{{ $em_gfonts }}" as="style" crossorigin="anonymous">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link rel="stylesheet" href="{{ $em_gfonts }}">
 </xf:if>
-
-<xf:foreach loop="$em_typekit" value="$font">
-	<link rel="preload" href="https://use.typekit.net/{{$font}}.js" as="script" crossorigin="anonymous">
-	<script>
-	  (function(d) {
-		var config = {
-		  kitId: '{{ $font }}',
-		  scriptTimeout: 3000,
-		  async: true
-		},
-		h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-	  })(document);
-	</script>
-</xf:foreach>
-
-<xf:foreach loop="$em_webtype" value="$font">
- 	<link rel="preload" href="https://cloud.webtype.com/css/{{ $font }}.css" as="style" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cloud.webtype.com/css/{{ $font }}.css">
-</xf:foreach>
-
-<xf:foreach loop="$em_fonts" value="$font">
- 	<link rel="preload" href="https://fast.fonts.net/jsapi/{{ $font }}.js" as="script" crossorigin="anonymous">
-	<script src="https://fast.fonts.net/jsapi/{{ $font }}.js"></script>
-</xf:foreach>
 
 <xf:if is="$em_serverFonts">
 	<style>

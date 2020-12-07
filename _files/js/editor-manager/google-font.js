@@ -18,6 +18,6 @@
 		textFit(elem);
 
 		$('#editor_kl_em_gfont_preview').css('font-family', "'" + fontStripped + "'");
-		$('head').append($('<link/>', {'rel': 'stylesheet', 'href':'https://fonts.googleapis.com/css?family=' + fontEscaped}));
+		$('head').append($('<link/>', {'rel': 'stylesheet', 'href':'https://fonts.googleapis.com/css2?family=' + fontEscaped}));
 	});
 }($, window, document));

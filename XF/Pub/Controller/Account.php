@@ -33,7 +33,7 @@ class Account extends XFCP_Account
      * @param User $visitor
      * @return FormAction
      */
-    protected function preferencesSaveProcess(User $visitor): FormAction
+    protected function preferencesSaveProcess(User $visitor)
     {
         $form = parent::preferencesSaveProcess($visitor);
 
@@ -41,7 +41,7 @@ class Account extends XFCP_Account
             'kl_em_wordcount_mode' => $this->filter('kl_em_wordcount_mode', 'str', 'letter')
         ];
 
-        $form->basicEntitySave($visitor, $input);
+        $form->basicEntitySave($visitor->Option, $input);
 
         return $form;
     }

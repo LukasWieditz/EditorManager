@@ -20,7 +20,7 @@ class BbCode extends XFCP_BbCode
      * @param $action
      * @param ParameterBag $params
      */
-    protected function preDispatchController($action, ParameterBag $params): void
+    protected function preDispatchController($action, ParameterBag $params)
     {
         $this->setSectionContext('kl_em_customBBC');
         parent::preDispatchController($action, $params);

@@ -4,7 +4,7 @@
 	<xf:title>{{ phrase('kl_em_edit_font:') }} {$font.title}</xf:title>
 </xf:if>
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto:400,500" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono|Roboto:400,500" />
 <xf:css src="kl_em_font_edit.less" />
 <xf:css src="public:bb_code.less" />
 <xf:js src="editor-manager/edit-font.js" min="1" addon="KL/EditorManager" />
@@ -88,9 +88,6 @@
 					label="{{ phrase('kl_em_hoster') }}">
 					<xf:select name="web_service" value="{{ $font.font_id ? $font.extra_data.web_service : 'gfonts' }}">
 						<xf:option value="gfonts">fonts.google.com</xf:option>
-						<xf:option value="typekit">fonts.adobe.com</xf:option>
-						<xf:option value="webtype">webtype.com</xf:option>
-						<xf:option value="fonts">fonts.com</xf:option>
 					</xf:select>
 				</xf:formrow>
 				
@@ -123,54 +120,10 @@
 										<a class="link-bar-link">STANDARD</a> <a class="link-bar-link link-is-inactive">@IMPORT</a>
 									</div>
 									<div ng-switch="embedCode.embedStyle">
-										<div class="code-block" style="">&lt;link href="<strong>https://fonts.googleapis.com/css?family=Roboto</strong>" rel="stylesheet"&gt;
+										<div class="code-block" style="">&lt;link href="<strong>https://fonts.googleapis.com/css2?family=Roboto</strong>" rel="stylesheet"&gt;
 										</div>
 									</div>
 								</section>
-							</div>
-							<div id="example-typekit" class="{{ $font.extra_data.web_service == 'typekit' ? 'active' : '' }}">
-								<div>
-									<ul class="neue-tabs">
-									  <li class="neue-tabs__tab neue-tabs__tab--active">
-										<span>Default</span>
-									  </li>
-									  <li class="neue-tabs__tab">
-										<span>Advanced</span>
-									  </li>
-									</ul>
-									  <pre class="neue-family-font-details__pre"><code>&lt;script src="<strong>https://use.typekit.net/ero6oyp.js</strong>"&gt;&lt;/script&gt;<br>&lt;script&gt;try{Typekit.load({ async: true });}catch(e){}&lt;/script&gt;</code></pre>
-									<p>
-										The default embed code is simple and easy to use. It does a good job of hiding the flash of unstyled text by blocking rendering while loading. <span class="a">Learn more</span>.
-									</p>
-								  </div>
-							</div>
-							<div id="example-webtype" class="{{ $font.extra_data.web_service == 'webtype' ? 'active' : '' }}">
-								<div class="clearafter" style=" background:#CCCCCC; padding:15px;">
-									<div>
-										<p><b>Resource Code:</b>
-											Copy &amp; paste in the &lt;head&gt;
-											tag of each page you want to use the Resource.
-										</p>
-										<div class="text-area">
-											&lt;link href="<strong>//cloud.webtype.com/css/47743fd5-0482-4c57-9220-ed5734160876.css</strong>" rel="stylesheet" type="text/css" /&gt;
-										</div>
-									</div>
-								</div>
-							</div>
-							<div id="example-fonts" class="{{ $font.extra_data.web_service == 'fonts' ? 'active' : '' }}">
-								<div class="with-border">
-									<p>
-										Copy the code below and paste it into your website's HTML
-										between the &lt;head&gt; and &lt;/head&gt; tags.
-										<b>The code only needs to be pasted once.</b>
-										Subsequent changes to your style sheet will automatically
-										be reflected on your webpage without modifying the code.
-									</p>
-									<div class="text-area">
-										&lt;script type="text/javascript" src="<strong>//fast.fonts.net/jsapi/8f77360e-33b9-4143-8842-2dcfc7f8480f.js</strong>"&gt;&lt;/script&gt;
-									</div>
-									<a class="link-action">Select code</a>
-								</div>
 							</div>
 						</div>
 					</dd>

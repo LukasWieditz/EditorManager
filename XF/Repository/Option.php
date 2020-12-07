@@ -21,7 +21,7 @@ class Option extends XFCP_Option
      * @param array $values
      * @return ArrayCollection
      */
-    public function updateOptions(array $values): ArrayCollection
+    public function updateOptions(array $values)
     {
         foreach ($values as $key => $value) {
             if (in_array($key, ['klEMBGColors', 'klEMColors'])) {
@@ -37,7 +37,7 @@ class Option extends XFCP_Option
      * @param $value
      * @return bool
      */
-    public function updateOption($name, $value): bool
+    public function updateOption($name, $value)
     {
         if (in_array($name, ['klEMBGColors', 'klEMColors'])) {
             $value = $this->getKLEMColorValue($name);
@@ -48,7 +48,6 @@ class Option extends XFCP_Option
 
     /**
      * @param $key
-     * @param $value
      * @return string
      */
     protected function getKLEMColorValue($key): string

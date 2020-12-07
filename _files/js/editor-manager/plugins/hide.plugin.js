@@ -1,7 +1,7 @@
 /*!
- * kl/editor-manager/plugins/templates.plugin.js
+ * kl/editor-manager/plugins/hide.plugin.js
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 /*global console, jQuery, XF, setTimeout */
@@ -45,24 +45,11 @@
 		focus: true,
 		callback: function() {XF.EditorHelpers.wrapSelectionText(this,'[HIDEREPLYTHANKS]','[/HIDEREPLYTHANKS]',true);}
 	});
-
-	/* Register Dropdown */
-	$.FE.RegisterCommand('klHideInsert', {
-		type: 'dropdown',
+	$.FE.RegisterCommand('klEMHideMembers', {
 		title: 'Hide',
 		icon: 'klHide',
-		undo: false,
+		undo: true,
 		focus: true,
-		html: function() {
-			var o = '<ul class="fr-dropdown-list">' +
-				'<li><a class="fr-command" data-cmd="klEMHide">' + this.icon.create('klHide') + '&nbsp;&nbsp;Hide</a></li>' +
-				'<li><a class="fr-command" data-cmd="klEMHideReply">' + this.icon.create('klHide') + '&nbsp;&nbsp;Hide Reply</a></li>' +
-				'<li><a class="fr-command" data-cmd="klEMHideThanks">' + this.icon.create('klHide') + '&nbsp;&nbsp;Hide Thanks</a></li>' +
-				'<li><a class="fr-command" data-cmd="klEMHideReplyThanks">' + this.icon.create('klHide') + '&nbsp;&nbsp;Hide Reply Thanks</a></li>' +
-				'<li><a class="fr-command" data-cmd="klEMHidePosts">' + this.icon.create('klHide') + '&nbsp;&nbsp;Hide Posts</a></li>'+
-				'</ul>';
-
-			return o;
-		}
+		callback: function() {XF.EditorHelpers.wrapSelectionText(this,'[HIDEMEMBERS]','[/HIDEMEMBERS]',true);}
 	});
 })(jQuery);

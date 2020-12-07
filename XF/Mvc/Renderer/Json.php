@@ -25,7 +25,7 @@ class Json extends XFCP_Json
      * @param array $content
      * @return array
      */
-    protected function addDefaultJsonParams(array $content): array
+    protected function addDefaultJsonParams(array $content)
     {
         if ($this->klEMPosts) {
             $content['klEMPosts'] = $this->klEMPosts;

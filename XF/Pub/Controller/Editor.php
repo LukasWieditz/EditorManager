@@ -67,7 +67,7 @@ class Editor extends XFCP_Editor
      * @param $dialog
      * @return array
      */
-    protected function loadDialog($dialog): array
+    protected function loadDialog($dialog)
     {
         $view = 'XF:Editor\Dialog';
         $template = null;
@@ -164,7 +164,7 @@ class Editor extends XFCP_Editor
     /**
      * @return AbstractReply
      */
-    public function actionSmiliesEmoji(): AbstractReply
+    public function actionSmiliesEmoji()
     {
         $response = parent::actionSmiliesEmoji();
 

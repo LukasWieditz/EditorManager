@@ -28,7 +28,7 @@ class GoogleFont extends Repository
      */
     public function findGoogleFonts(): GoogleFontFinder
     {
-        return $this->finder('KL:EditorManager\GoogleFont')
+        return $this->finder('KL\EditorManager:GoogleFont')
             ->setDefaultOrder('font_id', 'ASC');
     }
 
@@ -47,7 +47,7 @@ class GoogleFont extends Repository
                 $params = http_build_query(['key' => $apiKey]);
 
                 $response = $client->get('https://www.googleapis.com/webfonts/v1/webfonts?' . $params);
-                $response = json_decode($response, true);
+                $response = json_decode($response->getBody()->getContents(), true);
 
                 $webfonts = $this->findGoogleFonts()
                     ->fetch();

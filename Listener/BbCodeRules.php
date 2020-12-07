@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\Listener;
 
+use KL\EditorManager\EditorConfig;
 use XF;
 use XF\BbCode\RuleSet;
 
@@ -35,6 +36,7 @@ class BbCodeRules {
             'hidereply' => [],
             'hidethanks' => [],
             'hidereplythanks' => [],
+            'hidemembers' => [],
             'hidegroup' => ['hasOption' => true],
             'sup' => [],
             'sub' => [],
@@ -53,8 +55,13 @@ class BbCodeRules {
 
         $tags = $ruleSet->getTags();
 
+
+        /** @var EditorConfig $editorConfig */
+        $editorConfig = XF::app()->container('klEmEditorConfig');
+        $bbCodes = $editorConfig->bbCodeSettings();
+
         /** Load aliases */
-        foreach (XF::repository('KL\EditorManager:BbCodes')->getBbCodeSettings() as $bbCode => $config) {
+        foreach ($bbCodes as $bbCode => $config) {
             switch ($bbCode) {
                 case 'bold':
                     $bbCode = 'b';

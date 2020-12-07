@@ -20,7 +20,7 @@ class Smilie extends XFCP_Smilie
      * @param false $displayInEditorOnly
      * @return array
      */
-    public function getSmilieListData($displayInEditorOnly = false): array
+    public function getSmilieListData($displayInEditorOnly = false)
     {
         $smilieData = parent::getSmilieListData($displayInEditorOnly);
 
@@ -36,7 +36,7 @@ class Smilie extends XFCP_Smilie
     /**
      * @param $smilies
      */
-    public function filterSmilies(&$smilies): void
+    public function filterSmilies(&$smilies)
     {
         foreach ($smilies as $id => $smilie) {
             if (isset($smilie['kl_em_active']) && !$smilie['kl_em_active']) {

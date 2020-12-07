@@ -1,7 +1,7 @@
 /*!
  * kl/editor-manager/plugins/gFontFamily.plugin.js
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 /*global console, jQuery, XF, setTimeout */
@@ -55,7 +55,7 @@
 
                 ed.format.applyStyle('font-family', "'" + title + "'");
 
-                $(ed.selection.element()).before('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' + titleReplace + '" />');
+                $(ed.selection.element()).before('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' + titleReplace + '" />');
             }
         };
     });

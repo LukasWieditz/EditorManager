@@ -3,7 +3,7 @@
 /*!
  * KL/EditorManager/Setup.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 namespace KL\EditorManager;
@@ -36,7 +36,6 @@ class Setup extends AbstractSetup
      * ----------------
      */
 
-    /* CREATE xf_kl_em_fonts */
     /**
      *
      */
@@ -56,7 +55,6 @@ class Setup extends AbstractSetup
         );
     }
 
-    /* INSERT INTO xf_kl_em_fonts */
     /**
      *
      */
@@ -138,7 +136,6 @@ class Setup extends AbstractSetup
         ]);
     }
 
-    /* CREATE xf_kl_em_templates */
     /**
      *
      */
@@ -155,11 +152,11 @@ class Setup extends AbstractSetup
                 $table->addColumn('active', 'BOOL');
                 $table->addColumn('extra_data', 'BLOB');
                 $table->addColumn('user_criteria', 'mediumblob');
+                $table->addColumn('page_criteria', 'mediumblob');
             }
         );
     }
 
-    /* CREATE xf_kl_em_google_fonts */
     /**
      *
      */
@@ -177,7 +174,6 @@ class Setup extends AbstractSetup
         );
     }
 
-    /* CREATE xf_kl_em_bb_codes */
     /**
      *
      */
@@ -191,7 +187,6 @@ class Setup extends AbstractSetup
         });
     }
 
-    /* CREATE xf_kl_em_special_chars_groups */
     /**
      *
      */
@@ -205,7 +200,6 @@ class Setup extends AbstractSetup
         });
     }
 
-    /* CREATE xf_kl_em_special_chars */
     /**
      *
      */
@@ -220,7 +214,6 @@ class Setup extends AbstractSetup
         });
     }
 
-    /* CREATE xf_kl_em_audio_proxy */
     /**
      *
      */
@@ -248,7 +241,6 @@ class Setup extends AbstractSetup
         });
     }
 
-    /* CREATE xf_kl_em_audio_proxy_referrer */
     /**
      *
      */
@@ -267,7 +259,6 @@ class Setup extends AbstractSetup
         });
     }
 
-    /* CREATE xf_kl_em_audio_proxy */
     /**
      *
      */
@@ -295,7 +286,6 @@ class Setup extends AbstractSetup
         });
     }
 
-    /* CREATE xf_kl_em_video_proxy_referrer */
     /**
      *
      */
@@ -314,18 +304,17 @@ class Setup extends AbstractSetup
         });
     }
 
-    /* ALTER xf_user */
     /**
      *
      */
     public function installStep12()
     {
-        $this->schemaManager()->alterTable('xf_user', function (Alter $table) {
+        $this->schemaManager()->alterTable('xf_user_option', function (Alter $table) {
             $table->addColumn('kl_em_wordcount_mode', 'enum', ['letter', 'word'])->setDefault('letter');
+            $table->addColumn('kl_em_template_cache', 'blob')->nullable();
         });
     }
 
-    /* INSERT INTO xf_option_group_relation */
     /**
      *
      */
@@ -355,7 +344,6 @@ class Setup extends AbstractSetup
         ]);
     }
 
-    /* ALTER xf_smilie */
     /**
      *
      */
@@ -371,6 +359,9 @@ class Setup extends AbstractSetup
         $smilieRepo->rebuildSmilieCache();
     }
 
+    /**
+     *
+     */
     public function installStep15()
     {
         $this->schemaManager()->createTable('kl_em_custom_emote_prefix', function (Create $table) {
@@ -380,10 +371,12 @@ class Setup extends AbstractSetup
         });
     }
 
+    /**
+     *
+     */
     public function installStep16()
     {
-        $this->schemaManager()->createTable('kl_em_custom_emotes', function(Create $table)
-        {
+        $this->schemaManager()->createTable('kl_em_custom_emotes', function (Create $table) {
             $table->addColumn('emote_id', 'int')->autoIncrement();
             $table->addColumn('user_id', 'int')->setDefault(0);
             $table->addColumn('prefix_id', 'text');
@@ -411,32 +404,15 @@ class Setup extends AbstractSetup
     use Patch2000010;
 
     /**
-     *
+     * @param $previousVersion
+     * @param array $stateChanges
      */
-    public function upgrade1020093Step1()
+    public function postUpgrade($previousVersion, array &$stateChanges): void
     {
-        $this->db()->insertBulk('xf_option_group_relation', [
-            [
-                'option_id' => 'convertMarkdownToBbCode',
-                'group_id' => 'klEM',
-                'display_order' => 210
-            ]
-        ]);
-    }
-
-    /**
-     *
-     */
-    public function upgrade1030031Step1()
-    {
-        $this->schemaManager()->alterTable('xf_smilie', function (Alter $table) {
-            $table->addColumn('kl_em_active', 'bool')->setDefault(1);
-            $table->addColumn('kl_em_user_criteria', 'blob')->nullable();
-        });
-
-        /** @var Smilie $smilieRepo */
-        $smilieRepo = XF::repository('XF:Smilie');
-        $smilieRepo->rebuildSmilieCache();
+        if ($previousVersion < 2000010) {
+            XF::app()->jobManager()->enqueueUnique('klemRebuildUserTemplateCache',
+                'KL\EditorManager:UserTemplateCache', [], 0);
+        }
     }
 
     /**
@@ -445,7 +421,6 @@ class Setup extends AbstractSetup
      * ----------------
      */
 
-    /* DROP xf_kl_em_fonts */
     /**
      *
      */
@@ -454,7 +429,6 @@ class Setup extends AbstractSetup
         $this->schemaManager()->dropTable('xf_kl_em_fonts');
     }
 
-    /* DROP xf_kl_em_templates */
     /**
      *
      */
@@ -463,7 +437,6 @@ class Setup extends AbstractSetup
         $this->schemaManager()->dropTable('xf_kl_em_templates');
     }
 
-    /* DROP xf_kl_em_google_fonts */
     /**
      *
      */
@@ -472,7 +445,6 @@ class Setup extends AbstractSetup
         $this->schemaManager()->dropTable('xf_kl_em_google_fonts');
     }
 
-    /* DROP xf_kl_em_bb_codes */
     /**
      *
      */
@@ -481,7 +453,6 @@ class Setup extends AbstractSetup
         $this->schemaManager()->dropTable('xf_kl_em_bb_codes');
     }
 
-    /* DROP xf_kl_em_special_chars_groups */
     /**
      *
      */
@@ -490,7 +461,6 @@ class Setup extends AbstractSetup
         $this->schemaManager()->dropTable('xf_kl_em_special_chars_groups');
     }
 
-    /* DROP xf_kl_em_special_chars */
     /**
      *
      */
@@ -499,7 +469,6 @@ class Setup extends AbstractSetup
         $this->schemaManager()->dropTable('xf_kl_em_special_chars');
     }
 
-    /* DROP xf_kl_em_audio_proxy */
     /**
      *
      */
@@ -508,7 +477,6 @@ class Setup extends AbstractSetup
         $this->schemaManager()->dropTable('xf_kl_em_audio_proxy');
     }
 
-    /* DROP xf_kl_em_audio_proxy_referrer */
     /**
      *
      */
@@ -517,7 +485,6 @@ class Setup extends AbstractSetup
         $this->schemaManager()->dropTable('xf_kl_em_audio_proxy_referrer');
     }
 
-    /* DROP xf_kl_em_audio_proxy */
     /**
      *
      */
@@ -526,7 +493,6 @@ class Setup extends AbstractSetup
         $this->schemaManager()->dropTable('xf_kl_em_video_proxy');
     }
 
-    /* DROP xf_kl_em_audio_proxy_referrer */
     /**
      *
      */
@@ -540,8 +506,8 @@ class Setup extends AbstractSetup
      */
     public function uninstallStep11()
     {
-        $this->schemaManager()->alterTable('xf_user', function (Alter $table) {
-            $table->dropColumns(['kl_em_wordcount_mode']);
+        $this->schemaManager()->alterTable('xf_user_option', function (Alter $table) {
+            $table->dropColumns(['kl_em_wordcount_mode', 'kl_em_template_cache']);
         });
     }
 }

@@ -19,14 +19,10 @@ namespace KL\EditorManager\XF\BbCode\Renderer
 	class XFCP_Html extends \XF\BbCode\Renderer\Html {}
 }
 
-namespace KL\EditorManager\XF\BbCode
-{
-	class XFCP_RuleSet extends \XF\BbCode\RuleSet {}
-}
-
 namespace KL\EditorManager\XF\Entity
 {
 	class XFCP_Smilie extends \XF\Entity\Smilie {}
+	class XFCP_UserOption extends \XF\Entity\UserOption {}
 }
 
 namespace KL\EditorManager\XF\Finder

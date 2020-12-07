@@ -9,7 +9,6 @@
 namespace KL\EditorManager\Repository;
 
 use XF;
-use XF\Mvc\Entity\AbstractCollection;
 use XF\Mvc\Entity\Repository;
 
 /**
@@ -18,33 +17,6 @@ use XF\Mvc\Entity\Repository;
  */
 class BbCodes extends Repository
 {
-    /**
-     * @return array
-     */
-    public function getValidControllersForHide(): array
-    {
-        $value = XF::app()->options()->klEMHideControllers;
-        return explode("\n", $value);
-    }
-
-    /**
-     * @var AbstractCollection
-     */
-    protected $bbCodeSettings;
-
-    /**
-     * @return AbstractCollection
-     */
-    public function getBbCodeSettings(): AbstractCollection
-    {
-        if (!$this->bbCodeSettings) {
-            // TODO: Add XF Cache
-            $this->bbCodeSettings = XF::finder('KL\EditorManager:BbCode')->fetch();
-        }
-
-        return $this->bbCodeSettings;
-    }
-
     /**
      * @param string $bbCodeName
      * @return string
@@ -257,6 +229,7 @@ class BbCodes extends Repository
             'url' => [
                 'sort' => ['imageLinkProxy', 'messageOptions'],
                 'options' => [
+                    'klEMshowLinksToGuests',
                     'imageLinkProxy',
                     'imageLinkProxyKey',
                     'imageLinkProxyReferrer',
@@ -268,8 +241,13 @@ class BbCodes extends Repository
             'code' => [
                 'sort' => ['messageOptions'],
                 'options' => [
-                    'allowedCodeLanguages'
-                ]
+                    'allowedCodeLanguages',
+                    'CMTV_Code_defaultCodeLanguage',
+                    'CMTV_Code_defaultInsertCodeLanguage',
+                    'CMTV_Code_langOptions',
+                    'CMTV_Code_lineHighlight_enabled',
+                    'CMTV_Code_lineNumbers_enabled'
+                ],
             ],
             'media' => [
                 'sort' => ['messageOptions'],

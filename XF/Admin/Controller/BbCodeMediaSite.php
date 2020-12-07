@@ -20,7 +20,7 @@ class BbCodeMediaSite extends XFCP_BbCodeMediaSite
      * @param $action
      * @param ParameterBag $params
      */
-    protected function preDispatchController($action, ParameterBag $params): void
+    protected function preDispatchController($action, ParameterBag $params)
     {
         $this->setSectionContext('kl_em_bbMedia');
         parent::preDispatchController($action, $params);

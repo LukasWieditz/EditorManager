@@ -9,6 +9,8 @@
 namespace KL\EditorManager\XF\Proxy;
 
 use KL\EditorManager\Entity\AbstractProxy;
+use KL\EditorManager\Entity\AudioProxy;
+use KL\EditorManager\Entity\VideoProxy;
 use League\Flysystem\FileNotFoundException;
 use XF\App;
 use XF\Db\Exception;
@@ -130,15 +132,15 @@ class Controller extends XFCP_Controller
 
             /** @var \KL\EditorManager\Repository\AbstractProxy $proxyRepo */
             $proxyRepo = $this->app->repository($entityClass);
-            $video = $proxyRepo->getPlaceholder();
+            $resource = $proxyRepo->getPlaceholder();
         }
 
         if (!$error) {
             $proxyRepo = $this->app->repository($entityClass);
 
-            $proxyRepo->logView($video);
+            $proxyRepo->logView($resource);
             if ($this->referrer && $this->app->options()->klEMVideoAudioProxyReferrer['enabled']) {
-                $proxyRepo->logReferrer($video, $this->referrer);
+                $proxyRepo->logReferrer($resource, $this->referrer);
             }
         }
 
@@ -240,12 +242,12 @@ class Controller extends XFCP_Controller
 
     /**
      * @param Response $response
-     * @param \KL\EditorManager\Entity\VideoProxy $video
+     * @param VideoProxy $video
      * @param $error
      */
-    protected function applyKLEMVideoResponseHeaders(
+    public function applyKLEMVideoResponseHeaders(
         Response $response,
-        \KL\EditorManager\Entity\VideoProxy $video,
+        VideoProxy $video,
         $error
     ): void {
         $this->_applyKLEMResponseHeaders([
@@ -256,12 +258,12 @@ class Controller extends XFCP_Controller
 
     /**
      * @param Response $response
-     * @param \KL\EditorManager\Entity\AudioProxy $audio
+     * @param AudioProxy $audio
      * @param $error
      */
-    protected function applyKLEMAudioResponseHeaders(
+    public function applyKLEMAudioResponseHeaders(
         Response $response,
-        \KL\EditorManager\Entity\AudioProxy $audio,
+        AudioProxy $audio,
         $error
     ): void {
         $this->_applyKLEMResponseHeaders([

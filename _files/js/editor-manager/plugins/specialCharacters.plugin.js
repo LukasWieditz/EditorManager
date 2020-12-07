@@ -1,7 +1,7 @@
 /*!
- * kl/editor-manager/plugins/klSpecialChars.plugin.js
+ * kl/editor-manager/plugins/specialCharacters.plugin.js
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2020 Lukas Wieditz
  */
 
 /*global console, jQuery, XF, setTimeout */
@@ -9,24 +9,28 @@
 
 (function ($) {
     $(document).on('editor:config', function (event, config, xfEditor) {
-        var initialized = false;
-        var loaded = false;
-
-        var $menu,
+        var initialized = false,
+            loaded = false,
+            $menu,
             $menuScroll,
             scrollTop = 0,
             flashTimeout,
-            logTimeout;
+            logTimeout,
+            timer;
 
-        function showMenu() {
+        function showMenu()
+        {
             selectionSave();
 
             XF.EditorHelpers.blur(xfEditor.ed);
 
-            var $btn = xfEditor.ed.$tb.find('.fr-command[data-cmd="specialCharacters"]');
+            var $btn = $(xfEditor.ed.$tb.find('.fr-command[data-cmd="specialCharacters"]')).first();
 
-            if (!initialized) {
+            if (!initialized)
+            {
                 initialized = true;
+
+                var menuHtml = $.trim($('.js-xfEditorMenu').first().html());
 
                 $menu = $($.parseHTML(Mustache.render($('.js-specialCharacters').first().html())));
                 $menu.insertAfter($btn);
@@ -55,7 +59,7 @@
                         $(document).on('recent-klem-special-character:logged', updateRecentSpecialChar);
 
                         xfEditor.ed.events.on('commands.mousedown', function ($el) {
-                            if ($el.data('cmd') != 'specialCharacters') {
+                            if ($el.data('cmd') !== 'specialCharacters') {
                                 handler.close();
                             }
                         });
@@ -68,23 +72,25 @@
                     $menuScroll.scrollTop(scrollTop);
                 });
 
-                $menu.on('menu:closed', function () {
-                    setTimeout(function () {
+                $menu.on('menu:closed', function()
+                {
+                    setTimeout(function()
+                    {
                         xfEditor.ed.markers.remove();
                     }, 50);
                 });
             }
 
             var clickHandlers = $btn.data('xfClickHandlers');
-            if (clickHandlers && clickHandlers.menu) {
+            if (clickHandlers && clickHandlers.menu)
+            {
                 clickHandlers.menu.toggle();
             }
         }
 
         function insertSpecialChar(e) {
             var $target = $(e.currentTarget),
-                html = $target.html(),
-                $html = $(html);
+                html = $target.html().trim();
 
             XF.EditorHelpers.focus(xfEditor.ed);
             xfEditor.ed.html.insert(html);
@@ -107,8 +113,6 @@
                 logRecentSpecialCharacterUsage($target.data('id'));
             }, 1500);
         }
-
-        var timer;
 
         function performSearch() {
             var $input = $(this),

@@ -8,13 +8,19 @@
 
 namespace KL\EditorManager\Entity;
 
+use KL\EditorManager\EditorConfig;
+use KL\EditorManager\Repository\Template as TemplateRepo;
+use XF;
+use XF\Entity\User;
 use XF\Mvc\Entity\Entity;
+use XF\Mvc\Entity\Repository;
 use XF\Mvc\Entity\Structure;
 
 /**
  * Class Template
  * @package KL\EditorManager\Entity
  *
+ * COLUMNS
  * @property integer template_id
  * @property string title
  * @property string content
@@ -23,9 +29,51 @@ use XF\Mvc\Entity\Structure;
  * @property boolean active
  * @property array extra_data
  * @property array user_criteria
+ * @property array page_criteria
+ *
+ * GETTERS
+ * @property array editor_values
+ *
+ * RELATIONS
+ * @property User User
  */
 class Template extends Entity
 {
+    /**
+     * @return TemplateRepo|Repository
+     */
+    protected function getTemplateRepo(): TemplateRepo
+    {
+        return $this->repository('KL\EditorManager:Template');
+    }
+
+    /**
+     * @throws XF\PrintableException
+     */
+    protected function _postSave()
+    {
+        if ($this->user_id) {
+            $repo = $this->getTemplateRepo();
+            $repo->rebuildUserTemplateCache($this->User);
+        } else {
+            /** @var EditorConfig $editorConfig */
+            $editorConfig = XF::app()->container('klEmEditorConfig');
+            $editorConfig->cacheDelete('templates');
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getEditorValues()
+    {
+        $bbCode = XF::app()->bbCode();
+        return [
+            'title' => $this->title,
+            'content' => $bbCode->render($this->content, 'editorHtml', '', null)
+        ];
+    }
+
     /**
      * @param Structure $structure
      * @return Structure
@@ -44,6 +92,20 @@ class Template extends Entity
             'active' => ['type' => self::BOOL, 'default' => 1],
             'extra_data' => ['type' => self::JSON, 'default' => '[]'],
             'user_criteria' => ['type' => self::JSON, 'default' => []],
+            'page_criteria' => ['type' => self::JSON, 'default' => []],
+        ];
+
+        $structure->getters = [
+            'editor_values' => true
+        ];
+
+        $structure->relations = [
+            'User' => [
+                'type' => self::TO_ONE,
+                'conditions' => 'user_id',
+                'entity' => 'XF:User',
+                'primary' => true
+            ]
         ];
 
         return $structure;

@@ -74,6 +74,10 @@ class EditorButtonData
                 'fa' => 'fa-minus-square',
                 'title' => XF::phrase('kl_em_hide_reply_thanks')
             ],
+            'klEMHideMembers' => [
+                'fa' => 'fa-user-minus',
+                'title' => XF::phrase('kl_em_hide_members')
+            ],
             'klEMHideGroup' => [
                 'fa' => 'fa-folder-minus',
                 'title' => XF::phrase('kl_em_hide_group')
@@ -117,6 +121,7 @@ class EditorButtonData
                     unset($buttons[$tN]);
                 }
             } else {
+                /** @noinspection PhpIllegalArrayKeyTypeInspection */
                 unset($buttons[$toolbarName]);
             }
         }

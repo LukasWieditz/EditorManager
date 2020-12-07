@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 /*!
  * KL/EditorManager/BbCode/EditorManagerTrait.php
@@ -8,8 +8,8 @@
 
 namespace KL\EditorManager\BbCode;
 
+use KL\EditorManager\EditorConfig;
 use KL\EditorManager\Entity\BbCode;
-use KL\EditorManager\Repository\Font;
 use KL\EditorManager\XF\Str\Formatter;
 use XF;
 
@@ -51,8 +51,11 @@ trait EditorManagerTrait
             }
         }
 
+        /** @var EditorConfig $editorConfig */
+        $editorConfig = XF::app()->container('klEmEditorConfig');
+
         /** Load aliases */
-        foreach (XF::repository('KL\EditorManager:BbCodes')->getBbCodeSettings() as $bbCode => $config) {
+        foreach ($editorConfig->bbCodeSettings() as $bbCode => $config) {
             switch ($bbCode) {
                 case 'bold':
                     $bbCode = 'b';
@@ -135,16 +138,10 @@ trait EditorManagerTrait
     private function getKLFontList()
     {
         if (!$this->klFontList) {
-            /* Create Repository */
-            $app = XF::app();
+            /** @var EditorConfig $editorConfig */
+            $editorConfig = XF::app()->container('klEmEditorConfig');
 
-            /** @var Font $repo */
-            $repo = $app->em()->getRepository('KL\EditorManager:Font');
-
-            /* Load fonts */
-            $fontList = $repo->getFontsCached();
-
-            foreach ($fontList as $font) {
+            foreach ($editorConfig->fonts() as $font) {
                 $ids = explode(',', $font->family);
                 $id = strtolower(str_replace(["'", '"'], '', $ids[0]));
                 $stack = explode(',', str_replace(["'", '"'], '', $font->family));
@@ -165,10 +162,11 @@ trait EditorManagerTrait
      */
     private function getKLBbCodes() {
         if(!$this->klBbCodes) {
-            $bbCodes = XF::repository('KL\EditorManager:BbCodes')->getBbCodeSettings();
+            /** @var EditorConfig $editorConfig */
+            $editorConfig = XF::app()->container('klEmEditorConfig');
 
             $codes = [];
-            foreach($bbCodes as $tag => $bbCode) {
+            foreach($editorConfig->bbCodeSettings() as $tag => $bbCode) {
                 $codes[$tag] = $bbCode;
 
                 foreach($bbCode->aliases as $alias) {
