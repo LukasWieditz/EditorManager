@@ -1,7 +1,9 @@
 .fr-box {
 	.fr-wrapper.show-placeholder:first-child {
-		background: @editor-bg;
-		border: @editor-border;
+		background: @xf-editorBg;
+		border: solid 1px @xf-borderColor;
+		border-color: @_editorBorderColor;
+		.border-radius(@_editorBorderRadius);
 		top: 0;
 		left: 0;
 		padding: 10px;

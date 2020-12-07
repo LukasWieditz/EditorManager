@@ -25,6 +25,10 @@ class EditorButtonData
     public static function extend(array &$buttons, Editor $editorData)
     {
         $buttons += [
+            'backgroundColor' => [
+                'fa' => 'fa-paint-brush',
+                'title' => XF::phrase('kl_em_background_color')
+            ],
             'fullscreen' => [
                 'fa' => 'fa-expand',
                 'title' => XF::phrase('kl_em_fullscreen')
@@ -41,6 +45,10 @@ class EditorButtonData
             'audio' => [
                 'fa' => 'fa-music',
                 'title' => XF::phrase('kl_em_audio')
+            ],
+            'klFontAwesome' => [
+                'fa' => 'fa-flag',
+                'title' => XF::phrase('kl_font_awesome_icon')
             ],
             'klUnlinkAll' => [
                 'fa' => 'fa-unlink',

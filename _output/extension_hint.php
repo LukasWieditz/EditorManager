@@ -29,9 +29,19 @@ namespace KL\EditorManager\XF\Entity
 	class XFCP_Smilie extends \XF\Entity\Smilie {}
 }
 
+namespace KL\EditorManager\XF\Finder
+{
+	class XFCP_Post extends \XF\Finder\Post {}
+}
+
 namespace KL\EditorManager\XF\Html\Renderer
 {
 	class XFCP_BbCode extends \XF\Html\Renderer\BbCode {}
+}
+
+namespace KL\EditorManager\XF\Mvc\Renderer
+{
+	class XFCP_Json extends \XF\Mvc\Renderer\Json {}
 }
 
 namespace KL\EditorManager\XF\Proxy

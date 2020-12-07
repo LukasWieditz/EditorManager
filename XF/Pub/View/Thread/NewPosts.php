@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\XF\Pub\View\Thread;
 
+use KL\EditorManager\XF\Mvc\Renderer\Json;
 use XF;
 
 /**
@@ -15,6 +16,7 @@ use XF;
  * @package KL\EditorManager\XF\Pub\View\Thread
  *
  * @property array params
+ * @property Json renderer
  */
 class NewPosts extends XFCP_NewPosts
 {
@@ -23,12 +25,14 @@ class NewPosts extends XFCP_NewPosts
      */
     public function renderJson(): void
     {
+        $renderer = $this->renderer;
+
         if (isset($this->params['klEMPosts'])) {
-            $posts = $this->params['klEMPosts'];
+            $posts = $this->params['klEMPosts']->toArray();
             foreach ($posts as &$post) {
                 $post = XF::app()->bbCode()->render($post->message, 'html', 'post', $post);
             }
-            $this->params['klEMPosts'] = $posts;
+            $renderer->setKLEMPosts($posts);
         }
 
         if (method_exists(get_parent_class($this), 'renderJson')) {

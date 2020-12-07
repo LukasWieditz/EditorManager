@@ -9,6 +9,8 @@
 (function ($, window, document, _undefined) {
     "use strict";
     $(document).on('ajax:before-success', function($data, $status, $xhr) {
+        console.log($data, $status, $xhr);
+
        if($status.klEMPosts) {
            $.each($status.klEMPosts, function($index, $content) {
                $('article[data-content="post-' + $index + '"] article.message-body').html($content);

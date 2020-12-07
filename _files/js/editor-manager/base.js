@@ -32,6 +32,7 @@
 		} catch (e) {
 			console.error(e);
 		}
+
         console.log(config);
 	});
 }(jQuery, window, document));

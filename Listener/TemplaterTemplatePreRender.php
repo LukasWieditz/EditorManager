@@ -30,7 +30,7 @@ class TemplaterTemplatePreRender
      * @param $template
      * @param array $params
      */
-    public static function pageContainer(Templater $templater, &$type, &$template, array &$params)
+    public static function pageContainer(Templater $templater, &$type, &$template, array &$params): void
     {
         /* Create Repository */
         $app = XF::app();
@@ -100,7 +100,9 @@ class TemplaterTemplatePreRender
 
             #\XF::dump($gfonts);
 
-            $params['em_gfonts'] = $gfonts ? 'https://fonts.googleapis.com/css?' . http_build_query(['family' => join('|', $gfonts)]) : false;
+            $params['em_gfonts'] = $gfonts ? 'https://fonts.googleapis.com/css?' . http_build_query([
+                    'family' => join('|', $gfonts)
+                ]) : false;
             $params['em_typekit'] = $typekit;
             $params['em_webtype'] = $webtype;
             $params['em_fonts'] = $fonts;
@@ -110,13 +112,13 @@ class TemplaterTemplatePreRender
     }
 
     /**
-     * Push enabled BB code informations to help page.
+     * Pre-process color values for option template.
      * @param Templater $templater
      * @param $type
      * @param $template
      * @param array $params
      */
-    public static function klEmAvailableColors(Templater $templater, &$type, &$template, array &$params)
+    public static function klEmAvailableColors(Templater $templater, &$type, &$template, array &$params): void
     {
         $colors = explode(',', $params['option']->option_value);
         $colors = array_map('trim', $colors);
@@ -131,7 +133,7 @@ class TemplaterTemplatePreRender
      * @param $template
      * @param array $params
      */
-    public static function helpPageBbCode(Templater $templater, &$type, &$template, array &$params)
+    public static function helpPageBbCode(Templater $templater, &$type, &$template, array &$params): void
     {
         /* Push bb code configuration to template */
         $options = XF::app()->options();
@@ -143,24 +145,23 @@ class TemplaterTemplatePreRender
     /*** EDITOR DATA ***/
 
     /**
-     * @param $code
-     * @param $toolbars
-     * @param $dropdowns
+     * @param string $code
+     * @param array $toolbars
+     * @param array $dropdowns
      */
-    protected static function removeBbCode($code, &$toolbars, &$dropdowns)
+    protected static function removeBbCode(string $code, array &$toolbars, array &$dropdowns)
     {
         /** @var BbCodes $repo */
         $repo = XF::repository('KL\EditorManager:BbCodes');
         $toolbarNames = $repo->shortToButtonDataName($code);
-        if (!is_array($toolbarNames)) {
-            $toolbarNames = [$toolbarNames];
-        }
 
         foreach ($toolbarNames as $toolbarName) {
             foreach ($toolbars as &$toolbar) {
-                $toolbar = array_filter($toolbar, function ($e) use ($toolbarName) {
-                    return $toolbarName != $e && "xfCustom_" . $toolbarName != $e;
-                });
+                foreach ($toolbar as &$toolbarGroup) {
+                    $toolbarGroup['buttons'] = array_filter($toolbarGroup['buttons'], function ($e) use ($toolbarName) {
+                        return $toolbarName != $e && "xfCustom_" . $toolbarName != $e;
+                    });
+                }
             }
 
             foreach ($dropdowns as &$dropdown) {
@@ -172,10 +173,10 @@ class TemplaterTemplatePreRender
     }
 
     /**
-     * @param $params
+     * @param array $params
      * @return array
      */
-    protected static function filterButtons(&$params)
+    protected static function filterButtons(array &$params): array
     {
         $toolbars = $params['editorToolbars'];
         $dropdowns = $params['editorDropdowns'];
@@ -232,7 +233,9 @@ class TemplaterTemplatePreRender
         }
 
         foreach ($toolbars as &$toolbar) {
-            $toolbar = array_values($toolbar);
+            foreach ($toolbar as &$toolbarGroup) {
+                $toolbarGroup['buttons'] = array_values($toolbarGroup['buttons']);
+            }
         }
         foreach ($dropdowns as &$dropdown) {
             $dropdown['buttons'] = array_values($dropdown['buttons']);
@@ -248,76 +251,73 @@ class TemplaterTemplatePreRender
     }
 
     /**
-     * @param $bbCodeStates
+     * @param array $bbCodeStates
      * @return array
      */
-    protected static function getEnabledPlugins($bbCodeStates)
+    protected static function getEnabledPlugins(array $bbCodeStates = []) : array
     {
         $visitor = XF::visitor();
         $options = XF::options();
 
         return array_keys(array_filter([
-            'table' => isset($bbCodeStates['enabled']['table']),
-            'fullscreen' => true,
-            'hide' => isset($bbCodeStates['enabled']['hide']),
-            'fontFamily' => isset($bbCodeStates['enabled']['font']),
-            'gFontFamily' => $visitor->hasPermission('klEM', 'klEMUseGoogleFonts') && $options->klEMExternalFontPolling,
-            'fontSize' => isset($bbCodeStates['enabled']['size']),
-            'link' => isset($bbCodeStates['enabled']['url']),
-            'image' => isset($bbCodeStates['enabled']['img']),
             'align' => isset($bbCodeStates['enabled']['align']),
-            'lists' => isset($bbCodeStates['enabled']['list']),
-            'parseHtml' => isset($bbCodeStates['enabled']['parsehtml']),
-            'colors' => isset($bbCodeStates['enabled']['color']) || isset($bbCodeStates['enabled']['bgcolor']),
-            'templates' => $visitor->hasPermission('klEM', 'klEMTemplates'),
-            'draggable' => true,
-            'file' => true,
             'bbCode' => true,
             'charCounter' => isset($options->klEMCharCounter) && $options->klEMCharCounter !== 'none',
+            'colors' => isset($bbCodeStates['enabled']['color']) || isset($bbCodeStates['enabled']['bgcolor']),
+            'contentPreview' => true,
+            'draggable' => true,
+            'file' => true,
+            'fontFamily' => isset($bbCodeStates['enabled']['font']),
+            'fontSize' => isset($bbCodeStates['enabled']['size']),
+            'fullscreen' => true,
+            'gFontFamily' => $visitor->hasPermission('klEM', 'klEMUseGoogleFonts') && $options->klEMExternalFontPolling,
+            'hide' => isset($bbCodeStates['enabled']['hide']),
+            'image' => isset($bbCodeStates['enabled']['img']),
+            'link' => isset($bbCodeStates['enabled']['url']),
+            'lists' => isset($bbCodeStates['enabled']['list']),
+            'parseHtml' => isset($bbCodeStates['enabled']['parsehtml']),
             'specialCharacters' => true,
+            'table' => isset($bbCodeStates['enabled']['table']),
+            'templates' => $visitor->hasPermission('klEM', 'klEMTemplates'),
+            'unlinkAll' => isset($bbCodeStates['enabled']['url']),
+            'xfInsertGif' => true,
             'xfSmilie' => true,
-            'unlinkAll' => isset($bbCodeStates['enabled']['url'])
         ]));
     }
 
     /**
-     * @param $plugins
-     * @param $bbCodeStates
+     * @param array $plugins
+     * @param array $bbCodeStates
      * @return array
      */
-    protected static function getEditorConfig($plugins, $bbCodeStates)
+    protected static function getEditorConfig(array $plugins = [], array $bbCodeStates = []): array
     {
-        /** @var Font $repo */
-        $repo = XF::repository('KL\EditorManager:Font');
-        foreach ($repo->getFontsCached() as $font) {
-            $fonts[str_replace('"', "'", $font->family)] = $font->title;
-        }
-
+//        /** @var Font $repo */
+//        $repo = XF::repository('KL\EditorManager:Font');
+//        foreach ($repo->getFontsCached() as $font) {
+//            $fonts[str_replace('"', "'", $font->family)] = $font->title;
+//        }
+//
         $options = XF::options();
-
         $visitor = XF::visitor();
 
         return [
             'pluginsEnabled' => $plugins,
-
+//
             'initOnClick' => isset($options->klEMGeneralOptions['delay_load']) && (bool)($options->klEMGeneralOptions['delay_load']),
             'keepFormatOnDelete' => isset($options->klEMGeneralOptions['keep_format_on_delete']) && (bool)($options->klEMGeneralOptions['keep_format_on_delete']),
             'pastePlain' => isset($options->klEMGeneralOptions['paste_plain']) && (bool)($options->klEMGeneralOptions['paste_plain']),
-
-            'fontFamily' => $fonts,
-            'fontSize' => explode(', ', $options->klEMFontSizes),
-
+//
+//            'fontFamily' => $fonts,
+            'fontSize' => array_map('trim', explode(',', $options->klEMFontSizes)),
+//
             'colorsText' => explode(',', preg_replace('/\s/', '', $options->klEMColors)),
             'colorsBackground' => explode(',', preg_replace('/\s/', '', $options->klEMBGColors)),
             'colorsHEXInput' => (bool)($options->klEMHexColor),
             'colorsStep' => (int)$options->klEMColorStep,
-            'colorTypes' => [
-                'color' => isset($bbCodeStates['enabled']['color']),
-                'bgcolor' => isset($bbCodeStates['enabled']['bgcolor'])
-            ],
 
-            'charCounterCount' => in_array('charCounter', $plugins),
-            'charCounterMode' => $options->klEMCharCounter === 'user' ? $visitor->kl_em_wordcount_mode : $options->klEMCharCounter,
+//            'charCounterCount' => in_array('charCounter', $plugins),
+//            'charCounterMode' => $options->klEMCharCounter === 'user' ? $visitor->kl_em_wordcount_mode : $options->klEMCharCounter,
 
             'tableStyles' => [
                 'noborder' => XF::phrase('kl_em_no_border'),
@@ -333,7 +333,7 @@ class TemplaterTemplatePreRender
     }
 
     /**
-     * @return array|bool|ArrayCollection|Entity[]
+     * @return array[]|false
      */
     protected static function getTemplates()
     {
@@ -376,18 +376,18 @@ class TemplaterTemplatePreRender
 
     /**
      * @param Templater $templater
-     * @param $type
-     * @param $template
+     * @param string $type
+     * @param string $template
      * @param array $params
      */
-    public static function editor(Templater $templater, &$type, &$template, array &$params)
+    public static function editor(Templater $templater, string &$type, string &$template, array &$params)
     {
         $bbCodeStates = self::filterButtons($params);
         $plugins = self::getEnabledPlugins($bbCodeStates);
 
         $params['klEM'] = [
             'editorConfig' => self::getEditorConfig($plugins, $bbCodeStates),
-            'plugins' => $plugins
+            // 'plugins' => $plugins
         ];
     }
 }

@@ -3,7 +3,7 @@
     "execute_order": 10,
     "callback_class": "KL\\EditorManager\\Listener\\TemplaterTemplatePreRender",
     "callback_method": "klEmAvailableColors",
-    "active": false,
+    "active": true,
     "hint": "admin:kl_em_option_available_colors",
     "description": "admin:kl_em_option_available_colors"
 }

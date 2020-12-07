@@ -21,7 +21,7 @@ class BbCodes extends Repository
     /**
      * @return array
      */
-    public function getValidControllersForHide() : array
+    public function getValidControllersForHide(): array
     {
         $value = XF::app()->options()->klEMHideControllers;
         return explode("\n", $value);
@@ -35,7 +35,7 @@ class BbCodes extends Repository
     /**
      * @return AbstractCollection
      */
-    public function getBbCodeSettings() : AbstractCollection
+    public function getBbCodeSettings(): AbstractCollection
     {
         if (!$this->bbCodeSettings) {
             // TODO: Add XF Cache
@@ -46,10 +46,10 @@ class BbCodes extends Repository
     }
 
     /**
-     * @param $bbCodeName
+     * @param string $bbCodeName
      * @return string
      */
-    public function shortToFullName($bbCodeName) : string
+    public function shortToFullName(string $bbCodeName): string
     {
         switch ($bbCodeName) {
             case 'b':
@@ -105,12 +105,24 @@ class BbCodes extends Repository
     }
 
     /**
-     * @param $bbCodeName
-     * @return array|string
+     * @param string $bbCodeName
+     * @return array
      */
-    public function shortToButtonDataName($bbCodeName)
+    public function shortToButtonDataName(string $bbCodeName): array
     {
         switch ($bbCodeName) {
+            case 'sub':
+                $tag = 'subscript';
+                break;
+
+            case 'sup':
+                $tag = 'superscript';
+                break;
+
+            case 'bgcolor':
+                $tag = 'backgroundColor';
+                break;
+
             case 'parsehtml':
                 $tag = 'klEMParseHtml';
                 break;
@@ -179,13 +191,13 @@ class BbCodes extends Repository
                 $tag = $bbCodeName;
         }
 
-        return $tag;
+        return is_array($tag) ? $tag : [$tag];
     }
 
     /**
      * @return array
      */
-    public function getRelatedBbCodeOptions() : array
+    public function getRelatedBbCodeOptions(): array
     {
         return [
             'font' => [

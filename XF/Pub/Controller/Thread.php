@@ -1,7 +1,7 @@
 <?php
 
 /*!
- * KL/EditorManager/Pub/Controller/Thread.php
+ * KL/EditorManager/XF/Pub/Controller/Thread.php
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
  * Copyright 2020 Lukas Wieditz
  */
@@ -28,24 +28,25 @@ class Thread extends XFCP_Thread
      */
     public function actionAddReply(ParameterBag $params): AbstractReply
     {
-        $return = parent::actionAddReply($params);
+        $response = parent::actionAddReply($params);
 
-        if ($return instanceof View) {
+        if ($response instanceof View) {
             $messagesPerPage = XF::options()->messagesPerPage;
             $offset = max(0, ($this->filter('klPage', 'uint') ?: 0) - 1) * $messagesPerPage;
 
-            $thread = $this->assertViewableThread($params['thread_id']);
+            $thread = $response->getParam('thread') ?: $this->assertViewableThread($params['thread_id']);
 
-            $finder = XF::finder('XF:Post');
+            /** @var \KL\EditorManager\XF\Finder\Post $postFinder */
+            $postFinder = $this->getPostRepo()
+                ->findPostsForThreadView($thread);
 
-            $posts = $finder
-                ->where('thread_id', '=', $thread->thread_id)
-                ->whereSQL("LOWER(message) LIKE '%[hide%'")
+            $posts = $postFinder
+                ->whereContainsKLHideBBCode()
                 ->fetch($messagesPerPage, $offset);
 
-            $return->setJsonParam('klEMPosts', $posts);
+            $response->setParam('klEMPosts', $posts);
         }
 
-        return $return;
+        return $response;
     }
 }

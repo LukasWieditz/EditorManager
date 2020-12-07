@@ -29,8 +29,14 @@
     "XF-Entity-Smilie_KL-EditorManager-XF-Entity-Smilie.json": {
         "hash": "8bbf093fa7b0170ce438b3781ff7d8c1"
     },
+    "XF-Finder-Post_KL-EditorManager-XF-Finder-Post.json": {
+        "hash": "0a8bc9c7c805f4264e28d04159cd31b5"
+    },
     "XF-Html-Renderer-BbCode_KL-EditorManager-XF-Html-Renderer-BbCode.json": {
         "hash": "75aeb0cb5fad268e0c9ebadfc19f02d9"
+    },
+    "XF-Mvc-Renderer-Json_KL-EditorManager-XF-Mvc-Renderer-Json.json": {
+        "hash": "bbb21e0dc0bb28fe0d2b5494ef12189a"
     },
     "XF-Proxy-Controller_KL-EditorManager-XF-Proxy-Controller.json": {
         "hash": "870ca7ce684fa955a300d56317cfe1f9"

@@ -2,8 +2,8 @@
     "template": "post_macros",
     "description": "Insert hide live refresh script.",
     "execution_order": 10,
-    "enabled": false,
+    "enabled": true,
     "action": "preg_replace",
-    "find": "/<xf:macro name=\"post\".*?>/",
+    "find": "/<xf:macro name=\"post\".*>/sU",
     "replace": "$0\n<xf:if is=\"$xf.options.klEMEnabledBBCodes.hide\">\n\t<xf:js src=\"editor-manager/hide-refresh.js\" addon=\"KL/EditorManager\" />\n</xf:if>"
 }
