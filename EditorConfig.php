@@ -93,6 +93,14 @@ class EditorConfig
     {
         $cache = $this->cache;
         if ($cache) {
+            if(empty($entities)) {
+                $this->cacheSave($key, [
+                    'entityType' => null,
+                    'values' => []
+                ], $lifeTime);
+                return;
+            }
+
             $entityType = $entities->first()->structure()->shortName;
 
             $entities = $entities instanceof AbstractCollection ? $entities->toArray() : $entities;
@@ -122,6 +130,10 @@ class EditorConfig
             $cacheValue = $this->cacheFetch($key);
             if ($cacheValue) {
                 $entityType = $cacheValue['entityType'];
+
+                if(!$entityType) {
+                    return $this->em()->getEmptyCollection();
+                }
 
                 $entities = [];
                 foreach ($cacheValue['values'] as $entityId => $entityValue) {
@@ -302,6 +314,7 @@ class EditorConfig
                 'fontFamily' => isset($enabledBbCodes['font']),
                 'fontSize' => isset($enabledBbCodes['size']),
                 'fullscreen' => true,
+                'fontAwesomeSelector' => isset($enabledBbCodes['fa']),
                 'gFontFamily' => $visitor->hasPermission('klEM',
                         'klEMUseGoogleFonts') && $options->klEMExternalFontPolling,
                 'hide' => isset($enabledBbCodes['hide']),
@@ -355,7 +368,7 @@ class EditorConfig
                     continue;
                 }
 
-                $pageCriteria = XF::app()->criteria('XF:Page', $template->page_criteria, $pageParams);
+                $pageCriteria = XF::app()->criteria('XF:Page', $template->page_criteria ?: [], $pageParams);
                 $pageCriteria->setMatchOnEmpty(true);
                 if (!$pageCriteria->isMatched($visitor)) {
                     $templates->offsetUnset($templateId);

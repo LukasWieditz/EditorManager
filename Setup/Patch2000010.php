@@ -10,6 +10,7 @@ namespace KL\EditorManager\Setup;
 
 use XF;
 use XF\Db\Schema\Alter;
+use XF\Db\Schema\Create;
 use XF\Repository\Option;
 
 /**
@@ -113,6 +114,34 @@ trait Patch2000010
     {
         $this->schemaManager()->alterTable('xf_kl_em_templates', function (Alter $table) {
             $table->addColumn('page_criteria', 'mediumblob');
+        });
+    }
+
+    /**
+     *
+     */
+    public function upgrade2000010Step9(): void
+    {
+        $this->schemaManager()->createTable('xf_kl_em_custom_emote_prefix', function (Create $table) {
+            $table->addColumn('prefix_id', 'int')->autoIncrement();
+            $table->addColumn('user_id', 'int');
+            $table->addColumn('prefix', 'varchar', 10);
+        });
+    }
+
+    /**
+     *
+     */
+    public function upgrade2000010Step10(): void
+    {
+        $this->schemaManager()->createTable('xf_kl_em_custom_emotes', function (Create $table) {
+            $table->addColumn('emote_id', 'int')->autoIncrement();
+            $table->addColumn('user_id', 'int')->setDefault(0);
+            $table->addColumn('prefix_id', 'text');
+            $table->addColumn('title', 'varchar', 100);
+            $table->addColumn('replacement', 'varchar', 100);
+            $table->addColumn('image_date', 'int')->setDefault(0);
+            $table->addColumn('extension', 'enum')->values(['png', 'jpg', 'jpeg', 'gif'])->nullable();
         });
     }
 }

@@ -14,6 +14,26 @@ use XF\Mvc\Entity\Structure;
 class Smilie extends XFCP_Smilie
 {
     /**
+     * @param null $error
+     * @param \XF\Entity\User|null $contextUser
+     * @return bool
+     */
+    public function canKLEMUse(&$error = null, \XF\Entity\User $contextUser = null): bool
+    {
+        if (!$contextUser) {
+            $contextUser = \XF::visitor();
+        }
+
+        if (!$this->kl_em_active) {
+            return false;
+        }
+
+        $criteria = $this->app()->criteria('XF:User', $this->kl_em_user_criteria);
+        $criteria->setMatchOnEmpty(true);
+        return $criteria->isMatched($contextUser);
+    }
+
+    /**
      * @param Structure $structure
      * @return Structure
      */

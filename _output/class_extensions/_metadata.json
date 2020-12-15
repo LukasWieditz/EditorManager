@@ -29,6 +29,12 @@
     "XF-Entity-UserOption_KL-EditorManager-XF-Entity-UserOption.json": {
         "hash": "c6ec61f56ef7465d203020d8048b6439"
     },
+    "XF-Entity-UserProfile_KL-EditorManager-XF-Entity-UserProfile.json": {
+        "hash": "01ad33417803384e6b6fb4e5ebc54f69"
+    },
+    "XF-Entity-User_KL-EditorManager-XF-Entity-User.json": {
+        "hash": "88adfebf78a3d56dbeaf35abef944e07"
+    },
     "XF-Finder-Post_KL-EditorManager-XF-Finder-Post.json": {
         "hash": "0a8bc9c7c805f4264e28d04159cd31b5"
     },

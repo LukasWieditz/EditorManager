@@ -16,17 +16,22 @@ use XF\BbCode\RuleSet;
  * Class BbCodeRules
  * @package KL\EditorManager\Listener
  */
-class BbCodeRules {
+class BbCodeRules
+{
     /**
      * @param RuleSet $ruleSet
      * @param $context
      * @param $subContext
      */
-    public static function extend(RuleSet $ruleSet, $context, $subContext) {
+    public static function extend(RuleSet $ruleSet, $context, $subContext)
+    {
         $tags = [
             'bgcolor' => [
                 'hasOption' => true,
                 'optionMatch' => '/^(rgb\(\s*\d+%?\s*,\s*\d+%?\s*,\s*\d+%?\s*\)|#[a-f0-9]{6}|#[a-f0-9]{3}|[a-z]+)$/i'
+            ],
+            'fa' => [
+                'supportOptionKeys' => $ruleSet::OPTION_KEYS_BOTH,
             ],
             'video' => ['stopAutoLink' => true],
             'audio' => ['stopAutoLink' => true],
@@ -38,6 +43,8 @@ class BbCodeRules {
             'hidereplythanks' => [],
             'hidemembers' => [],
             'hidegroup' => ['hasOption' => true],
+            'hidetime' => ['hasOption' => true],
+            'hidedate' => ['hasOption' => true],
             'sup' => [],
             'sub' => [],
             'parsehtml' => ['stopAutoLink' => true],
@@ -46,7 +53,19 @@ class BbCodeRules {
                 "plain" => true,
                 "stopSmilies" => true,
                 "stopAutoLink" => true
-            ]
+            ],
+
+//            'chart' => [
+//                'stopAutoLink' => true,
+//                'supportOptionKeys' => RuleSet::OPTION_KEYS_BOTH,
+//            ],
+//            'chartdata' => [
+//                'stopAutoLink' => true,
+//                'supportOptionKeys' => RuleSet::OPTION_KEYS_BOTH,
+//                'validParents' => [
+//                    'chart'
+//                ]
+//            ]
         ];
 
         foreach ($tags as $name => $options) {

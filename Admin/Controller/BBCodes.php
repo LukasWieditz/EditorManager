@@ -71,8 +71,14 @@ class BBCodes extends AbstractController
         }
 
         $addons = $this->app->addOnManager()->getAllAddOns();
-        foreach ($addons as &$addon) {
-            $addon = $addon->getJson()['title'];
+        foreach ($addons as $key => &$addon) {
+            $json = $addon->getJson();
+            if($json && isset($json['title'])) {
+                $addon = $json['title'];
+            }
+            else {
+                unset($addons[$key]);
+            }
         }
 
         $bbCodes = $this->getBbCodeRepo()

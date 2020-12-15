@@ -461,6 +461,12 @@
         "version_string": "1.1.0.2",
         "hash": "e10565cd26b882b97a3e3846a0ce4ee9"
     },
+    "kl_em_content_hidden_until.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "d0467ee8741f2beffea354232b5a9a4d"
+    },
     "kl_em_custom_emotes.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -581,6 +587,12 @@
         "version_string": "1.1.0.2",
         "hash": "194f5394ae2e9c74dc3c441b92862d1d"
     },
+    "kl_em_font_awesome.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "0a686c94398d9aa95125a33c8a31c1b6"
+    },
     "kl_em_font_code.txt": {
         "global_cache": false,
         "version_id": 1010072,
@@ -682,6 +694,12 @@
         "version_id": 1010072,
         "version_string": "1.1.0.2",
         "hash": "62a5e490880a92eef74f167d9dc6dca0"
+    },
+    "kl_em_hide_date.txt": {
+        "global_cache": false,
+        "version_id": 2000010,
+        "version_string": "2.0.0 Alpha",
+        "hash": "48c7e586694784163997f6c16be2e131"
     },
     "kl_em_hide_default_option.txt": {
         "global_cache": false,

@@ -22,18 +22,7 @@ use XF\Mvc\Entity\Structure;
  */
 class BbCode extends Entity
 {
-    /**
-     * @param $criteria
-     * @return bool
-     */
-    protected function verifyUserCriteria(&$criteria)
-    {
-        $userCriteria = $this->app()->criteria('XF:User', $criteria);
-        $criteria = $userCriteria->getCriteria();
-        return true;
-    }
-
-    protected function _postSave()
+    protected function _postSave(): void
     {
         /** @var EditorConfig $editorConfig */
         $editorConfig = XF::app()->container('klEmEditorConfig');
@@ -44,7 +33,7 @@ class BbCode extends Entity
      * @param Structure $structure
      * @return Structure
      */
-    public static function getStructure(Structure $structure)
+    public static function getStructure(Structure $structure): Structure
     {
         $structure->table = 'xf_kl_em_bb_codes';
         $structure->shortName = 'KL\EditorManager:BbCode';

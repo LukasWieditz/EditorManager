@@ -41,7 +41,7 @@ class Font extends Entity
      * @param Structure $structure
      * @return Structure
      */
-    public static function getStructure(Structure $structure)
+    public static function getStructure(Structure $structure): Structure
     {
         $structure->table = 'xf_kl_em_fonts';
         $structure->shortName = 'KL\EditorManager:Font';

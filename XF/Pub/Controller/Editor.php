@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\XF\Pub\Controller;
 
+use KL\EditorManager\Repository\FontAwesomeIcons;
 use KL\EditorManager\Repository\GoogleFont;
 use KL\EditorManager\Repository\SpecialChars;
 use KL\EditorManager\XF\Repository\Smilie;
@@ -35,6 +36,14 @@ class Editor extends XFCP_Editor
     protected function getKLSpecialCharacterRepo(): SpecialChars
     {
         return $this->repository('KL\EditorManager:SpecialChars');
+    }
+
+    /**
+     * @return FontAwesomeIcons|Repository
+     */
+    protected function getKLFontAwesomeIconsRepo(): FontAwesomeIcons
+    {
+        return $this->repository('KL\EditorManager:FontAwesomeIcons');
     }
 
     /**
@@ -159,6 +168,69 @@ class Editor extends XFCP_Editor
         ];
         return $this->view('KL\EditorManager:Editor\SpecialCharacters\Search',
             'kl_em_editor_special_characters_search_results', $viewParams);
+    }
+
+    /**
+     * @return View
+     */
+    public function actionKlEmFontAwesomeIcons(): AbstractReply
+    {
+        $repo = $this->getKLFontAwesomeIconsRepo();
+
+        $categories = $repo->getCategoriesForList();
+        $icons = $repo->getIconsForList();
+
+        $iconsGrouped = [];
+        foreach($icons as $iconId => $icon) {
+            foreach($icon['categories'] as $category) {
+                $iconsGrouped[$category][$iconId] = $icon;
+            }
+        }
+
+        $recent = [];
+        $recentlyUsed = $this->request->getCookie('klem_fontAwesomeIcon_usage', '');
+        if ($recentlyUsed) {
+            $recentlyUsed = array_reverse(explode(',', $recentlyUsed));
+
+            foreach ($recentlyUsed as $id) {
+                if (isset($icons[$id])) {
+                    $recent[$id] = $icons[$id];
+                }
+            }
+        }
+
+        $viewParams = [
+            'recent' => $recent,
+            'groupedIcons' => $iconsGrouped,
+            'categories' => $categories
+        ];
+
+        return $this->view('KL\EditorManager:Editor\FontAwesomeIcons', 'kl_em_editor_font_awesome_icons', $viewParams);
+    }
+
+    /**
+     * @return View
+     */
+    public function actionKlEmFontAwesomeIconsSearch(): AbstractReply
+    {
+        $q = ltrim($this->filter('q', 'str', ['no-trim']));
+
+        if ($q !== '' && utf8_strlen($q) >= 2) {
+            $results = $this->getKLFontAwesomeIconsRepo()
+                ->getMatchingIconsByString($q, [
+                    'limit' => 20
+                ]);
+        } else {
+            $results = [];
+            $q = '';
+        }
+
+        $viewParams = [
+            'q' => $q,
+            'results' => $results
+        ];
+        return $this->view('KL\EditorManager:Editor\FontAwesomeIcons\Search',
+            'kl_em_editor_font_awesome_icons_search_results', $viewParams);
     }
 
     /**

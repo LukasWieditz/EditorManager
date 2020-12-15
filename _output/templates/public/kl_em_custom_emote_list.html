@@ -22,7 +22,7 @@
 				<xf:datalist>
 					<xf:foreach loop="$emotes" value="$emote">
 						<xf:datarow>
-							<xf:cell href="{{ link('account/kl-custom-emotes/edit', $emote) }}" class="dataList-cell--min">
+							<xf:cell href="{{ link('account/kl-custom-emotes/edit', $emote) }}" class="dataList-cell--iconic">
 								{{ kl_em_custom_emote($emote) }}
 							</xf:cell>
 							<xf:cell class="dataList-cell--link dataList-cell--main" hash="{$emote.emote_id}"
@@ -30,7 +30,7 @@
 								{$emote.title}
 							</xf:cell>
 							<xf:cell href="{{ link('account/kl-custom-emotes/edit', $emote) }}">
-								<span class="emoteText">:{$prefix.prefix}{$emote.replacement}:</span>
+								<span class="emoteText">{$emote.replacement_code}</span>
 							</xf:cell>
 							
 							<xf:delete href="{{ link('account/kl-custom-emotes/delete', $emote) }}" />

@@ -295,6 +295,19 @@
 						<xf:cell colspan="3">{{ phrase('kl_em_editor_manager_bb_codes') }}</xf:cell>
 					</xf:datarow>
 					<xf:datarow>
+						<xf:main href="{{ link('em/bb-codes', {'bb_code_id': 'fa'})}}" id="fa">
+							<xf:label>{{ phrase('kl_em_font_awesome') }}</xf:label>
+							<xf:hint>[fa]<xf:foreach loop="$permissions.fa.aliases" value="$alias">, [{$alias}]</xf:foreach></xf:hint>
+						</xf:main>
+						<xf:action class="{{ !empty($permissions.fa.user_criteria) ? 'dataList-cell--highlighted' : '' }}"
+								   href="{{ link('em/bb-codes', {'bb_code_id': 'fa'}) }}">
+							{{ phrase('user_criteria') }}
+						</xf:action>
+						<xf:toggle name="kl_active[fa]" selected="$xf.options.klEMEnabledBBCodes.fa"
+								   class="dataList-cell--separated" submit="true"
+								   tooltip="{{ phrase('enable_disable_x', {'title': '[' . phrase('kl_em_font_awesome') . ']'}) }}" />
+					</xf:datarow>
+					<xf:datarow>
 						<xf:main href="{{ link('em/bb-codes', {'bb_code_id': 'bgcolor'})}}" id="bgcolor">
 							<xf:label>{{ phrase('kl_em_background_color') }}</xf:label>
 							<xf:hint>[bgcolor]<xf:foreach loop="$permissions.bgcolor.aliases" value="$alias">, [{$alias}]</xf:foreach></xf:hint>

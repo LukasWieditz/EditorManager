@@ -163,9 +163,13 @@ class Html extends XFCP_Html implements EditorManagerInterface
             'hidereplythanks' => ['callback' => 'RenderTagKLHideReplyThanks', 'trimAfter' => 2],
             'hidegroup' => ['callback' => 'RenderTagKLHideGroup', 'trimAfter' => 2],
             'hidemembers' => ['callback' => 'renderTagKLHideMembers', 'trimAfter' => 2],
+            'hidedate' => ['callback' => 'renderTagKLHideDate', 'trimAfter' => 2],
+            'hidetime' => ['callback' => 'renderTagKLHideDate', 'trimAfter' => 2],
             'hide' => ['callback' => 'RenderTagKLHide' . $config['hide_default'], 'trimAfter' => 2],
             'video' => ['callback' => 'renderTagKLVideo'],
-            'audio' => ['callback' => 'renderTagKLAudio']
+            'audio' => ['callback' => 'renderTagKLAudio'],
+            'fa' => ['callback' => 'renderTagKLFA'],
+            // 'chart' => ['callback' => 'renderTagKLChart', 'trimAfter' => 2]
         ];
 
         /* Merge default BB code aliases into config */
@@ -311,6 +315,35 @@ class Html extends XFCP_Html implements EditorManagerInterface
      * @param array $options
      * @return string
      */
+    public function RenderTagKLHideDate(array $children, $option, array $tag, array $options)
+    {
+        if (!$children) {
+            return '';
+        }
+
+        $this->trimChildrenList($children);
+
+        $content = $this->renderSubTree($children, $options);
+        if ($content === '') {
+            return '';
+        }
+
+        $date = strtotime($option);
+
+        return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_date', [
+            'content' => new PreEscaped($content),
+            'visible' => \XF::$time >= $date || $this->isKLEMCreator($options),
+            'visibleAt' => $date
+        ]);
+    }
+
+    /**
+     * @param array $children
+     * @param $option
+     * @param array $tag
+     * @param array $options
+     * @return string
+     */
     public function RenderTagKLHideReply(array $children, $option, array $tag, array $options)
     {
         if (!$children) {
@@ -325,7 +358,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
         }
 
         $canView = $this->canReplyView($options) ||
-            $this->isCreator($options) ||
+            $this->isKLEMCreator($options) ||
             XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_reply', [
@@ -355,7 +388,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
         }
 
         $canView = $this->canLikeView($options) ||
-            $this->isCreator($options) ||
+            $this->isKLEMCreator($options) ||
             XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_thanks', [
@@ -389,7 +422,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
             $canView = $visitor->hasPermission('klEM', 'klEMBypassHide') ||
                 ($visitor->hasPermission('klEM', 'klEMHidePostCount') !== -1 &&
                     $visitor->hasPermission('klEM', 'klEMHidePostCount') <= $visitor->message_count) ||
-                $this->isCreator($options);
+                $this->isKLEMCreator($options);
 
             $message_threshold = $visitor->hasPermission('klEM', 'klEMHidePostCount');
         } else {
@@ -425,7 +458,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
         }
 
         $canView = $this->canLikeView($options) || $this->canReplyView($options) ||
-            $this->isCreator($options) ||
+            $this->isKLEMCreator($options) ||
             XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_reply_thanks', [
@@ -499,14 +532,17 @@ class Html extends XFCP_Html implements EditorManagerInterface
         $groups = array_map('trim', explode(',', strtolower($option)));
         $userGroups = $this->getUserGroups();
         foreach ($userGroups as $key => $userGroup) {
-            if (!in_array($key, $groups) && !in_array(strtolower($userGroup->title),
-                    $groups) && !in_array(strtolower($userGroup->user_title), $groups)) {
+            if (
+                !in_array($key, $groups)
+                && !in_array(strtolower($userGroup->title), $groups)
+                && !in_array(strtolower($userGroup->user_title), $groups)
+            ) {
                 $userGroups->offsetUnset($key);
             }
         }
 
         $canView = $this->isInGroup($options, $userGroups) ||
-            $this->isCreator($options) ||
+            $this->isKLEMCreator($options) ||
             XF::visitor()->hasPermission('klEM', 'klEMBypassHide');
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_group', [
@@ -575,7 +611,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
      * @param $options
      * @return bool
      */
-    protected function isCreator($options)
+    protected function isKLEMCreator($options)
     {
         if (isset($options['user'])) {
             return $options['user']->user_id === XF::visitor()->user_id;
@@ -630,4 +666,251 @@ class Html extends XFCP_Html implements EditorManagerInterface
             'classes' => join(' ', $classes)
         ]);
     }
+
+    protected function renderTagKLFA(array $children, $option, array $tag, array $options)
+    {
+        $text = $this->renderSubTreePlain($children);
+
+        if (substr($text, 0, 3) !== 'fa-') {
+            $text = 'fa-' . $text;
+        }
+
+        switch ($option) {
+            case 'brand':
+            case 'brands':
+            case 'b':
+                $text = 'fab ' . $text;
+                break;
+
+            case 's':
+            case 'solid':
+                $text = 'fas ' . $text;
+                break;
+
+            case 'light':
+            case 'l':
+                $text = 'fal ' . $text;
+                break;
+
+            case 'regular':
+            case 'r':
+                $text = 'far ' . $text;
+                break;
+
+            case 'duotone':
+            case 'duo':
+            case 'd':
+                $text = 'fad ' . $text;
+                break;
+        }
+
+        $templater = $this->getTemplater();
+        return $templater->fontAwesome($text);
+    }
+
+//    /**
+//     * @param $option
+//     * @return array
+//     */
+//    protected function parseKLChartOptions($option): array
+//    {
+//        $defaultData = [
+//            'type' => 'line',
+//            'title' => null,
+//            'timeseries' => false,
+//            'datasetCount' => 0
+//        ];
+//
+//        if (!is_array($option)) {
+//            $defaultData['title'] = $option;
+//            return $defaultData;
+//        }
+//
+//        $data = [];
+//
+//        if (isset($option['type'])) {
+//            switch ($option['type']) {
+//                case 'line':
+//                case 'pie':
+//                case 'area':
+//                case 'bar':
+//                case 'horizontalBar':
+//                case 'radar':
+//                case 'doughnut':
+//                case 'polar-area':
+//                    $data['type'] = $option['type'];
+//                    break;
+//
+//                case 'bar-horizontal':
+//                    $data['type'] = 'horizontalBar';
+//                    break;
+//
+//                default:
+//                    $data['type'] = 'line';
+//            }
+//        } else {
+//            $data['type'] = 'line';
+//        }
+//
+//        if (isset($option['title'])) {
+//            $data['title'] = $option['title'];
+//        }
+//
+//        return array_replace($defaultData, $data);
+//    }
+//
+//    /**
+//     * @param array $children
+//     * @param $option
+//     * @param array $tag
+//     * @param array $options
+//     */
+//    protected function renderTagKLChart(array $children, $option, array $tag, array $options)
+//    {
+//        $datasets = [];
+//        $options['chartOptions'] = $this->parseKLChartOptions($option);
+//
+//        $lostAndFound = [];
+//
+//        foreach ($children as $child) {
+//            if (is_array($child)) {
+//                if ($child['tag'] === 'chartdata') {
+//                    $datasets[] = $this->renderTagKLChartDataset($child['children'], $child['option'],
+//                        $child['original'], $options);
+//                } else {
+//                    $lostAndFound[] = $this->renderSubTree([$child], $options);
+//                }
+//            } else {
+//                if (trim($child) !== '') {
+//                    $lostAndFound[] = $this->renderSubTree([$child], $options);
+//                }
+//            }
+//        }
+//
+//        $options = $options['chartOptions'];
+//        return $this->templater->renderTemplate('public:kl_em_bb_code_tag_chart', [
+//                'chartConfig' => [
+//                    'type' => $options['type'],
+//                    'data' => [
+//                        'datasets' => $datasets
+//                    ],
+//                    'options' => [
+//                        'title' => [
+//                            'display' => (bool)$options['title'],
+//                            'text' => $options['title']
+//                        ],
+//                        'scales' => [
+//                            'xAxes' => [
+//                                array_replace(
+//                                    [
+//                                        // 'stacked' => true
+//                                    ],
+//                                    $options['timeseries'] ? [
+//                                        'type' => 'time',
+//                                        'time' => ['unit' => 'month']
+//                                    ] : []),
+//                            ],
+//                            'yAxes' => [
+//                                // 'stacked' => true,
+//                                'ticks' => [
+//                                    'suggestedMin' => 0
+//                                ]
+//                            ]
+//                        ]
+//                    ]
+//                ]
+//            ]) . implode("\n", $lostAndFound);
+//    }
+//
+//    /**
+//     * @param $option
+//     * @param $chartOptions
+//     * @return array
+//     */
+//    protected function parseKLChartDatasetOptions($option, $chartOptions): array
+//    {
+//        if (!is_array($option)) {
+//            $option = [
+//                'title' => (string)$option
+//            ];
+//        }
+//
+//        $options = [
+//            'backgroundColor' => $this->klChartColors[$chartOptions['datasetCount'] % count($this->klChartColors)],
+//            'borderColor' => $this->klChartColors[$chartOptions['datasetCount'] % count($this->klChartColors)],
+//            'label' => $option['title'] ?? $option['label'],
+//        ];
+//
+//        switch ($chartOptions['type']) {
+//            case 'line':
+//                $options['fill'] = false;
+//                break;
+//
+//            case 'pie':
+//            case 'area':
+//            case 'bar':
+//            case 'radar':
+//            case 'doughnut':
+//            case 'polar-area':
+//                break;
+//        }
+//
+//        return $options;
+//    }
+//
+//    protected $klChartColors = [
+//        '#d32f2f',
+//        '#512da8',
+//        '#0288d1',
+//        '#388e3c',
+//        '#ffa000',
+//        '#5d4037',
+//
+//        '#c2185b',
+//        '#d303f9f',
+//        '#0097a7',
+//        '#689f38',
+//        '#f57c00',
+//        '#616161',
+//
+//        '#7b1fa2',
+//        '#1976d2',
+//        '#00796b',
+//        '#afb42b',
+//        '#e64a19',
+//        '#455a64'
+//    ];
+//
+//    /**
+//     * @param array $children
+//     * @param $option
+//     * @param array $tag
+//     * @param array $options
+//     * @return array
+//     */
+//    protected function renderTagKLChartDataset(array $children, $option, array $tag, array &$options): array
+//    {
+//        $options['chartOptions']['datasetCount']++;
+//        $value = $this->renderSubTreePlain($children);
+//        $datasetOptions = $this->parseKLChartDatasetOptions($option, $options['chartOptions']);
+//
+//        $timeseries = false;
+//
+//        $values = array_map(function ($value) use (&$timeseries) {
+//            if (strpos($value, '|') !== false) {
+//                $values = explode('|', $value);
+//                $timeseries = true;
+//                return [
+//                    'y' => intval($values[1]),
+//                    't' => date('c', strtotime($values[0]))
+//                ];
+//            } else {
+//                return intval($value);
+//            }
+//        }, explode(';', $value));
+//
+//        $options['chartOptions']['timeseries'] |= $timeseries;
+//        $datasetOptions['data'] = $values;
+//        return $datasetOptions;
+//    }
 }

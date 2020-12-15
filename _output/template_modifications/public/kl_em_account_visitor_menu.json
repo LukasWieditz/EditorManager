@@ -5,5 +5,5 @@
     "enabled": true,
     "action": "str_replace",
     "find": "<!--[XF:account_links:bottom]-->",
-    "replace": "<xf:if is=\"$xf.visitor.hasPermission('klEM', 'emotes')\">\n\t<li><a href=\"{{ link('account/kl-custom-emotes/') }}\" class=\"menu-linkRow\">{{ phrase('kl_em_custom_emotes') }}</a></li>\n</xf:if>\n<xf:if is=\"$xf.visitor.hasPermission('klEM', 'klEMPrivateTemplates')\">\n\t<li><a href=\"{{ link('account/kl-editor-templates/') }}\" class=\"menu-linkRow\">{{ phrase('kl_em_editor_templates') }}</a></li>\n</xf:if>\n$0"
+    "replace": "<xf:comment>\n<xf:if is=\"$xf.visitor.hasPermission('klEM', 'emotes')\">\n\t<li><a href=\"{{ link('account/kl-custom-emotes/') }}\" class=\"menu-linkRow\">{{ phrase('kl_em_custom_emotes') }}</a></li>\n</xf:if>\n</xf:comment>\n<xf:if is=\"$xf.visitor.hasPermission('klEM', 'klEMPrivateTemplates')\">\n\t<li><a href=\"{{ link('account/kl-editor-templates/') }}\" class=\"menu-linkRow\">{{ phrase('kl_em_editor_templates') }}</a></li>\n</xf:if>\n$0"
 }

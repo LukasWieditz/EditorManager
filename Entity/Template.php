@@ -50,7 +50,7 @@ class Template extends Entity
     /**
      * @throws XF\PrintableException
      */
-    protected function _postSave()
+    protected function _postSave(): void
     {
         if ($this->user_id) {
             $repo = $this->getTemplateRepo();
@@ -65,7 +65,7 @@ class Template extends Entity
     /**
      * @return array
      */
-    public function getEditorValues()
+    public function getEditorValues(): array
     {
         $bbCode = XF::app()->bbCode();
         return [
@@ -78,7 +78,7 @@ class Template extends Entity
      * @param Structure $structure
      * @return Structure
      */
-    public static function getStructure(Structure $structure)
+    public static function getStructure(Structure $structure): Structure
     {
         $structure->table = 'xf_kl_em_templates';
         $structure->shortName = 'KL\EditorManager:Template';

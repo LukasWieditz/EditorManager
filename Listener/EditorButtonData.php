@@ -46,10 +46,11 @@ class EditorButtonData
                 'fa' => 'fa-music',
                 'title' => XF::phrase('kl_em_audio')
             ],
-            'klFontAwesome' => [
-                'fa' => 'fa-flag',
-                'title' => XF::phrase('kl_font_awesome_icon')
-            ],
+//            'klFontAwesome' => [
+//                'fa' => 'fa-flag',
+//                'title' => XF::phrase('kl_font_awesome_icon'),
+//                'type' => 'dropdown'
+//            ],
             'klUnlinkAll' => [
                 'fa' => 'fa-unlink',
                 'title' => XF::phrase('kl_em_unlink_all')
@@ -81,6 +82,10 @@ class EditorButtonData
             'klEMHideGroup' => [
                 'fa' => 'fa-folder-minus',
                 'title' => XF::phrase('kl_em_hide_group')
+            ],
+            'klEMHideDate' => [
+                'fa' => 'fa-stopwatch',
+                'title' => XF::phrase('kl_em_hide_date')
             ],
             'klEMParseHtml' => [
                 'fa' => 'fa-code',

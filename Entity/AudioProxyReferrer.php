@@ -31,7 +31,7 @@ class AudioProxyReferrer extends Entity
      * @param Structure $structure
      * @return Structure
      */
-    public static function getStructure(Structure $structure)
+    public static function getStructure(Structure $structure): Structure
     {
         $structure->table = 'xf_kl_em_audio_proxy_referrer';
         $structure->shortName = 'KL\EditorManager:AudioProxyReferrer';

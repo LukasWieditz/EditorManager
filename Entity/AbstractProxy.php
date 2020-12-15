@@ -71,7 +71,7 @@ abstract class AbstractProxy extends Entity
      * @param $url
      * @return bool
      */
-    protected function verifyUrl(&$url)
+    protected function verifyUrl(&$url): bool
     {
         $url = $this->getProxyRepo()
             ->cleanUrlForFetch($url);
@@ -99,7 +99,7 @@ abstract class AbstractProxy extends Entity
     /**
      * @return bool
      */
-    public function isFailureRefreshRequired()
+    public function isFailureRefreshRequired(): bool
     {
         if (!$this->failed_date || !$this->fail_count) {
             return false;
@@ -132,7 +132,7 @@ abstract class AbstractProxy extends Entity
     /**
      *
      */
-    protected function _preSave()
+    protected function _preSave(): void
     {
         if ($this->placeholderPath) {
             throw new LogicException("Cannot save placeholder file");
@@ -147,7 +147,7 @@ abstract class AbstractProxy extends Entity
      * @return bool
      * @throws PrintableException
      */
-    public function prune()
+    public function prune(): bool
     {
         if ($this->placeholderPath) {
             return false;
@@ -178,7 +178,7 @@ abstract class AbstractProxy extends Entity
      * @param $mimeType
      * @param null $fileName
      */
-    public function setAsPlaceholder($filePath, $mimeType, $fileName = null)
+    public function setAsPlaceholder($filePath, $mimeType, $fileName = null): void
     {
         if ($this->placeholderPath) {
             throw new InvalidArgumentException("Once a resource is marked as a placeholder, it cannot be changed");
@@ -204,7 +204,7 @@ abstract class AbstractProxy extends Entity
     /**
      * @return AbstractProxyRepo|Repository
      */
-    protected function getProxyRepo()
+    protected function getProxyRepo(): AbstractProxyRepo
     {
         return $this->repository($this->structure()->shortName);
     }

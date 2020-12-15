@@ -30,7 +30,7 @@ class SpecialCharacterGroup extends Entity
     /**
      * @return Phrase
      */
-    public function getTitle()
+    public function getTitle(): Phrase
     {
         return XF::phrase($this->getPhraseName());
     }
@@ -38,15 +38,15 @@ class SpecialCharacterGroup extends Entity
     /**
      * @return string
      */
-    public function getPhraseName()
+    public function getPhraseName(): string
     {
         return 'kl_em_sc_group_id.' . $this->group_id;
     }
 
     /**
-     * @return mixed|null|Entity
+     * @return XF\Entity\Phrase
      */
-    public function getMasterPhrase()
+    public function getMasterPhrase(): \XF\Entity\Phrase
     {
         $phrase = $this->MasterTitle;
         if (!$phrase) {
@@ -66,7 +66,7 @@ class SpecialCharacterGroup extends Entity
      * @param Structure $structure
      * @return Structure
      */
-    public static function getStructure(Structure $structure)
+    public static function getStructure(Structure $structure): Structure
     {
         $structure->table = 'xf_kl_em_special_chars_groups';
         $structure->shortName = 'KL\EditorManager:SpecialCharacterGroup';

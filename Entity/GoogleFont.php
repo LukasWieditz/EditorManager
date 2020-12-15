@@ -26,7 +26,7 @@ class GoogleFont extends Entity
     /**
      * @return string
      */
-    public function getFontIdEscaped()
+    public function getFontIdEscaped(): string
     {
         return strtr($this->font_id, [' ' => '+']);
     }
@@ -35,7 +35,7 @@ class GoogleFont extends Entity
      * @param Structure $structure
      * @return Structure
      */
-    public static function getStructure(Structure $structure)
+    public static function getStructure(Structure $structure): Structure
     {
         $structure->table = 'xf_kl_em_google_fonts';
         $structure->shortName = 'KL\EditorManager:GoogleFont';

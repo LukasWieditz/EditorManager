@@ -2,6 +2,24 @@
 	<xf:css src="kl_em_froala_image.less" />
 </xf:if>
 
+<xf:comment>
+	<xf:if is="{{ in_array('fontAwesomeSelector', $klEM.plugins) }}">
+		<xf:js src="editor-manager/plugins/fontAwesome.plugin.js" min="1" addon="KL/EditorManager" />
+		<xf:css src="kl_em_froala_font_awesome_icons.less" />
+		<script class="js-fontAwesomeIcon" type="text/template">
+		<div class="menu menu--fontAwesomeIcon" data-menu="menu" aria-hidden="true"
+			data-href="{{ link('editor/kl-em-font-awesome-icons') }}"
+			data-load-target=".js-fontAwesomeIconMenuBody">
+			<div class="menu-content">
+				<div class="js-fontAwesomeIconMenuBody">
+					<div class="menu-row">{{ phrase('loading...') }}</div>
+			</div>
+			</div>
+			</div>
+		</script>
+	</xf:if>
+</xf:comment>
+
 <xf:if is="{{ in_array('fullscreen', $klEM.plugins) }}">
 	<xf:js src="vendor/froala/plugins/fullscreen.min.js" />
 	<xf:css src="kl_em_froala_fullscreen.less" />
@@ -30,8 +48,8 @@
 			<div class="menu-content">
 				<div class="js-specialCharsMenuBody">
 					<div class="menu-row">{{ phrase('loading...') }}</div>
-				</div>
-			</div>
+		</div>
+		</div>
 		</div>
 	</script>
 </xf:if>
@@ -51,7 +69,7 @@
 <xf:if is="{{ $klEM.editorConfig.initOnClick }}">
 	<xf:js>
 		$('.actionBar-action--reply, .button--multiQuote').on('click', function(event) {
-			$('.fr-view').trigger('focus');
+		$('.fr-view').trigger('focus');
 		});
 	</xf:js>
 </xf:if>

@@ -364,7 +364,7 @@ class Setup extends AbstractSetup
      */
     public function installStep15()
     {
-        $this->schemaManager()->createTable('kl_em_custom_emote_prefix', function (Create $table) {
+        $this->schemaManager()->createTable('xf_kl_em_custom_emote_prefix', function (Create $table) {
             $table->addColumn('prefix_id', 'int')->autoIncrement();
             $table->addColumn('user_id', 'int');
             $table->addColumn('prefix', 'varchar', 10);
@@ -376,7 +376,7 @@ class Setup extends AbstractSetup
      */
     public function installStep16()
     {
-        $this->schemaManager()->createTable('kl_em_custom_emotes', function (Create $table) {
+        $this->schemaManager()->createTable('xf_kl_em_custom_emotes', function (Create $table) {
             $table->addColumn('emote_id', 'int')->autoIncrement();
             $table->addColumn('user_id', 'int')->setDefault(0);
             $table->addColumn('prefix_id', 'text');
@@ -385,7 +385,6 @@ class Setup extends AbstractSetup
             $table->addColumn('image_date', 'int')->setDefault(0);
             $table->addColumn('extension', 'enum')->values(['png', 'jpg', 'jpeg', 'gif'])->nullable();
         });
-
     }
 
     /**
