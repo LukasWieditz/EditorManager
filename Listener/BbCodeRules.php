@@ -74,9 +74,7 @@ class BbCodeRules
 
         $tags = $ruleSet->getTags();
 
-
-        /** @var EditorConfig $editorConfig */
-        $editorConfig = XF::app()->container('klEmEditorConfig');
+        $editorConfig = EditorConfig::getInstance();
         $bbCodes = $editorConfig->bbCodeSettings();
 
         /** Load aliases */

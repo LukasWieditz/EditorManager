@@ -26,6 +26,24 @@ use XF\Mvc\Entity\Manager;
 class EditorConfig
 {
     /**
+     * @return EditorConfig
+     */
+    public static function getInstance() : EditorConfig
+    {
+        $app = \XF::app();
+        if(!$app->offsetExists('klEmEditorConfig')) {
+            try {
+                $extendedClass = XF::extendClass(EditorConfig::class);
+            } catch (Exception $e) {
+                $extendedClass = EditorConfig::class;
+            }
+            $app->offsetSet('klEmEditorConfig', new $extendedClass($app));
+        }
+
+        return $app->offsetGet('klEmEditorConfig');
+    }
+
+    /**
      * @var App
      */
     protected $app;
@@ -93,7 +111,7 @@ class EditorConfig
     {
         $cache = $this->cache;
         if ($cache) {
-            if(empty($entities)) {
+            if (empty($entities) || !$entities->first()) {
                 $this->cacheSave($key, [
                     'entityType' => null,
                     'values' => []
@@ -131,7 +149,7 @@ class EditorConfig
             if ($cacheValue) {
                 $entityType = $cacheValue['entityType'];
 
-                if(!$entityType) {
+                if (!$entityType) {
                     return $this->em()->getEmptyCollection();
                 }
 
@@ -470,6 +488,8 @@ class EditorConfig
 
         $options = XF::options();
         $visitor = XF::visitor();
+        /** @var UserOption $visitorOption */
+        $visitorOption = $visitor->Option;
 
         return [
             'pluginsEnabled' => $this->editorPlugins(),
@@ -487,7 +507,7 @@ class EditorConfig
             'colorsStep' => (int)$options->klEMColorStep,
 
             'charCounterCount' => in_array('charCounter', $this->editorPlugins()),
-            'charCounterMode' => $options->klEMCharCounter === 'user' ? $visitor->Option->kl_em_wordcount_mode : $options->klEMCharCounter,
+            'charCounterMode' => $options->klEMCharCounter === 'user' ? $visitorOption->kl_em_wordcount_mode : $options->klEMCharCounter,
 
             'tableStyles' => [
                 'noborder' => XF::phrase('kl_em_table_style.no_border'),
@@ -510,8 +530,7 @@ class EditorConfig
         $toolbars = $templateParams['editorToolbars'];
         $dropdowns = $templateParams['editorDropdowns'];
 
-        /** @var EditorConfig $editorConfig */
-        $editorConfig = XF::app()->container('klEmEditorConfig');
+        $editorConfig = EditorConfig::getInstance();
         $disabledBbCodes = $editorConfig->bbCodeStatus()['disabled'];
 
         foreach ($disabledBbCodes as $disabledBbCode) {

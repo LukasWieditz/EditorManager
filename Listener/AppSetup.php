@@ -17,11 +17,9 @@ class AppSetup
      * @param App $app
      * @throws Exception
      */
-    public static function appSetup(App $app)
+    public static function appSetup(App $app): void
     {
-        $baseClass = EditorConfig::class;
-        $extendedClass = XF::extendClass($baseClass);
-        $editorConfig = new $extendedClass($app);
-        $app->offsetSet('klEmEditorConfig', $editorConfig);
+        $extendedClass = XF::extendClass(EditorConfig::class);
+        $app->offsetSet('klEmEditorConfig', new $extendedClass($app));
     }
 }

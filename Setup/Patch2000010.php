@@ -24,14 +24,20 @@ trait Patch2000010
      */
     public function upgrade2000010Step1(): void
     {
-        /** @var Option $optionRepo */
-        $optionRepo = XF::repository('XF:Option');
+        /** @var XF\Entity\Option $option */
+        $option = \XF::em()->find('XF:Option', 'klEMEnabledBBCodes');
 
-        $optionValue = XF::options()->klEMEnabledBBCodes;
+        $subOptions = $option->sub_options;
+        $subOptions[] = 'hr';
+        $subOptions[] = 'heading';
+        $option->sub_options = $subOptions;
+
+        $optionValue = $option->option_value;
         $optionValue['hr'] = 1;
         $optionValue['heading'] = 1;
+        $option->option_value = $optionValue;
 
-        $optionRepo->updateOption('klEMEnabledBBCodes', $optionValue);
+        $option->saveIfChanged();
     }
 
     /**
@@ -142,6 +148,16 @@ trait Patch2000010
             $table->addColumn('replacement', 'varchar', 100);
             $table->addColumn('image_date', 'int')->setDefault(0);
             $table->addColumn('extension', 'enum')->values(['png', 'jpg', 'jpeg', 'gif'])->nullable();
+        });
+    }
+
+    /**
+     *
+     */
+    public function upgrade2000033Step1()
+    {
+        $this->schemaManager()->alterTable('xf_user_profile', function (Alter $table) {
+            $table->addColumn('kl_em_custom_emote_cache', 'blob')->nullable();
         });
     }
 }

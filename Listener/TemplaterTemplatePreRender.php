@@ -27,8 +27,7 @@ class TemplaterTemplatePreRender
      */
     public static function pageContainer(Templater $templater, &$type, &$template, array &$params): void
     {
-        /** @var EditorConfig $editorConfig */
-        $editorConfig = XF::app()->container('klEmEditorConfig');
+        $editorConfig = EditorConfig::getInstance();
         $enabledBbCodes = $editorConfig->bbCodeStatus()['enabled'];
 
         $app = XF::app();
@@ -124,8 +123,7 @@ class TemplaterTemplatePreRender
      */
     public static function editor(Templater $templater, string &$type, string &$template, array &$params)
     {
-        /** @var EditorConfig $editorConfig */
-        $editorConfig = XF::app()->container('klEmEditorConfig');
+        $editorConfig = EditorConfig::getInstance();
         $editorConfig->filterButtons($params);
 
         $params['klEM'] = [

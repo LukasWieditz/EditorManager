@@ -24,8 +24,7 @@ class BbCode extends Entity
 {
     protected function _postSave(): void
     {
-        /** @var EditorConfig $editorConfig */
-        $editorConfig = XF::app()->container('klEmEditorConfig');
+        $editorConfig = EditorConfig::getInstance();
         $editorConfig->cacheDelete('bbCodesSettings');
     }
 

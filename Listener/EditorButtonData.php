@@ -110,24 +110,17 @@ class EditorButtonData
             ]
         ];
 
-        $disabledBbCodes = XF::options()->klEMEnabledBBCodes;
+        $bbCodeStates = XF::options()->klEMEnabledBBCodes;
         /** @var BbCodes $repo */
         $repo = XF::repository('KL\EditorManager:BbCodes');
 
-        foreach ($disabledBbCodes as $name => $disabledBbCode) {
-            if ($disabledBbCode) {
+        foreach ($bbCodeStates as $name => $enabled) {
+            if ($enabled) {
                 continue;
             }
 
-            $toolbarName = $repo->shortToButtonDataName($name);
-
-            if (is_array($toolbarName)) {
-                foreach ($toolbarName as $tN) {
-                    unset($buttons[$tN]);
-                }
-            } else {
-                /** @noinspection PhpIllegalArrayKeyTypeInspection */
-                unset($buttons[$toolbarName]);
+            foreach ($repo->shortToButtonDataName($name) as $tN) {
+                unset($buttons[$tN]);
             }
         }
     }

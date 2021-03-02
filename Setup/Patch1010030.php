@@ -178,14 +178,4 @@ trait Patch1010030 {
             $table->addKey('last_date');
         });
     }
-
-    /**
-     *
-     */
-    public function upgrade1010072Step1() : void
-    {
-        XF::db()->getSchemaManager()->alterTable('xf_user', function (Alter $table) {
-            $table->addColumn('kl_em_wordcount_mode', 'enum', ['letter', 'word'])->setDefault('letter');
-        });
-    }
 }

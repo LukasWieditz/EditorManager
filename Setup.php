@@ -133,7 +133,7 @@ class Setup extends AbstractSetup
                 'active' => 1,
                 'extra_data' => '[]'
             ]
-        ]);
+        ], true);
     }
 
     /**
@@ -384,6 +384,16 @@ class Setup extends AbstractSetup
             $table->addColumn('replacement', 'varchar', 100);
             $table->addColumn('image_date', 'int')->setDefault(0);
             $table->addColumn('extension', 'enum')->values(['png', 'jpg', 'jpeg', 'gif'])->nullable();
+        });
+    }
+
+    /**
+     *
+     */
+    public function installStep17()
+    {
+        $this->schemaManager()->alterTable('xf_user_profile', function (Alter $table) {
+            $table->addColumn('kl_em_custom_emote_cache', 'blob')->nullable();
         });
     }
 

@@ -39,10 +39,5 @@ class EntityStructure
      */
     public static function user(Manager $em, Structure &$structure)
     {
-        $structure->columns['kl_em_wordcount_mode'] = [
-            'type' => Entity::STR,
-            'default' => 'letter',
-            'allowedValues' => ['letter', 'word']
-        ];
     }
 }

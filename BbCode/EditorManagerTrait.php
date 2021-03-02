@@ -51,8 +51,7 @@ trait EditorManagerTrait
             }
         }
 
-        /** @var EditorConfig $editorConfig */
-        $editorConfig = XF::app()->container('klEmEditorConfig');
+        $editorConfig = EditorConfig::getInstance();
 
         /** Load aliases */
         foreach ($editorConfig->bbCodeSettings() as $bbCode => $config) {
@@ -138,8 +137,7 @@ trait EditorManagerTrait
     private function getKLFontList()
     {
         if (!$this->klFontList) {
-            /** @var EditorConfig $editorConfig */
-            $editorConfig = XF::app()->container('klEmEditorConfig');
+            $editorConfig = EditorConfig::getInstance();
 
             foreach ($editorConfig->fonts() as $font) {
                 $ids = explode(',', $font->family);
@@ -162,8 +160,7 @@ trait EditorManagerTrait
      */
     private function getKLBbCodes() {
         if(!$this->klBbCodes) {
-            /** @var EditorConfig $editorConfig */
-            $editorConfig = XF::app()->container('klEmEditorConfig');
+            $editorConfig = EditorConfig::getInstance();
 
             $codes = [];
             foreach($editorConfig->bbCodeSettings() as $tag => $bbCode) {

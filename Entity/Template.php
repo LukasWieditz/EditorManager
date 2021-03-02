@@ -56,8 +56,7 @@ class Template extends Entity
             $repo = $this->getTemplateRepo();
             $repo->rebuildUserTemplateCache($this->User);
         } else {
-            /** @var EditorConfig $editorConfig */
-            $editorConfig = XF::app()->container('klEmEditorConfig');
+            $editorConfig = EditorConfig::getInstance();
             $editorConfig->cacheDelete('templates');
         }
     }
