@@ -81,7 +81,7 @@ class SpecialChars extends AbstractController
      */
     protected function actionAddEdit(SpecialCharacterGroup $group): AbstractReply
     {
-        $userCriteria = $this->app->criteria('XF:User', $group->user_criteria);
+        $userCriteria = $this->app->criteria('XF:User', $group->user_criteria ?: []);
 
         $viewParams = [
             'group' => $group,

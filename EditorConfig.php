@@ -267,7 +267,7 @@ class EditorConfig
 
             $visitor = XF::visitor();
             foreach ($bbCodes as $bbCodeId => $bbCode) {
-                $userCriteria = XF::app()->criteria('XF:User', $bbCode->user_criteria);
+                $userCriteria = XF::app()->criteria('XF:User', $bbCode->user_criteria ?: []);
                 $userCriteria->setMatchOnEmpty(true);
 
                 if (!$userCriteria->isMatched($visitor)) {
@@ -370,7 +370,9 @@ class EditorConfig
                 /** @var Template $templateRepository */
                 $templateRepository = XF::repository('KL\EditorManager:Template');
                 $templates = $templateRepository->findTemplates()
-                    ->publicOnly()->fetch();
+                    ->publicOnly()
+                    ->activeOnly()
+                    ->fetch();
 
                 if ($this->cache) {
                     $this->cacheSaveEntities('publicTemplates', $templates);
@@ -379,7 +381,7 @@ class EditorConfig
 
             $visitor = XF::visitor();
             foreach ($templates as $templateId => $template) {
-                $userCriteria = XF::app()->criteria('XF:User', $template->user_criteria);
+                $userCriteria = XF::app()->criteria('XF:User', $template->user_criteria ?: []);
                 $userCriteria->setMatchOnEmpty(true);
                 if (!$userCriteria->isMatched($visitor)) {
                     $templates->offsetUnset($templateId);
@@ -456,7 +458,6 @@ class EditorConfig
             $visitor = XF::visitor();
             /** @var Template $templateRepository */
             if ($visitor->hasPermission('klEM', 'klEMTemplates')) {
-
                 $templateGroups = [
                     0 => [
                         'title' => XF::phrase('kl_em_template_type.public'),
@@ -467,6 +468,12 @@ class EditorConfig
                         'templates' => $this->privateTemplates()->pluckNamed('editor_values')
                     ]
                 ];
+
+                foreach($templateGroups as $templateGroupKey => $templateGroup) {
+                    if(empty($templateGroup['templates'])) {
+                        unset($templateGroups[$templateGroupKey]);
+                    }
+                }
 
                 $this->editorTemplates = $templateGroups;
             } else {

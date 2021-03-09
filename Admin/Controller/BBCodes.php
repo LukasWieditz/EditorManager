@@ -125,7 +125,7 @@ class BBCodes extends AbstractController
             $bbCode->bb_code_id = $params['bb_code_id'];
             $bbCode->save();
         }
-        $userCriteria = $this->app->criteria('XF:User', $bbCode->user_criteria);
+        $userCriteria = $this->app->criteria('XF:User', $bbCode->user_criteria ?: []);
 
         /** @var \KL\EditorManager\Repository\BbCodes $bbCodeRepo */
         $bbCodeRepo = $this->repository('KL\EditorManager:BbCodes');

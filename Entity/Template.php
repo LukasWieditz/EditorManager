@@ -57,7 +57,7 @@ class Template extends Entity
             $repo->rebuildUserTemplateCache($this->User);
         } else {
             $editorConfig = EditorConfig::getInstance();
-            $editorConfig->cacheDelete('templates');
+            $editorConfig->cacheDelete('publicTemplates');
         }
     }
 

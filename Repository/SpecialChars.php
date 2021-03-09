@@ -61,7 +61,7 @@ class SpecialChars extends Repository
         $visitor = XF::visitor();
 
         foreach ($groups as $key => $group) {
-            $userCriteria = XF::app()->criteria('XF:User', $group->user_criteria);
+            $userCriteria = XF::app()->criteria('XF:User', $group->user_criteria ?: []);
             $userCriteria->setMatchOnEmpty(true);
 
             if (!$userCriteria->isMatched($visitor)) {
@@ -99,7 +99,7 @@ class SpecialChars extends Repository
         $visitor = XF::visitor();
 
         foreach ($groups as $key => $group) {
-            $userCriteria = XF::app()->criteria('XF:User', $group->user_criteria);
+            $userCriteria = XF::app()->criteria('XF:User', $group->user_criteria ?: []);
             $userCriteria->setMatchOnEmpty(true);
 
             if (!$userCriteria->isMatched($visitor)) {

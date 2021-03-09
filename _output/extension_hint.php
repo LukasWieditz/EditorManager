@@ -22,7 +22,6 @@ namespace KL\EditorManager\XF\BbCode\Renderer
 namespace KL\EditorManager\XF\Entity
 {
 	class XFCP_Smilie extends \XF\Entity\Smilie {}
-	class XFCP_User extends \XF\Entity\User {}
 	class XFCP_UserOption extends \XF\Entity\UserOption {}
 	class XFCP_UserProfile extends \XF\Entity\UserProfile {}
 }

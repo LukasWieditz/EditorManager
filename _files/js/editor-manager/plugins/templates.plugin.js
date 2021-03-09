@@ -19,6 +19,10 @@
             templateGroups = false;
         }
 
+        if(!templateGroups.length) {
+            return;
+        }
+
         $.FE.DefineIcon('klTemplates', {NAME: 'clipboard'});
         $.FE.DefineIcon('klInsertTemplate', {NAME: 'file-alt'});
 

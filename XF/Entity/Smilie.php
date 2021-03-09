@@ -28,7 +28,7 @@ class Smilie extends XFCP_Smilie
             return false;
         }
 
-        $criteria = $this->app()->criteria('XF:User', $this->kl_em_user_criteria);
+        $criteria = $this->app()->criteria('XF:User', $this->kl_em_user_criteria ?: []);
         $criteria->setMatchOnEmpty(true);
         return $criteria->isMatched($contextUser);
     }

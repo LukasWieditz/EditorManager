@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\Admin\Controller;
 
+use KL\EditorManager\EditorConfig;
 use KL\EditorManager\Entity\Template;
 use KL\EditorManager\Repository\Template as TemplateRepo;
 use XF\Admin\Controller\AbstractController;
@@ -61,7 +62,7 @@ class Templates extends AbstractController
      */
     public function templateAddEdit(Template $template): AbstractReply
     {
-        $userCriteria = $this->app->criteria('XF:User', $template->user_criteria);
+        $userCriteria = $this->app->criteria('XF:User', $template->user_criteria ?: []);
         $pageCriteria = $this->app->criteria('XF:Page', $template->page_criteria ?: []);
 
         $viewParams = [
@@ -145,6 +146,7 @@ class Templates extends AbstractController
             'display_order' => 'uint',
             'active' => 'uint',
             'user_criteria' => 'array',
+            'page_criteria' => 'array'
         ]);
 
         /** @var Editor $editor */
@@ -194,7 +196,10 @@ class Templates extends AbstractController
     {
         /** @var Toggle $plugin */
         $plugin = $this->plugin('XF:Toggle');
-        return $plugin->actionToggle('KL\EditorManager:Template');
+        $response = $plugin->actionToggle('KL\EditorManager:Template');
+        $editorConfig = EditorConfig::getInstance();
+        $editorConfig->cacheDelete('publicTemplates');
+        return $response;
     }
 
     /**
