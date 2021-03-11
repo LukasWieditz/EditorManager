@@ -8,20 +8,6 @@
 
 namespace KL\EditorManager\Pub\Controller;
 
-use KL\EditorManager\Entity\CustomEmote;
-use KL\EditorManager\Entity\CustomEmotePrefix;
-use KL\EditorManager\Service\CustomEmote\Image;
-use XF;
-use XF\ControllerPlugin\Delete;
-use XF\Mvc\Entity\Entity;
-use XF\Mvc\FormAction;
-use XF\Mvc\ParameterBag;
-use XF\Mvc\Reply\AbstractReply;
-use XF\Mvc\Reply\Error;
-use XF\Mvc\Reply\Exception;
-use XF\Mvc\Reply\Redirect;
-use XF\Mvc\Reply\View;
-use XF\PrintableException;
 use XF\Pub\Controller\AbstractController;
 
 /**

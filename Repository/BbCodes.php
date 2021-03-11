@@ -8,7 +8,6 @@
 
 namespace KL\EditorManager\Repository;
 
-use XF;
 use XF\Mvc\Entity\Repository;
 
 /**

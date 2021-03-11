@@ -127,6 +127,7 @@ trait EditorManagerTrait
             }
         }
 
+        /** @noinspection PhpUndefinedClassInspection */
         return parent::renderTag($tag, $options);
     }
 
@@ -259,6 +260,7 @@ trait EditorManagerTrait
      */
     public function renderTagImage(array $children, $option, array $tag, array $options)
     {
+        /** @noinspection PhpUndefinedClassInspection */
         return parent::renderTagImage($children, $this->klOptionStringToArray($option), $tag, $options);
     }
 
@@ -346,6 +348,7 @@ trait EditorManagerTrait
             $this->formatter->setKlEmContextUser($options['user']);
         }
 
+        /** @noinspection PhpUndefinedClassInspection */
         $filteredString = parent::filterString($string, $options);
         $this->formatter->setKlEmContextUser(null);
         return $filteredString;

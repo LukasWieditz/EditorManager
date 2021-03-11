@@ -117,6 +117,9 @@ class CustomEmote extends Entity
         return $this->repository('KL\EditorManager:CustomEmote');
     }
 
+    /**
+     * @throws XF\PrintableException
+     */
     protected function _postSave()
     {
         $repo = $this->getCustomEmoteRepo();

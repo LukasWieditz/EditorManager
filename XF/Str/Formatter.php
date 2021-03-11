@@ -8,9 +8,7 @@
 
 namespace KL\EditorManager\XF\Str;
 
-use Audentio\Emoji\XF\Entity\Smilie;
-use KL\EditorManager\Entity\CustomEmote;
-use KL\EditorManager\XF\Template\Templater;
+use KL\EditorManager\XF\Entity\Smilie;
 use XF;
 use XF\Entity\User;
 use XF\Pub\App;
@@ -63,7 +61,7 @@ class Formatter extends XFCP_Formatter
 
             if ($contextUser = $this->getKlEmContextUser()) {
                 if ($smilie && isset($smilie['kl_em_user_criteria']) && $smilie['kl_em_user_criteria']) {
-                    /** @var \KL\EditorManager\XF\Entity\Smilie $smilieEntity */
+                    /** @var Smilie $smilieEntity */
                     $smilieEntity = XF::em()->instantiateEntity('XF:Smilie', $smilie);
                     if (!$smilieEntity->canKLEMUse($error, $contextUser)) {
                         return $smilie['smilieText'][0];

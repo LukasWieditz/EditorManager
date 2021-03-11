@@ -9,7 +9,6 @@
 namespace KL\EditorManager\Listener;
 
 use KL\EditorManager\EditorConfig;
-use XF;
 use XF\BbCode\RuleSet;
 
 /**

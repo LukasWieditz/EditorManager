@@ -62,6 +62,20 @@ class Template extends Entity
     }
 
     /**
+     * @throws XF\PrintableException
+     */
+    protected function _postDelete()
+    {
+        if ($this->user_id) {
+            $repo = $this->getTemplateRepo();
+            $repo->rebuildUserTemplateCache($this->User);
+        } else {
+            $editorConfig = EditorConfig::getInstance();
+            $editorConfig->cacheDelete('publicTemplates');
+        }
+    }
+
+    /**
      * @return array
      */
     public function getEditorValues(): array

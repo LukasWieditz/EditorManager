@@ -4,6 +4,7 @@
 namespace KL\EditorManager\Repository;
 
 
+use XF;
 use XF\Mvc\Entity\Manager;
 use XF\Mvc\Entity\Repository;
 
@@ -31,7 +32,7 @@ class FontAwesomeIcons extends Repository
     public function __construct(Manager $em, $identifier)
     {
         parent::__construct($em, $identifier);
-        $baseFile = \XF::getAddOnDirectory() . '/KL/EditorManager/fontAwesome.icons.json';
+        $baseFile = XF::getAddOnDirectory() . '/KL/EditorManager/fontAwesome.icons.json';
         $data = json_decode(file_get_contents($baseFile), true);
         $this->categories = $data['categories'];
         $this->icons = $data['icons'];

@@ -1,8 +1,8 @@
 {
     "admin/kl_em_app.less": {
-        "version_id": 1010072,
-        "version_string": "1.1.0.2",
-        "hash": "fd324e56c4abef427fe8d8cda160a751"
+        "version_id": 2000052,
+        "version_string": "2.0.0 Release Candidate 2",
+        "hash": "5f76fc0db9287296593f55df88657a82"
     },
     "admin/kl_em_bb_code_edit.html": {
         "version_id": 1010033,

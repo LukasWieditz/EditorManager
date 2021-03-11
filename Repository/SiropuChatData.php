@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUndefinedClassInspection */
 
 /*!
  * KL/EditorManager/Repository/SiropuChatData.php

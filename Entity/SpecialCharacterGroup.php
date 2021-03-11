@@ -46,7 +46,7 @@ class SpecialCharacterGroup extends Entity
     /**
      * @return XF\Entity\Phrase
      */
-    public function getMasterPhrase(): \XF\Entity\Phrase
+    public function getMasterPhrase(): XF\Entity\Phrase
     {
         $phrase = $this->MasterTitle;
         if (!$phrase) {

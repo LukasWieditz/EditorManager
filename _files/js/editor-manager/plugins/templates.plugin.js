@@ -19,6 +19,8 @@
             templateGroups = false;
         }
 
+        console.log(templateGroups);
+
         if(!templateGroups.length) {
             return;
         }

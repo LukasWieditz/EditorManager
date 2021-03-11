@@ -65,6 +65,8 @@ class UserProfile extends XFCP_UserProfile
             foreach($customEmotes as $customEmote) {
                 $map[$customEmote->replacement_code] = $customEmote;
             }
+
+            $this->klEMCustomEmoteMap = $map;
         }
 
         return $this->klEMCustomEmoteMap;

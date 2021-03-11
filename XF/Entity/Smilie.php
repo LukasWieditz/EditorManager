@@ -2,6 +2,8 @@
 
 namespace KL\EditorManager\XF\Entity;
 
+use XF;
+use XF\Entity\User;
 use XF\Mvc\Entity\Structure;
 
 /**
@@ -15,13 +17,14 @@ class Smilie extends XFCP_Smilie
 {
     /**
      * @param null $error
-     * @param \XF\Entity\User|null $contextUser
+     * @param User|null $contextUser
      * @return bool
+     * @noinspection PhpUnusedParameterInspection
      */
-    public function canKLEMUse(&$error = null, \XF\Entity\User $contextUser = null): bool
+    public function canKLEMUse(&$error = null, User $contextUser = null): bool
     {
         if (!$contextUser) {
-            $contextUser = \XF::visitor();
+            $contextUser = XF::visitor();
         }
 
         if (!$this->kl_em_active) {

@@ -11,7 +11,6 @@ namespace KL\EditorManager\Setup;
 use XF;
 use XF\Db\Schema\Alter;
 use XF\Db\Schema\Create;
-use XF\Repository\Option;
 
 /**
  * Trait Patch2000010
@@ -25,7 +24,7 @@ trait Patch2000010
     public function upgrade2000010Step1(): void
     {
         /** @var XF\Entity\Option $option */
-        $option = \XF::em()->find('XF:Option', 'klEMEnabledBBCodes');
+        $option = XF::em()->find('XF:Option', 'klEMEnabledBBCodes');
 
         $subOptions = $option->sub_options;
         $subOptions[] = 'hr';

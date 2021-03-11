@@ -9,7 +9,6 @@
 namespace KL\EditorManager\Entity;
 
 use KL\EditorManager\EditorConfig;
-use XF;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 

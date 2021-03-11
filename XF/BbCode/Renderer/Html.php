@@ -33,9 +33,9 @@ class Html extends XFCP_Html implements EditorManagerInterface
      */
     public function renderTagUrl(array $children, $option, array $tag, array $options)
     {
-        if (!\XF::options()->klEMshowLinksToGuests && !\XF::visitor()->user_id) {
-            return '<a href="' . \XF::app()->router('public')->buildLink('login/login') . '" data-xf-click="overlay">'
-                . \XF::phrase('kl_em_you_must_be_logged_in_to_see_this_link') . '</a>';
+        if (!XF::options()->klEMshowLinksToGuests && !XF::visitor()->user_id) {
+            return '<a href="' . XF::app()->router('public')->buildLink('login/login') . '" data-xf-click="overlay">'
+                . XF::phrase('kl_em_you_must_be_logged_in_to_see_this_link') . '</a>';
         }
 
         return parent::renderTagUrl($children, $option, $tag, $options);
@@ -332,7 +332,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_date', [
             'content' => new PreEscaped($content),
-            'visible' => \XF::$time >= $date || $this->isKLEMCreator($options),
+            'visible' => XF::$time >= $date || $this->isKLEMCreator($options),
             'visibleAt' => $date
         ]);
     }
@@ -505,7 +505,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
 
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_members', [
             'content' => new PreEscaped($content),
-            'visible' => (bool)\XF::visitor()->user_id
+            'visible' => (bool)XF::visitor()->user_id
         ]);
     }
 

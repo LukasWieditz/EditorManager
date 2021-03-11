@@ -30,7 +30,7 @@ class EditorConfig
      */
     public static function getInstance() : EditorConfig
     {
-        $app = \XF::app();
+        $app = XF::app();
         if(!$app->offsetExists('klEmEditorConfig')) {
             try {
                 $extendedClass = XF::extendClass(EditorConfig::class);
@@ -475,7 +475,7 @@ class EditorConfig
                     }
                 }
 
-                $this->editorTemplates = $templateGroups;
+                $this->editorTemplates = array_values($templateGroups);
             } else {
                 $this->editorTemplates = [];
             }
