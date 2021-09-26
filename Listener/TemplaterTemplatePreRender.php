@@ -73,11 +73,12 @@ class TemplaterTemplatePreRender
 
             /* Pre-load custom google webfonts */
             $templater = $app->templater();
-            $webfonts = isset($templater->pageParams['kl_em_webfonts']) ? $templater->pageParams['kl_em_webfonts'] : [];
+            $webfonts = $templater->pageParams['kl_em_webfonts'] ?? [];
 
             $googleFonts = array_unique(array_merge($googleFonts, $webfonts));
+            $googleFonts = str_replace(' ', '+', join('&family=', $googleFonts));
 
-            $params['em_gfonts'] = $googleFonts ? 'https://fonts.googleapis.com/css2?family=' . join('|', $googleFonts) : false;
+            $params['em_gfonts'] = $googleFonts ? 'https://fonts.googleapis.com/css2?family=' . $googleFonts : false;
             $params['em_serverFonts'] = $serverFonts;
         }
 

@@ -1763,12 +1763,6 @@
         "version_string": "1.1.0.2",
         "hash": "d24735bbcd035b1312597e543f9ae1e1"
     },
-    "rpgs_reactivate_location.txt": {
-        "global_cache": false,
-        "version_id": 1020093,
-        "version_string": "1.2.0 Patch Level 3",
-        "hash": "0264ffe4bc2907be61e40b9a34c427c3"
-    },
     "style_prop.klEMAudioControls.txt": {
         "global_cache": false,
         "version_id": 1010032,

@@ -8,6 +8,7 @@
 
 namespace KL\EditorManager\XF\Admin\Controller;
 
+use KL\EditorManager\EditorConfig;
 use XF\Mvc\ParameterBag;
 
 /**
@@ -24,5 +25,6 @@ class ButtonManager extends XFCP_ButtonManager
     {
         parent::preDispatchController($action, $params);
         $this->setSectionContext('emLayout');
+        EditorConfig::getInstance()->setAdminPreview(true);
     }
 }

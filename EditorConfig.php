@@ -28,10 +28,10 @@ class EditorConfig
     /**
      * @return EditorConfig
      */
-    public static function getInstance() : EditorConfig
+    public static function getInstance(): EditorConfig
     {
         $app = XF::app();
-        if(!$app->offsetExists('klEmEditorConfig')) {
+        if (!$app->offsetExists('klEmEditorConfig')) {
             try {
                 $extendedClass = XF::extendClass(EditorConfig::class);
             } catch (Exception $e) {
@@ -54,6 +54,11 @@ class EditorConfig
     protected $cache;
 
     /**
+     * @var bool
+     */
+    protected $adminPreview = false;
+
+    /**
      * EditorConfig constructor.
      * @param App $app
      */
@@ -61,6 +66,14 @@ class EditorConfig
     {
         $this->app = $app;
         $this->cache = $app->cache('KL/EditorManager');
+    }
+
+    /**
+     * @param $adminPreview
+     */
+    public function setAdminPreview($adminPreview): void
+    {
+        $this->adminPreview = $adminPreview;
     }
 
     /**
@@ -78,7 +91,7 @@ class EditorConfig
     public function cacheExists(string $key): bool
     {
         $cache = $this->cache;
-        return $cache ? $cache->contains('klem_' . $key) : false;
+        return $cache && $cache->contains('klem_' . $key);
     }
 
     /**
@@ -98,8 +111,9 @@ class EditorConfig
      */
     public function cacheSave(string $key, $value, int $lifeTime = 3600): void
     {
-        $cache = $this->cache;
-        $cache ? $cache->save('klem_' . $key, $value, $lifeTime) : null;
+        if ($cache = $this->cache) {
+            $cache->save('klem_' . $key, $value, $lifeTime);
+        }
     }
 
     /**
@@ -109,8 +123,7 @@ class EditorConfig
      */
     public function cacheSaveEntities(string $key, $entities, int $lifeTime = 0): void
     {
-        $cache = $this->cache;
-        if ($cache) {
+        if ($this->cache) {
             if (empty($entities) || !$entities->first()) {
                 $this->cacheSave($key, [
                     'entityType' => null,
@@ -143,8 +156,7 @@ class EditorConfig
      */
     public function cacheFetchEntities(string $key): AbstractCollection
     {
-        $cache = $this->cache;
-        if ($cache) {
+        if ($this->cache) {
             $cacheValue = $this->cacheFetch($key);
             if ($cacheValue) {
                 $entityType = $cacheValue['entityType'];
@@ -249,6 +261,7 @@ class EditorConfig
      */
     public function bbCodeStatus(): array
     {
+        // Skip permission checks on admin preview
         if (!$this->bbCodeStatus) {
             $bbCodes = XF::options()->klEMEnabledBBCodes;
 
@@ -263,36 +276,37 @@ class EditorConfig
                 $disabledBbCodes[$name] = true;
             }
 
-            $bbCodes = $this->bbCodeSettings();
+            if (!$this->adminPreview) {
+                $bbCodes = $this->bbCodeSettings();
+                $visitor = XF::visitor();
+                foreach ($bbCodes as $bbCode) {
+                    $userCriteria = XF::app()->criteria('XF:User', $bbCode->user_criteria ?: []);
+                    $userCriteria->setMatchOnEmpty(true);
 
-            $visitor = XF::visitor();
-            foreach ($bbCodes as $bbCodeId => $bbCode) {
-                $userCriteria = XF::app()->criteria('XF:User', $bbCode->user_criteria ?: []);
-                $userCriteria->setMatchOnEmpty(true);
-
-                if (!$userCriteria->isMatched($visitor)) {
-                    // self::removeBbCode($bbCode->bb_code_id, $toolbars, $dropdowns);
-                    unset($enabledBbCodes[$bbCode->bb_code_id]);
-                    $disabledBbCodes[$bbCode->bb_code_id] = true;
-                }
-            }
-
-            if (isset($enabledBbCodes['hide'])) {
-                try {
-                    $threadPostRoute = false;
-                    $route = XF::app()->router('public')->routeToController(XF::app()->request()->getRoutePath());
-                    if ($route) {
-                        $controller = $route->getController();
-                        if (in_array($controller, $this->hideControllers())) {
-                            $threadPostRoute = true;
-                        }
+                    if (!$userCriteria->isMatched($visitor)) {
+                        // self::removeBbCode($bbCode->bb_code_id, $toolbars, $dropdowns);
+                        unset($enabledBbCodes[$bbCode->bb_code_id]);
+                        $disabledBbCodes[$bbCode->bb_code_id] = true;
                     }
-                } catch (Exception $e) {
-                    $threadPostRoute = false;
                 }
-                if (!$threadPostRoute) {
-                    unset($enabledBbCodes['hide']);
-                    $disabledBbCodes['hide'] = true;
+
+                if (isset($enabledBbCodes['hide'])) {
+                    try {
+                        $threadPostRoute = false;
+                        $route = XF::app()->router('public')->routeToController(XF::app()->request()->getRoutePath());
+                        if ($route) {
+                            $controller = $route->getController();
+                            if (in_array($controller, $this->hideControllers())) {
+                                $threadPostRoute = true;
+                            }
+                        }
+                    } catch (Exception $e) {
+                        $threadPostRoute = false;
+                    }
+                    if (!$threadPostRoute) {
+                        unset($enabledBbCodes['hide']);
+                        $disabledBbCodes['hide'] = true;
+                    }
                 }
             }
 
@@ -469,8 +483,8 @@ class EditorConfig
                     ]
                 ];
 
-                foreach($templateGroups as $templateGroupKey => $templateGroup) {
-                    if(empty($templateGroup['templates'])) {
+                foreach ($templateGroups as $templateGroupKey => $templateGroup) {
+                    if (empty($templateGroup['templates'])) {
                         unset($templateGroups[$templateGroupKey]);
                     }
                 }
@@ -501,9 +515,9 @@ class EditorConfig
         return [
             'pluginsEnabled' => $this->editorPlugins(),
 
-            'initOnClick' => isset($options->klEMGeneralOptions['delay_load']) && (bool)($options->klEMGeneralOptions['delay_load']),
-            'keepFormatOnDelete' => isset($options->klEMGeneralOptions['keep_format_on_delete']) && (bool)($options->klEMGeneralOptions['keep_format_on_delete']),
-            'pastePlain' => isset($options->klEMGeneralOptions['paste_plain']) && (bool)($options->klEMGeneralOptions['paste_plain']),
+            'initOnClick' => isset($options->klEMGeneralOptions['delay_load']) && $options->klEMGeneralOptions['delay_load'],
+            'keepFormatOnDelete' => isset($options->klEMGeneralOptions['keep_format_on_delete']) && $options->klEMGeneralOptions['keep_format_on_delete'],
+            'pastePlain' => isset($options->klEMGeneralOptions['paste_plain']) && $options->klEMGeneralOptions['paste_plain'],
 
             'fontFamily' => $fonts,
             'fontSize' => array_map('trim', explode(',', $options->klEMFontSizes)),
@@ -540,7 +554,7 @@ class EditorConfig
         $editorConfig = EditorConfig::getInstance();
         $disabledBbCodes = $editorConfig->bbCodeStatus()['disabled'];
 
-        foreach ($disabledBbCodes as $disabledBbCode) {
+        foreach (array_keys($disabledBbCodes) as $disabledBbCode) {
             $this->removeBbCode($disabledBbCode, $toolbars, $dropdowns);
         }
 

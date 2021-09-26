@@ -10,6 +10,7 @@ namespace KL\EditorManager\BbCode;
 
 use KL\EditorManager\EditorConfig;
 use KL\EditorManager\Entity\BbCode;
+use KL\EditorManager\Repository\BbCodes;
 use KL\EditorManager\XF\Str\Formatter;
 use XF;
 
@@ -37,6 +38,11 @@ trait EditorManagerTrait
      * @var
      */
     protected $klBbCodes;
+
+    /**
+     * @var array
+     */
+    protected $klAliasMap = [];
 
     /**
      */
@@ -82,6 +88,7 @@ trait EditorManagerTrait
 
             if (isset($this->tags[$bbCode])) {
                 foreach ($config->aliases as $alias) {
+                    $this->klAliasMap[$alias] = $bbCode;
                     $this->addTag(strtolower($alias), $this->tags[$bbCode]);
                 }
             }
@@ -95,7 +102,13 @@ trait EditorManagerTrait
      */
     public function renderTag(array $tag, array $options)
     {
+        /** @var BbCodes $repo */
+        $repo = \XF::repository('KL\EditorManager:BbCodes');
         $tagName = $tag['tag'];
+
+        // Resolve alias to original tag
+        $tagName = $this->klAliasMap[$tagName] ?? $tagName;
+        $tagName = $repo->shortToFullName($tagName);
 
         $bbCodes = $this->getKLBbCodes();
 
