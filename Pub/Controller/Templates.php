@@ -245,14 +245,14 @@ class Templates extends AbstractController
     {
         /** @var \KL\EditorManager\Repository\Template $repo */
         $repo = $this->repository('KL\EditorManager:Template');
-        $templates = $repo->findTemplates()->forUser(XF::visitor());
+        $templates = $repo->findTemplates()->forUser(XF::visitor())->fetch();
 
         if ($this->isPost()) {
             $lastOrder = 0;
             foreach (json_decode($this->filter('templates', 'string')) as $templateValue) {
                 $lastOrder += 10;
 
-                /** @var Smilie $smilie */
+                /** @var Template $template */
                 $template = $templates[$templateValue->id];
                 $this->assertUserTemplate($template);
                 $template->display_order = $lastOrder;
