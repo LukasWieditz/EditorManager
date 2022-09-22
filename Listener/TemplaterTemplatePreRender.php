@@ -20,13 +20,17 @@ class TemplaterTemplatePreRender
 {
     /**
      * Push external fonts to page container head.
-     * @param Templater $templater
+     * @param  Templater  $templater
      * @param $type
      * @param $template
-     * @param array $params
+     * @param  array  $params
      */
     public static function pageContainer(Templater $templater, &$type, &$template, array &$params): void
     {
+        if ($template !== 'PAGE_CONTAINER') {
+            return;
+        }
+
         $editorConfig = EditorConfig::getInstance();
         $enabledBbCodes = $editorConfig->bbCodeStatus()['enabled'];
 
@@ -34,7 +38,7 @@ class TemplaterTemplatePreRender
         if (isset($enabledBbCodes['font']) && $enabledBbCodes['font']) {
             $googleFonts = [];
             $serverFonts = [];
-            $fontDirectory = $app->get('config')['externalDataPath'] . '/fonts';
+            $fontDirectory = $app->get('config')['externalDataPath'].'/fonts';
             $fileTypes = [
                 'ttf' => 'truetype',
                 'woff' => 'woff',
@@ -59,7 +63,7 @@ class TemplaterTemplatePreRender
                             if ($filetype === 'svg') {
                                 $src[] = "url('/$fontDirectory/$filename.svg#$filename') format('svg')";
                             } else {
-                                $src[] = "url('/$fontDirectory/$filename.$filetype') format('" . $fileTypes[$filetype] . "')";
+                                $src[] = "url('/$fontDirectory/$filename.$filetype') format('".$fileTypes[$filetype]."')";
                             }
                         }
 
@@ -78,7 +82,7 @@ class TemplaterTemplatePreRender
             $googleFonts = array_unique(array_merge($googleFonts, $webfonts));
             $googleFonts = str_replace(' ', '+', join('&family=', $googleFonts));
 
-            $params['em_gfonts'] = $googleFonts ? 'https://fonts.googleapis.com/css2?family=' . $googleFonts : false;
+            $params['em_gfonts'] = $googleFonts ? 'https://fonts.googleapis.com/css2?family='.$googleFonts : false;
             $params['em_serverFonts'] = $serverFonts;
         }
 
@@ -87,10 +91,10 @@ class TemplaterTemplatePreRender
 
     /**
      * Pre-process color values for option template.
-     * @param Templater $templater
+     * @param  Templater  $templater
      * @param $type
      * @param $template
-     * @param array $params
+     * @param  array  $params
      */
     public static function klEmAvailableColors(Templater $templater, &$type, &$template, array &$params): void
     {
@@ -102,10 +106,10 @@ class TemplaterTemplatePreRender
 
     /**
      * Push enabled BB code information to help page.
-     * @param Templater $templater
+     * @param  Templater  $templater
      * @param $type
      * @param $template
-     * @param array $params
+     * @param  array  $params
      */
     public static function helpPageBbCode(Templater $templater, &$type, &$template, array &$params): void
     {
@@ -113,14 +117,14 @@ class TemplaterTemplatePreRender
         $options = XF::app()->options();
         $params['enabled_bb_codes'] = $options['klEMEnabledBBCodes'];
         $params['max_font_size'] = count(explode(', ', $options['klEMFontSizes'])) + 1;
-        $params['hide'] = '[HIDE' . strtoupper($options['klEMDefaultHide']) . ']';
+        $params['hide'] = '[HIDE'.strtoupper($options['klEMDefaultHide']).']';
     }
 
     /**
-     * @param Templater $templater
-     * @param string $type
-     * @param string $template
-     * @param array $params
+     * @param  Templater  $templater
+     * @param  string  $type
+     * @param  string  $template
+     * @param  array  $params
      */
     public static function editor(Templater $templater, string &$type, string &$template, array &$params)
     {

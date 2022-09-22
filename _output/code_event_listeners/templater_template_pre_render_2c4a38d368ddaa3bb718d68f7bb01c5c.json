@@ -4,6 +4,6 @@
     "callback_class": "KL\\EditorManager\\Listener\\TemplaterTemplatePreRender",
     "callback_method": "pageContainer",
     "active": true,
-    "hint": "public:PAGE_CONTAINER",
-    "description": "public:PAGE_CONTAINER"
+    "hint": "",
+    "description": ""
 }
