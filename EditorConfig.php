@@ -515,7 +515,7 @@ class EditorConfig
         return [
             'pluginsEnabled' => $this->editorPlugins(),
 
-            'initOnClick' => isset($options->klEMGeneralOptions['delay_load']) && $options->klEMGeneralOptions['delay_load'],
+            'initOnClick' => !(\XF::app() instanceof \XF\Admin\App) &&  isset($options->klEMGeneralOptions['delay_load']) && $options->klEMGeneralOptions['delay_load'],
             'keepFormatOnDelete' => isset($options->klEMGeneralOptions['keep_format_on_delete']) && $options->klEMGeneralOptions['keep_format_on_delete'],
             'pastePlain' => isset($options->klEMGeneralOptions['paste_plain']) && $options->klEMGeneralOptions['paste_plain'],
 
