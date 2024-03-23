@@ -32,7 +32,7 @@ class CustomEmote extends Repository
      * @param User|null $user
      * @throws XF\PrintableException
      */
-    public function rebuildUserCustomEmoteCache(User $user = null): void
+    public function rebuildUserCustomEmoteCache(?User $user = null): void
     {
         if (!$user) {
             $user = XF::visitor();
