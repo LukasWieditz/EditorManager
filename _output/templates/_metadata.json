@@ -140,9 +140,9 @@
         "hash": "0fa8efb16abf26c9dcd9bb04fb047879"
     },
     "public/editor_dialog_kl_em_gfont.html": {
-        "version_id": 1000370,
-        "version_string": "1.0.3",
-        "hash": "3b772d1f616dad2d488dc338833ab0a8"
+        "version_id": 2000191,
+        "version_string": "2.0.1 Patch Level 1",
+        "hash": "f04239c31ed9a853b17b43a2d6b954d5"
     },
     "public/kl_em_PAGE_CONTAINER.html": {
         "version_id": 2000010,
@@ -250,8 +250,8 @@
         "hash": "a99809e42d49765878c49e167cdd7b18"
     },
     "public/kl_em_editor_plugins.html": {
-        "version_id": 2000010,
-        "version_string": "2.0.0 Alpha",
+        "version_id": 2000191,
+        "version_string": "2.0.1 Patch Level 1",
         "hash": "ec47cfae239da519fe7f38bad6010d37"
     },
     "public/kl_em_editor_special_characters.html": {

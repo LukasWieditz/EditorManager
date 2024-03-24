@@ -5,7 +5,7 @@
  */
 
 (function () {
-    document.addEventListener('editor:config', function (event, config, xfEditor) {
+    XF.on(document.body, 'editor:config', function (event, config, xfEditor) {
         var initialized = false,
             loaded = false,
             $menu,

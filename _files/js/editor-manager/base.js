@@ -5,29 +5,29 @@
 */
 
 (function (window, document, _undefined) {
-	"use strict";
+    "use strict";
 
-	const copyProperties = function (to, from) {
-		for (const key in from) {
-			if (Object.prototype.hasOwnProperty.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
-	};
+    const copyProperties = function (to, from) {
+        for (const key in from) {
+            if (Object.prototype.hasOwnProperty.call(from, key)) {
+                to[key] = from[key];
+            }
+        }
+    };
 
-	document.addEventListener('editor:config', function(event, config, xfEditor) {
-		let newConfig;
-		
-		// Add Link To Allowed Tags
-		config.htmlAllowedTags.push('link');
-		
-		/* Load config overwrites */
-		try {
-			newConfig = JSON.parse(document.querySelector('.js-klEditorConfig').innerHTML) || {};
-			copyProperties(config, newConfig);
-			Object.assign(config, newConfig);
-		} catch (e) {
-			console.error(e);
-		}
-	});
+    XF.on(document.body, 'editor:config', function (event, config, xfEditor) {
+        let newConfig;
+
+        // Add Link To Allowed Tags
+        config.htmlAllowedTags.push('link');
+
+        /* Load config overwrites */
+        try {
+            newConfig = JSON.parse(document.querySelector('.js-klEditorConfig').innerHTML) || {};
+            copyProperties(config, newConfig);
+            Object.assign(config, newConfig);
+        } catch (e) {
+            console.error(e);
+        }
+    });
 }(window, document));

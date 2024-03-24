@@ -4,20 +4,30 @@
  * Copyright 2017-2024 Lukas Wieditz
  */
 
-/*global $, XF, setTimeout, jQuery, window, document */
+(function (window, document, _undefined) {
+    "use strict";
 
-(function ($, window, document, _undefined) {
-	"use strict";
-	$('body').on('change paste auto-complete:insert', '#editor_kl_em_gfont_title', function(event) {
-		var font = $('#editor_kl_em_gfont_title').val(),
-			fontStripped = font.replace(/[^A-Za-z0-9\+ ]/g, ''),
-			fontEscaped = fontStripped.replace(' ', '+'),
-			elem = $('#editor_kl_em_gfont_preview');
+    XF.on(document.body, 'change pase auto-complete:insert', function (event) {
+        const target = event.target.closest('#editor_kl_em_gfont_title');
+        if (!target) {
+            return;
+        }
 
-		elem.css('width', elem.innerWidth());
-		textFit(elem);
+        const font = target.value;
+        const fontStripped = font.replace(/[^A-Za-z0-9+ ]/g, '');
+        const fontPreview = document.getElementById('editor_kl_em_gfont_preview');
 
-		$('#editor_kl_em_gfont_preview').css('font-family', "'" + fontStripped + "'");
-		$('head').append($('<link/>', {'rel': 'stylesheet', 'href':'https://fonts.googleapis.com/css2?family=' + fontEscaped}));
-	});
-}($, window, document));
+        WebFont.load({
+            google: {
+                families: [fontStripped]
+            },
+            loading: () => {
+                fontPreview.style.width = fontPreview.offsetWidth + 'px';
+                fontPreview.style.fontFamily = fontStripped;
+            },
+            active: () => {
+                textFit(fontPreview);
+            }
+        });
+    });
+}(window, document));

@@ -7,9 +7,9 @@
 (function (window, document, _undefined) {
     "use strict";
 
-    document.addEventListener('change', function (event) {
-        const target = event.target.closest('input[name="type"]');
-        if (target === null || !target.checked) {
+    XF.onDelegated(document.body, 'change', 'input[name="type"]', function (event) {
+        const target = event.target;
+        if (!target.checked) {
             return;
         }
 
@@ -29,9 +29,9 @@
         }, 100);
     });
 
-    document.addEventListener('change', function (event) {
-        const target = event.target.closest('select[name="web_service"]');
-        if (target === null || !target.checked) {
+    XF.onDelegated(document.body, 'change', 'select[name="web_service"]', function (event) {
+        const target = event.target;
+        if (!target.checked) {
             return;
         }
 

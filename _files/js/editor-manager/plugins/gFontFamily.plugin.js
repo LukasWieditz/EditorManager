@@ -4,14 +4,11 @@
  * Copyright 2020-2024 Lukas Wieditz
  */
 
-/*global console, jQuery, XF, setTimeout */
-/*jshint loopfunc:true */
+(function () {
+    XF.on(document.body, 'editor:start', function () {
+        XF.FE.DefineIcon('xfKLEMgFontFamily', {NAME: 'fa-google fab'});
 
-(function ($) {
-    $(document).one('editor:start', function() {
-        $.FE.DefineIcon('xfKLEMgFontFamily', {NAME: 'google fab'});
-
-        $.FE.RegisterCommand('gFontFamily', {
+        XF.FE.RegisterCommand('gFontFamily', {
             title: 'Google Font',
             icon: 'xfKLEMgFontFamily',
             undo: true,
@@ -23,26 +20,27 @@
 
         XF.EditorDialogGFont = XF.extend(XF.EditorDialog, {
             _beforeShow: function (overlay) {
-                $('#editor_kl_em_gfont_title').val('');
-                $('#editor_kl_em_gfont_preview').css('font-family', false);
+                document.getElementById('editor_kl_em_gfont_title').value = '';
+                document.getElementById('editor_kl_em_gfont_preview').style.fontFamily = '';
             },
 
             _init: function (overlay) {
-                $('#editor_kl_em_gfont_form').submit($.proxy(this, 'submit'));
+                document.getElementById('editor_kl_em_gfont_title')
+                    .closest('form')
+                    ?.submit(XF.proxy(this, 'submit'));
             },
 
             submit: function (e) {
                 e.preventDefault();
 
-                var ed = this.ed,
+                const ed = this.ed,
                     overlay = this.overlay;
 
-                console.log(ed);
-
                 ed.selection.restore();
-                XF.EditorHelpers.insertKLEMgFontFamily(ed, $('#editor_kl_em_gfont_title').val());
+                XF.EditorHelpers.insertKLEMgFontFamily(ed, document.getElementById('editor_kl_em_gfont_title').value);
 
                 overlay.hide();
+                return false;
             }
         });
 
@@ -51,12 +49,18 @@
         /* Additional Helpers */
         XF.EditorHelpers.insertKLEMgFontFamily = function (ed, title) {
             if (title) {
-                var titleReplace = title.replace(/\s/g, '+');
+                const titleReplace = title.replace(/\s/g, '+');
 
                 ed.format.applyStyle('font-family', "'" + title + "'");
 
-                $(ed.selection.element()).before('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' + titleReplace + '" />');
+                const stylesheet = XF.createElement('link', {
+                    rel: 'stylesheet',
+                    href: 'https://fonts.googleapis.com/css2?family=' + titleReplace
+                });
+
+                const parentNode = ed.selection.element.parentNode;
+                parentNode.insertBefore(stylesheet, ed.selection.element);
             }
         };
     });
-})(jQuery);
+})();

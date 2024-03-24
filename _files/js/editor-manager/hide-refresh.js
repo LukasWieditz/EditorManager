@@ -5,7 +5,7 @@
  */
 (function (document) {
     "use strict";
-    document.addEventListener('ajax:before-success', function (event) {
+    XF.on(document.body, 'ajax:before-success', function (event) {
         if (event.data.klEMPosts) {
             for (const postId in event.data.klEMPosts) {
                 const postContent = event.data.klEMPosts[postId];

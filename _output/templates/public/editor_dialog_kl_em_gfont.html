@@ -7,6 +7,7 @@
 						   name="title"
 						   id="editor_kl_em_gfont_title"
 						   ac="single"
+						   data-autosubmit="false"
 						   data-acurl="{{ link('editor/findGFont') }}"
 						   label="{{ phrase('kl_em_google_font_name') }}"
 						   dir="ltr" />
@@ -25,5 +26,6 @@
 	</div>
 </form>
 
+<xf:js src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" />
 <xf:js src="editor-manager/vendor/textFit.js" min="1" addon="KL/EditorManager" />
 <xf:js src="editor-manager/google-font.js" min="1" addon="KL/EditorManager" />
