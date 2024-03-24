@@ -118,7 +118,7 @@ class Controller extends XFCP_Controller
             /** @var \KL\EditorManager\Service\AbstractProxy $proxy */
             $proxy = $this->app->service($entityClass);
             $resource = $proxy->getResource($url);
-            if (!$resource || !$resource->isValid()) {
+            if (!$resource->isValid()) {
                 $resource = null;
             }
         } else {
@@ -215,9 +215,9 @@ class Controller extends XFCP_Controller
 
             $expectedETag = $resource->getETagValue();
             if ($expectedETag) {
-                $response->header('ETag', '"' . $expectedETag . '"', true);
+                $response->header('ETag', '"' . $expectedETag . '"');
 
-                if ($this->eTag && $this->eTag === "\"$expectedETag\"") {
+                if ($this->eTag === "\"$expectedETag\"") {
                     $response->httpCode(304);
                     $response->removeHeader('Last-Modified');
                     return;

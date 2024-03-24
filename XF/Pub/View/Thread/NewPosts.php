@@ -36,7 +36,6 @@ class NewPosts extends XFCP_NewPosts
         }
 
         if (method_exists(get_parent_class($this), 'renderJson')) {
-            /** @noinspection PhpUndefinedMethodInspection */
             parent::renderJson();
         }
     }

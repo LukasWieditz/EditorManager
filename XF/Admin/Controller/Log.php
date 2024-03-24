@@ -136,7 +136,6 @@ class Log extends XFCP_Log
      */
     protected function assertAudioProxyExists($id, $with = null, $phraseKey = null): AudioProxy
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->assertRecordExists('KL\EditorManager:AudioProxy', $id, $with, $phraseKey);
     }
 
@@ -252,7 +251,6 @@ class Log extends XFCP_Log
      */
     protected function assertVideoProxyExists($id, $with = null, $phraseKey = null): VideoProxy
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->assertRecordExists('KL\EditorManager:VideoProxy', $id, $with, $phraseKey);
     }
 }

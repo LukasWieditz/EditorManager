@@ -45,10 +45,11 @@ class Formatter extends XFCP_Formatter
     }
 
     /**
-     * @param $text
+     * @param string $text
+     * @param string $format
      * @return string|string[]|null
      */
-    public function replaceSmiliesHtml($text)
+    public function replaceSmiliesHtml($text, string $format = 'default'): string
     {
         // TODO: Add custom smilie translate
 
@@ -107,7 +108,6 @@ class Formatter extends XFCP_Formatter
     {
         $string = preg_replace("#\[(HIDE(?:REPLY|POSTS|THANKS|REPLYTHANKS)?)].*?\[/\g1]#si",
             XF::phrase('kl_em_hidden_content'), $string);
-        $string = parent::snippetString($string, $maxLength, $options);
-        return $string;
+        return parent::snippetString($string, $maxLength, $options);
     }
 }

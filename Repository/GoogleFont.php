@@ -29,7 +29,7 @@ class GoogleFont extends Repository
     public function findGoogleFonts(): GoogleFontFinder
     {
         return $this->finder('KL\EditorManager:GoogleFont')
-            ->setDefaultOrder('font_id', 'ASC');
+            ->setDefaultOrder('font_id');
     }
 
     /**

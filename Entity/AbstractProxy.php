@@ -59,7 +59,7 @@ abstract class AbstractProxy extends Entity
      */
     public function isPlaceholder(): bool
     {
-        return (bool) $this->placeholderPath;
+        return $this->placeholderPath;
     }
 
     /**

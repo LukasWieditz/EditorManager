@@ -167,7 +167,6 @@ class SpecialChars extends AbstractController
             foreach (json_decode($this->filter('groups', 'string')) as $groupValue) {
                 $lastOrder += 10;
 
-                /** @var Smilie $smilie */
                 $group = $groups[$groupValue->id];
                 $group->display_order = $lastOrder;
                 $group->saveIfChanged();
@@ -343,7 +342,6 @@ class SpecialChars extends AbstractController
             foreach (json_decode($this->filter('characters', 'string')) as $characterValue) {
                 $lastOrder += 10;
 
-                /** @var Smilie $smilie */
                 $character = $characters[$characterValue->id];
                 $character->display_order = $lastOrder;
                 $character->saveIfChanged();
@@ -431,7 +429,7 @@ class SpecialChars extends AbstractController
         $mode = $this->filter('mode', 'str');
 
         if ($mode == 'upload') {
-            $upload = $this->request->getFile('upload', false);
+            $upload = $this->request->getFile('upload');
             if (!$upload) {
                 return $this->error(XF::phrase('kl_em_please_upload_valid_xml_file'));
             }

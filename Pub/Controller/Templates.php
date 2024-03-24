@@ -12,16 +12,15 @@ use XF;
 use XF\ControllerPlugin\Delete;
 use XF\ControllerPlugin\Editor;
 use XF\ControllerPlugin\Toggle;
-use XF\Entity\Smilie;
 use XF\Mvc\FormAction;
 use XF\Mvc\Reply\AbstractReply;
 use XF\Mvc\Reply\Exception;
 use XF\Mvc\Reply\Message;
 use XF\Mvc\Reply\Redirect;
 use XF\PrintableException;
-use \XF\Pub\Controller\AbstractController;
-use \XF\Mvc\Reply\View;
-use \XF\Mvc\ParameterBag;
+use XF\Pub\Controller\AbstractController;
+use XF\Mvc\Reply\View;
+use XF\Mvc\ParameterBag;
 use KL\EditorManager\Entity\Template;
 
 /**

@@ -28,7 +28,7 @@ class Template extends Repository
     {
         $finder = $this->finder('KL\EditorManager:Template');
         $finder
-            ->setDefaultOrder('display_order', 'ASC');
+            ->setDefaultOrder('display_order');
 
         return $finder;
     }

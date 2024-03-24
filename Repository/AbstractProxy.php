@@ -110,9 +110,7 @@ abstract class AbstractProxy extends Repository
                 $url = str_replace($match[0], '%' . strtoupper(dechex(ord($match[0]))), $url);
             }
         }
-        $url = preg_replace('/%(?![a-fA-F0-9]{2})/', '%25', $url);
-
-        return $url;
+        return preg_replace('/%(?![a-fA-F0-9]{2})/', '%25', $url);
     }
 
     /**
@@ -259,7 +257,7 @@ abstract class AbstractProxy extends Repository
         }
 
         // we can only remove logs where we've pruned the resource
-        return (int)$this->db()->delete($this->getDbTable(),
+        return $this->db()->delete($this->getDbTable(),
             'pruned = 1 AND last_request_date < ?', $pruneDate
         );
     }
@@ -286,7 +284,7 @@ abstract class AbstractProxy extends Repository
             $pruneDate = XF::$time - (86400 * $referrerOptions['length']);
         }
 
-        return (int)$this->db()->delete($this->getReferrerDbTable(),
+        return $this->db()->delete($this->getReferrerDbTable(),
             'last_date < ?', $pruneDate
         );
     }

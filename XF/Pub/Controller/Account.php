@@ -10,7 +10,7 @@ namespace KL\EditorManager\XF\Pub\Controller;
 
 use XF\Entity\User;
 use XF\Mvc\FormAction;
-use \XF\Mvc\ParameterBag;
+use XF\Mvc\ParameterBag;
 use XF\Mvc\Reply\AbstractReply;
 
 /**

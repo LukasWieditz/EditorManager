@@ -24,7 +24,7 @@ class CustomEmote extends Repository
     public function findCustomEmotes(): CustomEmoteFinder
     {
         $finder = $this->finder('KL\EditorManager:CustomEmote');
-        $finder->setDefaultOrder('title', 'ASC');
+        $finder->setDefaultOrder('title');
         return $finder;
     }
 

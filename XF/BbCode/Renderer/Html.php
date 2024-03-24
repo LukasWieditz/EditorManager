@@ -272,7 +272,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
                     $extra = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=' . $family . '" />';
                 } else {
                     $pageParams = XF::app()->templater()->pageParams;
-                    $params = isset($pageParams['kl_em_webfonts']) ? $pageParams['kl_em_webfonts'] : [];
+                    $params = $pageParams['kl_em_webfonts'] ?? [];
                     $params[] = $option;
                     XF::app()->templater()->setPageParam('kl_em_webfonts', $params);
                     $extra = '';
@@ -567,7 +567,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
                 return $v['user_id'];
             }, $options['likes']);
         } else {
-            if (isset($options['entity']) && isset($options['entity']['reaction_users'])) {
+            if (isset($options['entity']['reaction_users'])) {
                 $likeIds = array_map(function ($v) {
                     return $v['user_id'];
                 }, $options['entity']['reaction_users']);
@@ -594,7 +594,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
         if (isset($options['thread_id'])) {
             $threadId = $options['thread_id'];
         } else {
-            if (isset($options['entity']) && isset($options['entity']['thread_id'])) {
+            if (isset($options['entity']['thread_id'])) {
                 $threadId = $options['entity']['thread_id'];
             }
         }

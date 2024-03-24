@@ -72,7 +72,6 @@ trait Patch1020030
      */
     public function upgrade1020031Step3() : void
     {
-        /** @var SchemaManager $schemaManager */
         $schemaManager = $this->schemaManager();
         $schemaManager->dropTable('xf_kl_em_dropdowns');
     }

@@ -121,6 +121,7 @@ class BBCodes extends AbstractController
         /** @var BbCode $bbCode */
         $bbCode = XF::em()->find('KL\EditorManager:BbCode', $params['bb_code_id']);
         if (!$bbCode) {
+            /** @var BbCode $bbCode */
             $bbCode = XF::em()->create('KL\EditorManager:BbCode');
             $bbCode->bb_code_id = $params['bb_code_id'];
             $bbCode->save();
@@ -240,7 +241,6 @@ class BBCodes extends AbstractController
      */
     protected function getBbCodeRepo(): BbCodeRepo
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->repository('XF:BbCode');
     }
 
@@ -249,7 +249,6 @@ class BBCodes extends AbstractController
      */
     protected function getOptionRepo(): Option
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->repository('XF:Option');
     }
 }

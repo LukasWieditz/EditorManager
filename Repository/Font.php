@@ -25,6 +25,6 @@ class Font extends Repository
     public function findFonts(): FontFinder
     {
         return $this->finder('KL\EditorManager:Font')
-            ->setDefaultOrder('display_order', 'ASC');
+            ->setDefaultOrder('display_order');
     }
 }

@@ -103,7 +103,7 @@ trait EditorManagerTrait
     public function renderTag(array $tag, array $options)
     {
         /** @var BbCodes $repo */
-        $repo = \XF::repository('KL\EditorManager:BbCodes');
+        $repo = XF::repository('KL\EditorManager:BbCodes');
         $tagName = $tag['tag'];
 
         // Resolve alias to original tag
@@ -140,7 +140,6 @@ trait EditorManagerTrait
             }
         }
 
-        /** @noinspection PhpUndefinedClassInspection */
         return parent::renderTag($tag, $options);
     }
 
@@ -273,7 +272,6 @@ trait EditorManagerTrait
      */
     public function renderTagImage(array $children, $option, array $tag, array $options)
     {
-        /** @noinspection PhpUndefinedClassInspection */
         return parent::renderTagImage($children, $this->klOptionStringToArray($option), $tag, $options);
     }
 
@@ -344,7 +342,7 @@ trait EditorManagerTrait
             }
 
             $size = intval($match[1]);
-            $size = max($options['minManual'], min($size, $options['maxManual'] ? $options['maxManual'] : PHP_INT_MAX));
+            $size = max($options['minManual'], min($size, $options['maxManual'] ?: PHP_INT_MAX));
 
             return $size . 'px';
         }
@@ -361,9 +359,8 @@ trait EditorManagerTrait
             $this->formatter->setKlEmContextUser($options['user']);
         }
 
-        /** @noinspection PhpUndefinedClassInspection */
         $filteredString = parent::filterString($string, $options);
-        $this->formatter->setKlEmContextUser(null);
+        $this->formatter->setKlEmContextUser();
         return $filteredString;
     }
 }

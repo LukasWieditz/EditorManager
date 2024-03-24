@@ -236,7 +236,7 @@ abstract class AbstractProxy extends AbstractService
                     $fileName = $this->getType();
                 }
 
-                $resourceInfo = filesize($streamFile) ? @pathinfo($streamFile) : false;
+                $resourceInfo = filesize($streamFile) && @pathinfo($streamFile);
                 if ($resourceInfo) {
                     $resourceType = (string)$response->getHeader('content-type');
 

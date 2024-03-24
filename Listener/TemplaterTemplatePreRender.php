@@ -53,6 +53,9 @@ class TemplaterTemplatePreRender
                         case 'gfonts':
                             $googleFonts[] = $font->extra_data['web_url'];
                             break;
+
+                        default:
+                            break;
                     }
                 } else {
                     if ($font->type === 'upload') {
@@ -75,7 +78,7 @@ class TemplaterTemplatePreRender
                 }
             }
 
-            /* Pre-load custom google webfonts */
+            /* Preload custom google webfonts */
             $templater = $app->templater();
             $webfonts = $templater->pageParams['kl_em_webfonts'] ?? [];
 
