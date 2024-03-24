@@ -4,25 +4,25 @@
  * Copyright 2017-2024 Lukas Wieditz
  */
 
-(function ($, window, document, Plyr, _undefined) {
+(function (window, document, Plyr, _undefined) {
     "use strict";
 
-    var videoOptions = {
-            controls: ['play', 'progress', 'volume', 'mute', 'current-time', 'fullscreen'],
-            keyboard: {focused: true, global: false},
-            displayDuration: true,
-        },
-        videoPlayers = Array.from(document.querySelectorAll('.js-PlyrVideo')).map(p => new Plyr(p, videoOptions)),
-        audioOptions = {
-            controls: ['play', 'progress', 'volume', 'mute', 'current-time'],
-            keyboard: {focused: true, global: false},
-            displayDuration: true,
-        },
-        audioPlayers = Array.from(document.querySelectorAll('.js-PlyrAudio')).map(p => new Plyr(p, audioOptions));
+    const videoOptions = {
+        controls: ['play', 'progress', 'volume', 'mute', 'current-time', 'fullscreen'],
+        keyboard: {focused: true, global: false},
+        displayDuration: true,
+    };
+    Array.from(document.querySelectorAll('.js-PlyrVideo')).map(p => new Plyr(p, videoOptions));
+    const audioOptions = {
+        controls: ['play', 'progress', 'volume', 'mute', 'current-time'],
+        keyboard: {focused: true, global: false},
+        displayDuration: true,
+    };
+    Array.from(document.querySelectorAll('.js-PlyrAudio')).map(p => new Plyr(p, audioOptions));
 
-    $(document).bind('DOMNodeInserted', function () {
-        var videoPlayers = Array.from(document.querySelectorAll('.js-PlyrVideo')).map(p => new Plyr(p, videoOptions)),
-            audioPlayers = Array.from(document.querySelectorAll('.js-PlyrAudio')).map(p => new Plyr(p, audioOptions));
+    document.addEventListener('DOMNodeInserted', function () {
+        Array.from(document.querySelectorAll('.js-PlyrVideo')).map(p => new Plyr(p, videoOptions));
+        Array.from(document.querySelectorAll('.js-PlyrAudio')).map(p => new Plyr(p, audioOptions));
     });
 
-}($, window, document, Plyr));
+}(window, document, Plyr));
