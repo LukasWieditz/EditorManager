@@ -1,11 +1,8 @@
 /*!
 * kl/editor-manager/plugins/templates.plugin.js
 * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
-* Copyright 2020 Lukas Wieditz
+* Copyright 2020-2024 Lukas Wieditz
 */
-
-/*global console, jQuery, XF, setTimeout */
-/*jshint loopfunc:true */
 
 (function ($) {
     (function () {

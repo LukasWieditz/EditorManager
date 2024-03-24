@@ -1,14 +1,11 @@
 /*!
  * kl/editor-manager/plugins/specialCharacters.plugin.js
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2020 Lukas Wieditz
+ * Copyright 2020-2024 Lukas Wieditz
  */
 
-/*global console, jQuery, XF, setTimeout */
-/*jshint loopfunc:true */
-
-(function ($) {
-    $(document).on('editor:config', function (event, config, xfEditor) {
+(function () {
+    document.addEventListener('editor:config', function (event, config, xfEditor) {
         var initialized = false,
             loaded = false,
             $menu,
@@ -18,16 +15,14 @@
             logTimeout,
             timer;
 
-        function showMenu()
-        {
+        function showMenu() {
             selectionSave();
 
             XF.EditorHelpers.blur(xfEditor.ed);
 
             var $btn = $(xfEditor.ed.$tb.find('.fr-command[data-cmd="specialCharacters"]')).first();
 
-            if (!initialized)
-            {
+            if (!initialized) {
                 initialized = true;
 
                 var menuHtml = $.trim($('.js-xfEditorMenu').first().html());
@@ -72,18 +67,15 @@
                     $menuScroll.scrollTop(scrollTop);
                 });
 
-                $menu.on('menu:closed', function()
-                {
-                    setTimeout(function()
-                    {
+                $menu.on('menu:closed', function () {
+                    setTimeout(function () {
                         xfEditor.ed.markers.remove();
                     }, 50);
                 });
             }
 
             var clickHandlers = $btn.data('xfClickHandlers');
-            if (clickHandlers && clickHandlers.menu)
-            {
+            if (clickHandlers && clickHandlers.menu) {
                 clickHandlers.menu.toggle();
             }
         }
@@ -213,10 +205,10 @@
         function logRecentSpecialCharacterUsage(id) {
             id = $.trim(id);
 
-            var limit = XF.Feature.has('hiddenscroll') ? 12 : 11, // bit arbitrary but basically a single row on full width displays
-                value = XF.Cookie.get('klem_specialcharacter_usage'),
-                recent = value ? value.split(',') : [],
-                exist = recent.indexOf(id);
+            const limit = XF.Feature.has('hiddenscroll') ? 12 : 11; // bit arbitrary but basically a single row on full width displays
+            const value = XF.Cookie.get('klem_specialcharacter_usage');
+            let recent = value ? value.split(',') : [];
+            const exist = recent.indexOf(id);
 
             if (exist !== -1) {
                 recent.splice(exist, 1);
@@ -234,13 +226,13 @@
                 new Date(new Date().setFullYear(new Date().getFullYear() + 1))
             );
 
-            $(document).trigger('recent-klem-special-character:logged');
+            document.dispatchEvent(new CustomEvent('recent-klem-special-character:logged'));
 
             return recent;
         }
 
-        $.FE.DefineIcon('klSpecialChars', {NAME: 'omega'});
-        $.FE.RegisterCommand('specialCharacters', {
+        XF.FE.DefineIcon('klSpecialChars', {NAME: 'omega'});
+        XF.FE.RegisterCommand('specialCharacters', {
             title: 'Special Characters',
             icon: 'klSpecialChars',
             undo: false,
@@ -250,6 +242,5 @@
                 showMenu();
             }
         });
-
     });
-})(jQuery);
+})();

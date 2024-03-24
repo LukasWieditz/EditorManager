@@ -1,7 +1,7 @@
 /*!
  * kl/editor-manager/google-font.js
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
- * Copyright 2017 Lukas Wieditz
+ * Copyright 2017-2024 Lukas Wieditz
  */
 
 /*global $, XF, setTimeout, jQuery, window, document */

@@ -1,36 +1,33 @@
 /*!
 * kl/editor-manager/base.js
 * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
-* Copyright 2017 Lukas Wieditz
+* Copyright 2017-2024 Lukas Wieditz
 */
 
-/*jslint browser: true, nomen: true*/
-/*global jQuery, XF, console */
-
-(function ($, window, document, _undefined) {
+(function (window, document, _undefined) {
 	"use strict";
 
-	var copyProperties = function (to, from) {
-		for (var key in from) {
+	const copyProperties = function (to, from) {
+		for (const key in from) {
 			if (Object.prototype.hasOwnProperty.call(from, key)) {
 				to[key] = from[key];
 			}
 		}
 	};
 
-	$(document).on('editor:config', function(event, config, xfEditor) {
-		var newConfig;
+	document.addEventListener('editor:config', function(event, config, xfEditor) {
+		let newConfig;
 		
 		// Add Link To Allowed Tags
 		config.htmlAllowedTags.push('link');
 		
 		/* Load config overwrites */
 		try {
-			newConfig = $.parseJSON($('.js-klEditorConfig').first().html()) || {};
+			newConfig = JSON.parse(document.querySelector('.js-klEditorConfig').innerHTML) || {};
 			copyProperties(config, newConfig);
 			Object.assign(config, newConfig);
 		} catch (e) {
 			console.error(e);
 		}
 	});
-}(jQuery, window, document));
+}(window, document));
