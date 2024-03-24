@@ -1,5 +1,6 @@
 <?php
 
+/** @noinspection PhpIllegalPsrClassPathInspection */
 // ################## THIS IS A GENERATED FILE ##################
 // DO NOT EDIT DIRECTLY. EDIT THE CLASS EXTENSIONS IN THE CONTROL PANEL.
 
@@ -63,6 +64,11 @@ namespace KL\EditorManager\XF\Repository
 {
 	class XFCP_Option extends \XF\Repository\Option {}
 	class XFCP_Smilie extends \XF\Repository\Smilie {}
+}
+
+namespace KL\EditorManager\XF\Service\Icon
+{
+	class XFCP_UsageAnalyzer extends \XF\Service\Icon\UsageAnalyzer {}
 }
 
 namespace KL\EditorManager\XF\Str

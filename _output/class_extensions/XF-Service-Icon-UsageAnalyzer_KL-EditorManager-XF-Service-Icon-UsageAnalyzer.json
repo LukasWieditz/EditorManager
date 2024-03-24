@@ -1,0 +1,6 @@
+{
+    "from_class": "XF\\Service\\Icon\\UsageAnalyzer",
+    "to_class": "KL\\EditorManager\\XF\\Service\\Icon\\UsageAnalyzer",
+    "execute_order": 10,
+    "active": true
+}
