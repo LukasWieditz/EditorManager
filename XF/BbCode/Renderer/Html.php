@@ -558,6 +558,10 @@ class Html extends XFCP_Html implements EditorManagerInterface
      */
     protected function canLikeView($options)
     {
+        if (!XF::visitor()->user_id) {
+            return false;
+        }
+
         if (isset($options['likes'])) {
             $likeIds = array_map(function ($v) {
                 return $v['user_id'];
@@ -583,6 +587,9 @@ class Html extends XFCP_Html implements EditorManagerInterface
      */
     protected function canReplyView($options)
     {
+        if (!XF::visitor()->user_id) {
+            return false;
+        }
         $threadId = 0;
         if (isset($options['thread_id'])) {
             $threadId = $options['thread_id'];
@@ -613,6 +620,10 @@ class Html extends XFCP_Html implements EditorManagerInterface
      */
     protected function isKLEMCreator($options)
     {
+        if (!XF::visitor()->user_id) {
+            return false;
+        }
+
         if (isset($options['user'])) {
             return $options['user']->user_id === XF::visitor()->user_id;
         }
@@ -639,6 +650,10 @@ class Html extends XFCP_Html implements EditorManagerInterface
      */
     protected function isInGroup(array $options, AbstractCollection $groups)
     {
+        if (!XF::visitor()->user_id) {
+            return false;
+        }
+
         $ids = $groups->keys();
         $user = XF::visitor();
         /** @var User $user */
