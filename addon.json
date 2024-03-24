@@ -11,12 +11,12 @@
     "extra_urls": [],
     "require": {
         "XF": [
-            2020010,
-            "XenForo 2.2.0+"
+            2030010,
+            "XenForo 2.3.0+"
         ],
         "php": [
-            "7.2.0",
-            "PHP 7.2.0+"
+            "7.4.0",
+            "PHP 7.4.0+"
         ]
     },
     "icon": "icon.png",
