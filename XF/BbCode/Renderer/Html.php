@@ -50,7 +50,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
      */
     public function renderTagKLVideo(array $children, $option, array $tag, array $options)
     {
-        $optionArray = explode(',', trim($option));
+        $optionArray = explode(',', trim($option ?? ''));
 
         $params = ['size' => ''];
         foreach ($optionArray as $optionValue) {
@@ -431,7 +431,7 @@ class Html extends XFCP_Html implements EditorManagerInterface
             $messageThreshold = -1;
         }
 
-        if($messageThreshold === -1) {
+        if ($messageThreshold === -1) {
             return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_never', [
                 'content' => new PreEscaped($content),
                 'visible' => $canView,
