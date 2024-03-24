@@ -39,7 +39,7 @@ class Formatter extends XFCP_Formatter
     /**
      * @param User|null $klEmContextUser
      */
-    public function setKlEmContextUser(User $klEmContextUser = null): void
+    public function setKlEmContextUser(?User $klEmContextUser = null): void
     {
         $this->klEmContextUser = $klEmContextUser;
     }

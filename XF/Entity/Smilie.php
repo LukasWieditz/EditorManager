@@ -21,7 +21,7 @@ class Smilie extends XFCP_Smilie
      * @return bool
      * @noinspection PhpUnusedParameterInspection
      */
-    public function canKLEMUse(&$error = null, User $contextUser = null): bool
+    public function canKLEMUse(&$error = null, ?User $contextUser = null): bool
     {
         if (!$contextUser) {
             $contextUser = XF::visitor();

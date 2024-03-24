@@ -37,7 +37,7 @@ class Template extends Repository
      * @param User|null $user
      * @throws XF\PrintableException
      */
-    public function rebuildUserTemplateCache(User $user = null): void
+    public function rebuildUserTemplateCache(?User $user = null): void
     {
         if (!$user) {
             $user = XF::visitor();

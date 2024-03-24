@@ -31,7 +31,7 @@ class Controller extends XFCP_Controller
      * @param Linker $linker
      * @param Request|null $request
      */
-    public function __construct(App $app, Linker $linker, Request $request = null)
+    public function __construct(App $app, Linker $linker, ?Request $request = null)
     {
         parent::__construct($app, $linker, $request);
     }
