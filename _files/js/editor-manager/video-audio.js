@@ -20,9 +20,17 @@
     };
     Array.from(document.querySelectorAll('.js-PlyrAudio')).map(p => new Plyr(p, audioOptions));
 
-    document.addEventListener('DOMNodeInserted', function () {
-        Array.from(document.querySelectorAll('.js-PlyrVideo')).map(p => new Plyr(p, videoOptions));
-        Array.from(document.querySelectorAll('.js-PlyrAudio')).map(p => new Plyr(p, audioOptions));
-    });
-
+    // Convert to mutation observer
+    new MutationObserver(function (mutations) {
+        mutations.forEach(mutation => {
+            const addedNodes = mutation.addedNodes;
+            addedNodes.forEach(addedNode => {
+                if (addedNode.nodeType !== 1) {
+                    return;
+                }
+                [...addedNode.querySelectorAll('.js-PlyrVideo')].forEach(p => new Plyr(p, videoOptions));
+                [...addedNode.querySelectorAll('.js-PlyrAudio')].forEach(p => new Plyr(p, audioOptions));
+            })
+        });
+    }).observe(document.body, {childList: true, subtree: true});
 }(window, document, Plyr));
