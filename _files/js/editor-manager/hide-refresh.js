@@ -3,15 +3,18 @@
  * License https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
  * Copyright 2017-2024 Lukas Wieditz
  */
-
-
-(function ($, window, document, _undefined) {
+(function (document) {
     "use strict";
-    $(document).on('ajax:before-success', function($data, $status, $xhr) {
-       if($status.klEMPosts) {
-           $.each($status.klEMPosts, function($index, $content) {
-               $('article[data-content="post-' + $index + '"] article.message-body').html($content);
-           });
-       }
+    document.addEventListener('ajax:before-success', function (event) {
+        if (event.data.klEMPosts) {
+            for (const postId in event.data.klEMPosts) {
+                const postContent = event.data.klEMPosts[postId];
+                const postSelector = `article[data-content="post-${postId}"] article.message-body`;
+                const post = document.querySelector(postSelector);
+                if (post) {
+                    post.innerHTML = postContent;
+                }
+            }
+        }
     });
-}($, window, document));
+}(document));

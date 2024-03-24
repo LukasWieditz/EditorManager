@@ -184,6 +184,11 @@
         "version_string": "2.0.0 Alpha",
         "hash": "e5470c2bfa5063c8d588c19b728f5cdd"
     },
+    "public/kl_em_bb_code_tag_hide_never.html": {
+        "version_id": 2000191,
+        "version_string": "2.0.1 Patch Level 1",
+        "hash": "6537774f872d8ff2c67bdc45cc5a9bc2"
+    },
     "public/kl_em_bb_code_tag_hide_posts.html": {
         "version_id": 2000010,
         "version_string": "2.0.0 Alpha",

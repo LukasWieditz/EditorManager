@@ -419,20 +419,29 @@ class Html extends XFCP_Html implements EditorManagerInterface
 
         $visitor = XF::visitor();
         if ($visitor->user_id) {
+            $requiredPostCount = $visitor->hasPermission('klEM', 'klEMHidePostCount');
+
             $canView = $visitor->hasPermission('klEM', 'klEMBypassHide') ||
-                ($visitor->hasPermission('klEM', 'klEMHidePostCount') !== -1 &&
-                    $visitor->hasPermission('klEM', 'klEMHidePostCount') <= $visitor->message_count) ||
+                ($requiredPostCount !== -1 && $requiredPostCount <= $visitor->message_count) ||
                 $this->isKLEMCreator($options);
 
-            $message_threshold = $visitor->hasPermission('klEM', 'klEMHidePostCount');
+            $messageThreshold = $visitor->hasPermission('klEM', 'klEMHidePostCount');
         } else {
             $canView = false;
-            $message_threshold = -1;
+            $messageThreshold = -1;
         }
+
+        if($messageThreshold === -1) {
+            return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_never', [
+                'content' => new PreEscaped($content),
+                'visible' => $canView,
+            ]);
+        }
+
         return $this->templater->renderTemplate('public:kl_em_bb_code_tag_hide_posts', [
             'content' => new PreEscaped($content),
             'visible' => $canView,
-            'message_threshold' => $message_threshold,
+            'messageThreshold' => $messageThreshold,
             'message_count' => $visitor->message_count
         ]);
     }

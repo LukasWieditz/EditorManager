@@ -51,6 +51,7 @@ class Formatter extends XFCP_Formatter
      */
     public function replaceSmiliesHtml($text, string $format = 'default'): string
     {
+        return parent::replaceSmiliesHtml($text, $format);
         // TODO: Add custom smilie translate
 
         $cache = &$this->smilieCache;
